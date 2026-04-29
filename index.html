@@ -164,7 +164,7 @@
 
 <script>
 const GH = 'https://cdn.jsdelivr.net/gh/123KingKarl123/garmin-data-xK9mP2qL7vR4nJ8w@main/';
-const FILES = ['activities.csv','daily_summaries.csv','sleep.csv','hrv.csv','resting_heart_rate.csv','stress.csv'];
+const FILES = ['activities.csv','daily_summaries.csv','sleep.csv','HRV_Status.csv','resting_heart_rate.csv','stress.csv'];
 let D = {};
 let days = 30;
 let curTab = 'activities';
@@ -237,14 +237,16 @@ function renderMetrics() {
   const sc=findCol(daily[0],['totalSteps','steps']);
   const cc=findCol(daily[0],['totalKilocalories','activeKilocalories','calories']);
   const slc=findCol(sleep[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
-  const hvc=findCol(hrv[0],['lastNight','weeklyAvg','hrvSummary_lastNight']);
+  // HRV_Status.csv: strip 'ms' suffix and use correct column names
+  function msVal(v){ return v?parseInt((v||'').replace(/ms/i,'').trim())||0:0; }
+  const hvc=findCol(hrv[0],['Overnight HRV','lastNight','weeklyAvg']);
   const hrc=findCol(hr[0],['value','restingHeartRate']);
   const stc=findCol((D.stress||[])[0],['averageStressLevel','avgStressLevel']);
 
   const avgSteps=sc?avg(daily.map(r=>+r[sc]||0)):0;
   const avgCals=cc?avg(daily.map(r=>+r[cc]||0)):0;
   const avgSleep=slc?(avg(sleep.map(r=>+r[slc]||0))/3600).toFixed(1):'—';
-  const avgHrv=hvc?avg(hrv.map(r=>+r[hvc]||0)):0;
+  const avgHrv=hvc?avg(hrv.map(r=>msVal(r[hvc]))):0;
   const avgHr=hrc?avg(hr.map(r=>+r[hrc]||0)):0;
   const avgStress=stc?avg(filterRows(D.stress||[],'date',days).map(r=>+r[stc]||0)):0;
 
@@ -317,12 +319,32 @@ function showTab(name) {
       }
     },
     hrv:{
-      title:'HRV (ms)',
+      title:'HRV (ms) with baseline range',
       build:()=>{
-        const rows=filterRows(D.hrv||[],'date',days);
-        const c=findCol(rows[0],['lastNight','weeklyAvg','hrvSummary_lastNight']);
-        return {labels:rows.map(r=>r.date.slice(5)),
-          ds:[{label:'HRV',data:rows.map(r=>c?+r[c]||0:0),borderColor:'#4ade80',backgroundColor:'#4ade8018',fill:true,tension:.35,pointRadius:2}],extra:{}};
+        // HRV_Status.csv uses "Apr 29" dates and "105ms" values
+        const months={Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12'};
+        function toISO(s){
+          if(!s) return '';
+          if(/^\d{4}/.test(s)) return s;
+          const m=s.match(/^(\w{3})\s+(\d+)/);
+          if(!m) return s;
+          return new Date().getFullYear()+'-'+( months[m[1]]||'01')+'-'+m[2].padStart(2,'0');
+        }
+        function ms(v){ return v?parseInt(v.replace(/ms/i,'').trim())||0:0; }
+        const raw=(D.hrv||[]).map(r=>({...r, _iso: toISO(r['Date']||r['date']||'')}));
+        const c2=cutoff(days);
+        const rows=raw.filter(r=>r._iso&&new Date(r._iso)>=c2).sort((a,b)=>a._iso>b._iso?1:-1);
+        const labels=rows.map(r=>r._iso.slice(5));
+        const hrv=rows.map(r=>ms(r['Overnight HRV']));
+        const avg7=rows.map(r=>ms(r['7d Avg']));
+        const baseLow=rows.map(r=>{ const b=r['Baseline']||''; const p=b.split('-'); return ms(p[0]); });
+        const baseHigh=rows.map(r=>{ const b=r['Baseline']||''; const p=b.split('-'); return p[1]?ms(p[1]):ms(p[0]); });
+        return {labels, ds:[
+          {label:'Baseline high',data:baseHigh,borderColor:'transparent',backgroundColor:'rgba(74,222,128,0.12)',fill:'+1',tension:.35,pointRadius:0,order:3},
+          {label:'Baseline low',data:baseLow,borderColor:'transparent',backgroundColor:'rgba(74,222,128,0.12)',fill:false,tension:.35,pointRadius:0,order:4},
+          {label:'7d avg',data:avg7,borderColor:'#60a5fa',backgroundColor:'transparent',borderDash:[4,3],tension:.35,pointRadius:0,order:2},
+          {label:'Overnight HRV',data:hrv,borderColor:'#4ade80',backgroundColor:'#4ade8030',fill:false,tension:.35,pointRadius:3,order:1},
+        ],extra:{}};
       }
     },
     stress:{
@@ -349,7 +371,13 @@ function showTab(name) {
   if(!c){el.innerHTML='';return;}
   const built=c.build();
   const chartType=name==='steps'?'bar':name==='sleep'?'bar':'line';
-  el.innerHTML=`<div class="chart-panel"><h3>${c.title}</h3><div class="chart-wrap"><canvas id="mainChart"></canvas></div></div>`;
+  const showLegend = name==='hrv';
+  const legendHtml = name==='hrv' ? `<div style="display:flex;gap:16px;margin-bottom:10px;font-size:11px;color:var(--muted);font-family:var(--mono)">
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#4ade80;border-radius:2px;display:inline-block"></span>Overnight HRV</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:3px;background:#60a5fa;display:inline-block"></span>7d avg</span>
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:rgba(74,222,128,0.2);border-radius:2px;display:inline-block"></span>Baseline</span>
+  </div>` : '';
+  el.innerHTML=`<div class="chart-panel"><h3>${c.title}</h3>${legendHtml}<div class="chart-wrap"><canvas id="mainChart"></canvas></div></div>`;
   makeChart('mainChart',chartType,built.labels,built.ds,built.extra);
 }
 
