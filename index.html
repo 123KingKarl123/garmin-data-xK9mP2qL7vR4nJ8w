@@ -175,12 +175,22 @@ const raceDate = new Date('2026-05-17');
 const daysLeft = Math.max(0, Math.round((raceDate - new Date()) / 86400000));
 document.getElementById('daysLeft').textContent = daysLeft;
 
-// ── CSV parser ──────────────────────────────────────────────
+// ── CSV parser (handles both comma and tab separated) ───────
 function parseCSV(txt) {
   const lines = txt.trim().split('\n');
   if (lines.length < 2) return [];
-  const hdrs = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+  // Auto-detect delimiter: tab or comma
+  const delim = lines[0].includes('\t') ? '\t' : ',';
+  const hdrs = lines[0].split(delim).map(h => h.replace(/^"|"$/g,'').trim());
   return lines.slice(1).map(line => {
+    if (delim === '\t') {
+      // Tab-separated: simple split, no quote handling needed
+      const vals = line.split('\t');
+      const o = {};
+      hdrs.forEach((h,i) => o[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+      return o;
+    }
+    // Comma-separated with quote handling
     const vals = []; let cur = '', inQ = false;
     for (const c of line) {
       if (c==='"') inQ=!inQ;
