@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garmin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #0e0f11;
+    --surface: #16181c;
+    --surface2: #1e2026;
+    --border: #2a2d35;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --accent: #4ade80;
+    --accent2: #60a5fa;
+    --accent3: #f472b6;
+    --accent4: #fb923c;
+    --warn: #facc15;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 300; min-height: 100vh; }
+
+  /* grid noise texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  .shell { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem; position: relative; z-index: 1; }
+
+  /* header */
+  header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+  .logo { display: flex; flex-direction: column; gap: 2px; }
+  .logo-title { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .15em; text-transform: uppercase; }
+  .logo-name { font-size: 22px; font-weight: 500; color: var(--text); }
+  .race-chip { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: .6rem 1rem; text-align: right; }
+  .race-chip .days { font-family: var(--mono); font-size: 28px; font-weight: 500; color: var(--accent); line-height: 1; }
+  .race-chip .race-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* range tabs */
+  .range-row { display: flex; gap: 6px; margin-bottom: 1.75rem; }
+  .range-btn { font-family: var(--mono); font-size: 11px; padding: 5px 12px; border-radius: 6px; border: 0.5px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; letter-spacing: .05em; transition: all .15s; }
+  .range-btn.on { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+
+  /* metric grid */
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .metric { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .9rem 1rem; }
+  .metric-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .metric-value { font-size: 24px; font-weight: 500; color: var(--text); line-height: 1; }
+  .metric-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .metric-value.green { color: var(--accent); }
+  .metric-value.blue { color: var(--accent2); }
+  .metric-value.pink { color: var(--accent3); }
+  .metric-value.orange { color: var(--accent4); }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; flex-wrap: wrap; border-bottom: 0.5px solid var(--border); padding-bottom: 0; }
+  .tab { font-family: var(--mono); font-size: 11px; padding: 7px 14px; border-radius: 6px 6px 0 0; border: none; background: transparent; color: var(--muted); cursor: pointer; letter-spacing: .05em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all .15s; }
+  .tab.on { color: var(--text); border-bottom-color: var(--accent); }
+
+  /* chart area */
+  .chart-panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 1.25rem; margin-bottom: 1.5rem; }
+  .chart-panel h3 { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* activity list */
+  .act-row { display: flex; align-items: center; gap: 10px; padding: .7rem .9rem; background: var(--surface2); border-radius: 8px; margin-bottom: 6px; }
+  .act-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .act-type { font-size: 13px; font-weight: 500; color: var(--text); min-width: 110px; text-transform: capitalize; }
+  .act-stat { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+  .act-date { margin-left: auto; font-size: 11px; color: var(--muted); font-family: var(--mono); }
+
+  /* training plan */
+  .plan-section { margin-top: 2rem; }
+  .plan-week { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin: 1.25rem 0 .5rem; padding-bottom: 4px; border-bottom: 0.5px solid var(--border); }
+  .plan-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .85rem 1rem; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .plan-card.today { border-color: var(--accent); }
+  .plan-card.race-day { border-color: var(--accent4); background: #1a1510; }
+  .plan-date-col { min-width: 80px; }
+  .plan-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .plan-day { font-size: 12px; font-weight: 500; color: var(--text); margin-top: 2px; }
+  .plan-content { flex: 1; }
+  .plan-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .plan-detail { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .plan-note { font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: .7; }
+  .plan-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; margin-bottom: 5px; display: inline-block; }
+  .bz2 { background: #0d2e1e; color: var(--accent); }
+  .bmx { background: #2a1a0a; color: var(--accent4); }
+  .brs { background: #1e1e22; color: var(--muted); }
+  .btp { background: #161230; color: var(--accent2); }
+  .brc { background: #2a1205; color: var(--accent4); }
+  .plan-segs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .plan-seg { font-size: 10px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--border); color: var(--muted); }
+  .plan-done-btn { margin-top: 6px; font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .plan-done-btn.done { background: #0d2e1e; color: var(--accent); border-color: var(--accent); }
+
+  /* status */
+  .status { text-align: center; padding: 3rem; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+  /* progress bar */
+  .prog { margin-bottom: 1.5rem; }
+  .prog-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 5px; letter-spacing: .05em; }
+  .prog-bar { height: 3px; background: var(--surface2); border-radius: 2px; }
+  .prog-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s ease; }
+
+  /* updated */
+  .updated { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; margin-bottom: 1rem; letter-spacing: .05em; }
+
+  @media(max-width:600px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .plan-card { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div class="logo">
+      <span class="logo-title">Health dashboard</span>
+      <span class="logo-name">Good morning 👋</span>
+    </div>
+    <div class="race-chip">
+      <div class="days" id="daysLeft">—</div>
+      <div class="race-label">days to Chester Half</div>
+    </div>
+  </header>
+
+  <div class="updated" id="updatedLabel">Fetching data...</div>
+
+  <div class="range-row">
+    <button class="range-btn" onclick="setRange(7)">7D</button>
+    <button class="range-btn on" onclick="setRange(30)">30D</button>
+    <button class="range-btn" onclick="setRange(90)">90D</button>
+  </div>
+
+  <div id="statusMsg" class="status">Loading your Garmin data from GitHub...</div>
+
+  <div id="mainContent" style="display:none">
+    <div class="metrics" id="metricsGrid"></div>
+
+    <div class="tabs">
+      <button class="tab on" onclick="showTab('activities')">Activities</button>
+      <button class="tab" onclick="showTab('steps')">Steps</button>
+      <button class="tab" onclick="showTab('sleep')">Sleep</button>
+      <button class="tab" onclick="showTab('hrv')">HRV</button>
+      <button class="tab" onclick="showTab('stress')">Stress</button>
+      <button class="tab" onclick="showTab('hr')">Heart rate</button>
+      <button class="tab" onclick="showTab('plan')">Race plan</button>
+    </div>
+
+    <div id="tabContent"></div>
+  </div>
+
+</div>
+
+<script>
+const GH = 'https://cdn.jsdelivr.net/gh/123KingKarl123/garmin-data-xK9mP2qL7vR4nJ8w@main/';
+const FILES = ['activities.csv','daily_summaries.csv','sleep.csv','hrv.csv','resting_heart_rate.csv','stress.csv'];
+let D = {};
+let days = 30;
+let curTab = 'activities';
+let chart = null;
+
+// ── race countdown ──────────────────────────────────────────
+const raceDate = new Date('2026-05-17');
+const daysLeft = Math.max(0, Math.round((raceDate - new Date()) / 86400000));
+document.getElementById('daysLeft').textContent = daysLeft;
+
+// ── CSV parser ──────────────────────────────────────────────
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  if (lines.length < 2) return [];
+  const hdrs = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+  return lines.slice(1).map(line => {
+    const vals = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c==='"') inQ=!inQ;
+      else if (c===',' && !inQ) { vals.push(cur); cur=''; }
+      else cur+=c;
+    }
+    vals.push(cur);
+    const o = {};
+    hdrs.forEach((h,i) => o[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+    return o;
+  });
+}
+
+function cutoff(n) { const d=new Date(); d.setDate(d.getDate()-n); return d; }
+function filterRows(rows, field, n) {
+  const c=cutoff(n);
+  return rows.filter(r=>r[field]&&new Date(r[field])>=c).sort((a,b)=>a[field]>b[field]?1:-1);
+}
+function findCol(row, opts) { if(!row) return null; for(const o of opts) if(row[o]!==undefined) return o; return null; }
+function avg(arr) { const f=arr.filter(Boolean); return f.length?Math.round(f.reduce((a,b)=>a+b,0)/f.length):0; }
+
+// ── fetch all ───────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const results = await Promise.all(FILES.map(f =>
+      fetch(GH+f+'?t='+Date.now())
+        .then(r=>r.ok?r.text():'').then(t=>t?parseCSV(t):[]).catch(()=>[])
+    ));
+    D.activities=results[0]; D.daily=results[1]; D.sleep=results[2];
+    D.hrv=results[3]; D.hr=results[4]; D.stress=results[5];
+
+    if (!D.daily.length && !D.activities.length) {
+      document.getElementById('statusMsg').textContent='No data found. Check your GitHub Actions workflow has run.';
+      return;
+    }
+    document.getElementById('statusMsg').style.display='none';
+    document.getElementById('mainContent').style.display='';
+    document.getElementById('updatedLabel').textContent='Last synced: today at 07:00 · auto-updates daily';
+    renderMetrics();
+    showTab('activities');
+  } catch(e) {
+    document.getElementById('statusMsg').textContent='Error: '+e.message;
+  }
+}
+
+// ── metrics ─────────────────────────────────────────────────
+function renderMetrics() {
+  const daily=filterRows(D.daily||[],'date',days);
+  const sleep=filterRows(D.sleep||[],'date',days);
+  const hrv=filterRows(D.hrv||[],'date',days);
+  const hr=filterRows(D.hr||[],'date',days);
+  const acts=filterRows(D.activities||[],'startTimeLocal',days);
+
+  const sc=findCol(daily[0],['totalSteps','steps']);
+  const cc=findCol(daily[0],['totalKilocalories','activeKilocalories','calories']);
+  const slc=findCol(sleep[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
+  const hvc=findCol(hrv[0],['lastNight','weeklyAvg','hrvSummary_lastNight']);
+  const hrc=findCol(hr[0],['value','restingHeartRate']);
+  const stc=findCol((D.stress||[])[0],['averageStressLevel','avgStressLevel']);
+
+  const avgSteps=sc?avg(daily.map(r=>+r[sc]||0)):0;
+  const avgCals=cc?avg(daily.map(r=>+r[cc]||0)):0;
+  const avgSleep=slc?(avg(sleep.map(r=>+r[slc]||0))/3600).toFixed(1):'—';
+  const avgHrv=hvc?avg(hrv.map(r=>+r[hvc]||0)):0;
+  const avgHr=hrc?avg(hr.map(r=>+r[hrc]||0)):0;
+  const avgStress=stc?avg(filterRows(D.stress||[],'date',days).map(r=>+r[stc]||0)):0;
+
+  document.getElementById('metricsGrid').innerHTML=[
+    {l:'Avg steps',v:avgSteps?avgSteps.toLocaleString():'—',s:`per day · ${days}d`,cls:'green'},
+    {l:'Avg calories',v:avgCals?avgCals.toLocaleString():'—',s:'kcal / day',cls:'blue'},
+    {l:'Avg sleep',v:avgSleep+'h',s:'per night',cls:'pink'},
+    {l:'Avg HRV',v:avgHrv?avgHrv+'ms':'—',s:'last night avg',cls:'green'},
+    {l:'Resting HR',v:avgHr?avgHr+' bpm':'—',s:'average',cls:'orange'},
+    {l:'Avg stress',v:avgStress||'—',s:'0–100 scale',cls:''},
+    {l:'Activities',v:acts.length,s:`last ${days} days`,cls:'blue'},
+  ].map(m=>`<div class="metric">
+    <div class="metric-label">${m.l}</div>
+    <div class="metric-value ${m.cls}">${m.v}</div>
+    <div class="metric-sub">${m.s}</div>
+  </div>`).join('');
+}
+
+// ── chart helper ─────────────────────────────────────────────
+function makeChart(id, type, labels, datasets, extraOpts={}) {
+  if(chart) chart.destroy();
+  const ctx=document.getElementById(id);
+  if(!ctx) return;
+  chart=new Chart(ctx,{
+    type, data:{labels,datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{color:'#6b7280',font:{size:10},maxRotation:45,autoSkip:true,maxTicksLimit:14},grid:{color:'#1e2026'}},
+        y:{ticks:{color:'#6b7280',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}},
+        ...extraOpts
+      }
+    }
+  });
+}
+
+// ── tabs ─────────────────────────────────────────────────────
+function showTab(name) {
+  curTab=name;
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.classList.toggle('on',['activities','steps','sleep','hrv','stress','hr','plan'][i]===name);
+  });
+  const el=document.getElementById('tabContent');
+  if(chart){chart.destroy();chart=null;}
+
+  if(name==='activities') { renderActivities(el); return; }
+  if(name==='plan') { renderPlan(el); return; }
+
+  const cfg={
+    steps:{
+      title:'Daily steps & calories',
+      build:()=>{
+        const rows=filterRows(D.daily||[],'date',days);
+        const sc=findCol(rows[0],['totalSteps','steps']);
+        const cc=findCol(rows[0],['totalKilocalories','activeKilocalories']);
+        return {labels:rows.map(r=>r.date.slice(5)),
+          ds:[{label:'Steps',data:rows.map(r=>+r[sc]||0),backgroundColor:'#4ade8066',borderColor:'#4ade80',borderWidth:1,yAxisID:'y'},
+              {label:'Calories',data:rows.map(r=>+r[cc]||0),backgroundColor:'#fb923c66',borderColor:'#fb923c',borderWidth:1,yAxisID:'y1'}],
+          extra:{y1:{position:'right',ticks:{color:'#6b7280',font:{size:10}},grid:{display:false}}}};
+      }
+    },
+    sleep:{
+      title:'Sleep duration (hours)',
+      build:()=>{
+        const rows=filterRows(D.sleep||[],'date',days);
+        const c=findCol(rows[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
+        return {labels:rows.map(r=>r.date.slice(5)),
+          ds:[{label:'Sleep',data:rows.map(r=>c?+(+r[c]/3600).toFixed(1):0),backgroundColor:'#f472b666',borderColor:'#f472b6',borderWidth:1}],extra:{}};
+      }
+    },
+    hrv:{
+      title:'HRV (ms)',
+      build:()=>{
+        const rows=filterRows(D.hrv||[],'date',days);
+        const c=findCol(rows[0],['lastNight','weeklyAvg','hrvSummary_lastNight']);
+        return {labels:rows.map(r=>r.date.slice(5)),
+          ds:[{label:'HRV',data:rows.map(r=>c?+r[c]||0:0),borderColor:'#4ade80',backgroundColor:'#4ade8018',fill:true,tension:.35,pointRadius:2}],extra:{}};
+      }
+    },
+    stress:{
+      title:'Average daily stress',
+      build:()=>{
+        const rows=filterRows(D.stress||[],'date',days);
+        const c=findCol(rows[0],['averageStressLevel','avgStressLevel','overallStressLevel']);
+        return {labels:rows.map(r=>r.date.slice(5)),
+          ds:[{label:'Stress',data:rows.map(r=>c?+r[c]||0:0),borderColor:'#fb923c',backgroundColor:'#fb923c18',fill:true,tension:.35,pointRadius:2}],extra:{}};
+      }
+    },
+    hr:{
+      title:'Resting heart rate (bpm)',
+      build:()=>{
+        const rows=filterRows(D.hr||[],'date',days);
+        const c=findCol(rows[0],['value','restingHeartRate','allDayHR_restingHeartRate']);
+        return {labels:rows.map(r=>r.date.slice(5)),
+          ds:[{label:'HR',data:rows.map(r=>c?+r[c]||0:0),borderColor:'#f472b6',backgroundColor:'#f472b618',fill:true,tension:.35,pointRadius:2}],extra:{}};
+      }
+    }
+  };
+
+  const c=cfg[name];
+  if(!c){el.innerHTML='';return;}
+  const built=c.build();
+  const chartType=name==='steps'?'bar':name==='sleep'?'bar':'line';
+  el.innerHTML=`<div class="chart-panel"><h3>${c.title}</h3><div class="chart-wrap"><canvas id="mainChart"></canvas></div></div>`;
+  makeChart('mainChart',chartType,built.labels,built.ds,built.extra);
+}
+
+function renderActivities(el) {
+  const acts=filterRows(D.activities||[],'startTimeLocal',days).reverse().slice(0,20);
+  if(!acts.length){el.innerHTML='<div class="status">No activities in this period.</div>';return;}
+  const icons={'running':'🏃','cycling':'🚴','swimming':'🏊','walking':'🚶','strength_training':'🏋️','default':'⚡'};
+  el.innerHTML=acts.map(a=>{
+    const type=(a.activityType_typeKey||a.activityType||a.activityName||'activity').replace(/_/g,' ');
+    const icon=icons[Object.keys(icons).find(k=>type.includes(k))||'default'];
+    const dist=a.distance?(parseFloat(a.distance)/1000).toFixed(2)+'km':'';
+    const dur=a.duration?Math.round(parseFloat(a.duration)/60)+'min':'';
+    const hr2=a.averageHR?a.averageHR+' bpm avg':'';
+    const date=(a.startTimeLocal||'').slice(0,10);
+    return `<div class="act-row">
+      <div class="act-icon" style="background:var(--surface2)">${icon}</div>
+      <span class="act-type">${type}</span>
+      ${dist?`<span class="act-stat">${dist}</span>`:''}
+      ${dur?`<span class="act-stat">${dur}</span>`:''}
+      ${hr2?`<span class="act-stat">${hr2}</span>`:''}
+      <span class="act-date">${date}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── training plan ─────────────────────────────────────────────
+const planWeeks=[
+  {label:'Week 1 — 28 Apr to 4 May · Last big week',days:[
+    {date:'28 Apr',day:'Tue · Today',today:true,type:'bz2',badge:'Zone 2',title:'Zone 2 cycle',detail:'Easy steady-state ride, HR in zone 2 throughout.',segs:['Full Z2'],note:'Priming session before tomorrow\'s run.'},
+    {date:'29 Apr',day:'Wed',type:'bmx',badge:'Mixed',title:'9km structured run',detail:'2km Z2 · 5km threshold · 2km Z2',segs:['2km Z2','5km threshold','2km Z2'],note:'Quality session of the week. ~80–85% max HR on threshold.'},
+    {date:'30 Apr',day:'Thu',type:'brs',badge:'Rest',title:'Rest / active recovery',detail:'Full rest, walk, or light stretching.',segs:[],note:'Absorb Wednesday\'s effort.'},
+    {date:'1 May',day:'Fri',type:'brs',badge:'Rest',title:'Easy movement',detail:'Foam rolling or short walk.',segs:[],note:'Prep legs for long run.'},
+    {date:'2 May',day:'Sat',type:'bz2',badge:'Zone 2',title:'Long run — 19–20km',detail:'Full zone 2 throughout.',segs:['19–20km Z2','Fuel every 45min'],note:'Last big long run. Nail nutrition from 45min onward.'},
+    {date:'3 May',day:'Sun',type:'brs',badge:'Rest',title:'Full rest',detail:'No training. Sleep, hydrate, eat.',segs:[],note:'Non-negotiable.'},
+    {date:'4 May',day:'Mon',type:'btp',badge:'Taper',title:'Easy 5–6km zone 2',detail:'Short shakeout, very easy.',segs:['5–6km Z2'],note:'Taper begins. Volume drops from here.'},
+  ]},
+  {label:'Week 2 — 5 to 11 May · Taper',days:[
+    {date:'5 May',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'6 May',day:'Wed',type:'bmx',badge:'Mixed',title:'6km structured run',detail:'1km Z2 · 4km threshold · 1km Z2',segs:['1km Z2','4km threshold','1km Z2'],note:'Shorter quality session — keeps legs sharp.'},
+    {date:'7 May',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest or easy walk.',segs:[],note:''},
+    {date:'8 May',day:'Fri',type:'bz2',badge:'Zone 2',title:'Easy 8km zone 2',detail:'Comfortable, easy effort throughout.',segs:['8km Z2'],note:'Last run of real length.'},
+    {date:'9 May',day:'Sat',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'8 days out.'},
+    {date:'10 May',day:'Sun',type:'bz2',badge:'Zone 2',title:'Easy 5km zone 2',detail:'Short and relaxed.',segs:['5km Z2'],note:'Just keep the legs moving.'},
+    {date:'11 May',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'6 days to race day. Trust the training.'},
+  ]},
+  {label:'Race week — 12 to 17 May',days:[
+    {date:'12 May',day:'Tue',type:'btp',badge:'Shakeout',title:'Easy 4km shakeout',detail:'Very easy, fully relaxed.',segs:['4km Z2'],note:'5 days out.'},
+    {date:'13 May',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Fitness is locked in.'},
+    {date:'14 May',day:'Thu',type:'btp',badge:'Shakeout',title:'3km + strides',detail:'3km easy with 4×20sec race-pace strides.',segs:['3km easy','4× strides'],note:'Wakes up fast-twitch fibres.'},
+    {date:'15 May',day:'Fri',type:'brs',badge:'Rest',title:'Rest & prep',detail:'Lay out kit. Carb load begins.',segs:[],note:'Pasta, rice, potatoes — top up glycogen.'},
+    {date:'16 May',day:'Sat',type:'btp',badge:'Pre-race',title:'10–15min easy jog',detail:'Very short, just to stay loose.',segs:['10–15min easy'],note:'Race eve. Sleep early, eat well, hydrate.'},
+    {date:'17 May',day:'Sun · Race day',type:'brc',badge:'Race day',title:'Chester Half Marathon 🏁',detail:'21.1km · Go get it.',segs:['Start easy','Build through middle','Leave it all at 18km'],note:'Trust your training. Start slower than feels right.'},
+  ]}
+];
+
+let planDone={};
+try{planDone=JSON.parse(localStorage.getItem('chesterPlan')||'{}');}catch(e){}
+
+function totalPlanSessions(){let t=0;planWeeks.forEach(w=>w.days.forEach(d=>{if(d.type!=='brs')t++;}));return t;}
+function donePlanCount(){return Object.values(planDone).filter(Boolean).length;}
+
+function togglePlanDone(key){
+  planDone[key]=!planDone[key];
+  try{localStorage.setItem('chesterPlan',JSON.stringify(planDone));}catch(e){}
+  renderPlan(document.getElementById('tabContent'));
+}
+
+function renderPlan(el){
+  const total=totalPlanSessions(), done=donePlanCount(), pct=Math.round((done/total)*100);
+  let html=`<div class="prog">
+    <div class="prog-labels"><span>${done} of ${total} sessions done</span><span>${pct}%</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+  </div>`;
+  planWeeks.forEach(w=>{
+    html+=`<div class="plan-week">${w.label}</div>`;
+    w.days.forEach(d=>{
+      const isDone=planDone[d.date];
+      const isRace=d.type==='brc';
+      html+=`<div class="plan-card${d.today?' today':''}${isRace?' race-day':''}">
+        <div class="plan-date-col">
+          <div class="plan-date">${d.date}</div>
+          <div class="plan-day">${d.day}</div>
+        </div>
+        <div class="plan-content">
+          <span class="plan-badge ${d.type}">${d.badge}</span>
+          ${isDone?'<span class="plan-badge bz2" style="margin-left:4px">Done ✓</span>':''}
+          <div class="plan-title">${d.title}</div>
+          <div class="plan-detail">${d.detail}</div>
+          ${d.segs.length?`<div class="plan-segs">${d.segs.map(s=>`<span class="plan-seg">${s}</span>`).join('')}</div>`:''}
+          ${d.note?`<div class="plan-note">${d.note}</div>`:''}
+          ${d.type!=='brs'?`<button class="plan-done-btn${isDone?' done':''}" onclick="togglePlanDone('${d.date}')">${isDone?'Completed':'Mark done'}</button>`:''}
+        </div>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+
+// ── range ─────────────────────────────────────────────────────
+function setRange(n){
+  days=n;
+  document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  renderMetrics();
+  showTab(curTab);
+}
+
+loadAll();
+</script>
+</body>
+</html>
