@@ -249,10 +249,12 @@ function renderMetrics() {
   const slc=findCol(sleep[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
   const hvc=findCol(hrv[0],['hrvSummary_lastNightAvg','lastNight','weeklyAvg']);
   function parseHRval(r){
-    const s=+r['value']||+r['restingHeartRate']||0; if(s) return s;
-    const raw=r['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE']||'';
-    try{ const p=JSON.parse(raw); if(Array.isArray(p)&&p[0]) return +p[0].value||0; }catch(e){}
-    const m=raw.match(/"value":\s*([\d.]+)/); return m?+m[1]||0:0;
+    for (const val of Object.values(r)) {
+      if (!val || typeof val !== 'string') continue;
+      const m = val.match(/value["']?\s*:\s*([\d.]+)/i);
+      if (m && +m[1] > 20 && +m[1] < 250) return Math.round(+m[1]);
+    }
+    return 0;
   }
   const hrc=findCol(hr[0],['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE','value','restingHeartRate']);
   const stc=findCol((D.stress||[])[0],['averageStressLevel','avgStressLevel']);
@@ -363,19 +365,14 @@ function showTab(name) {
       build:()=>{
         const rows=filterRows(D.hr||[],'date',days);
         function parseHR(r){
-          // Try simple columns first
-          const simple = +r['value']||+r['restingHeartRate']||0;
-          if(simple) return simple;
-          // Parse from JSON string in allMetrics column
-          const raw = r['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE']||'';
-          if(!raw) return 0;
-          try {
-            const parsed = JSON.parse(raw);
-            if(Array.isArray(parsed) && parsed[0]) return +parsed[0].value||0;
-          } catch(e){}
-          // Fallback: regex extract value
-          const m = raw.match(/"value":\s*([\d.]+)/);
-          return m ? +m[1]||0 : 0;
+          // Search all column values for the resting HR JSON pattern
+          for (const val of Object.values(r)) {
+            if (!val || typeof val !== 'string') continue;
+            // Look for {"value": 51.0 pattern anywhere in the string
+            const m = val.match(/["\']{0,2}value["\']{0,2}\s*:\s*([\d.]+)/i);
+            if (m && +m[1] > 20 && +m[1] < 250) return Math.round(+m[1]);
+          }
+          return 0;
         }
         return {labels:rows.map(r=>r.date.slice(5)),
           ds:[{label:'Resting HR',data:rows.map(r=>parseHR(r)),borderColor:'#f472b6',backgroundColor:'#f472b618',fill:true,tension:.35,pointRadius:2,pointBackgroundColor:'#f472b6'}],extra:{}};
