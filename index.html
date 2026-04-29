@@ -342,10 +342,10 @@ function showTab(name) {
         const baseLow=rows.map(r=>+r['hrvSummary_baseline_balancedLow']||0);
         const baseHigh=rows.map(r=>+r['hrvSummary_baseline_balancedUpper']||0);
         return {labels, ds:[
-          {label:'Baseline',data:baseHigh,borderColor:'rgba(74,222,128,0.3)',backgroundColor:'rgba(74,222,128,0.1)',fill:'-1',tension:.35,pointRadius:0,order:3},
-          {label:'Baseline low',data:baseLow,borderColor:'rgba(74,222,128,0.3)',backgroundColor:'rgba(74,222,128,0.1)',fill:false,tension:.35,pointRadius:0,order:4},
+          {label:'Baseline low',data:baseLow,borderColor:'rgba(74,222,128,0.25)',backgroundColor:'rgba(74,222,128,0.12)',fill:'+1',tension:.35,pointRadius:0,order:4,borderWidth:1},
+          {label:'Baseline high',data:baseHigh,borderColor:'rgba(74,222,128,0.25)',backgroundColor:'rgba(74,222,128,0.12)',fill:false,tension:.35,pointRadius:0,order:3,borderWidth:1},
           {label:'7d avg',data:avg7,borderColor:'#60a5fa',backgroundColor:'transparent',borderWidth:1.5,borderDash:[4,3],tension:.35,pointRadius:0,order:2},
-          {label:'Overnight HRV',data:hrv,borderColor:'#4ade80',backgroundColor:'#4ade8020',fill:false,tension:.35,pointRadius:3,pointBackgroundColor:'#4ade80',order:1},
+          {label:'Overnight HRV',data:hrv,borderColor:'#4ade80',backgroundColor:'transparent',fill:false,tension:.35,pointRadius:3,pointBackgroundColor:'#4ade80',borderWidth:2,order:1},
         ],extra:{}};
       }
     },
