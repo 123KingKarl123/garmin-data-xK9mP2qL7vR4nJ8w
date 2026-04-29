@@ -249,11 +249,9 @@ function renderMetrics() {
   const slc=findCol(sleep[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
   const hvc=findCol(hrv[0],['hrvSummary_lastNightAvg','lastNight','weeklyAvg']);
   function parseHRval(r){
-    for (const val of Object.values(r)) {
-      if (!val || typeof val !== 'string') continue;
-      const m = val.match(/value["']?\s*:\s*([\d.]+)/i);
-      if (m && +m[1] > 20 && +m[1] < 250) return Math.round(+m[1]);
-    }
+    const rowStr = Object.values(r).join(',');
+    const m = rowStr.match(/value[^\d]+(\d+\.?\d*)/i);
+    if (m && +m[1] > 20 && +m[1] < 250) return Math.round(+m[1]);
     return 0;
   }
   const hrc=findCol(hr[0],['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE','value','restingHeartRate']);
@@ -365,13 +363,10 @@ function showTab(name) {
       build:()=>{
         const rows=filterRows(D.hr||[],'date',days);
         function parseHR(r){
-          // Search all column values for the resting HR JSON pattern
-          for (const val of Object.values(r)) {
-            if (!val || typeof val !== 'string') continue;
-            // Look for {"value": 51.0 pattern anywhere in the string
-            const m = val.match(/["\']{0,2}value["\']{0,2}\s*:\s*([\d.]+)/i);
-            if (m && +m[1] > 20 && +m[1] < 250) return Math.round(+m[1]);
-          }
+          // The raw CSV row contains the HR value - search entire stringified row
+          const rowStr = Object.values(r).join(',');
+          const m = rowStr.match(/value[^\d]+(\d+\.?\d*)/i);
+          if (m && +m[1] > 20 && +m[1] < 250) return Math.round(+m[1]);
           return 0;
         }
         return {labels:rows.map(r=>r.date.slice(5)),
