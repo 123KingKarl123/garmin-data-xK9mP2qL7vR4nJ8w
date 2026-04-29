@@ -238,14 +238,20 @@ function renderMetrics() {
   const cc=findCol(daily[0],['totalKilocalories','activeKilocalories','calories']);
   const slc=findCol(sleep[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
   const hvc=findCol(hrv[0],['hrvSummary_lastNightAvg','lastNight','weeklyAvg']);
-  const hrc=findCol(hr[0],['value','restingHeartRate']);
+  function parseHRval(r){
+    const s=+r['value']||+r['restingHeartRate']||0; if(s) return s;
+    const raw=r['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE']||'';
+    try{ const p=JSON.parse(raw); if(Array.isArray(p)&&p[0]) return +p[0].value||0; }catch(e){}
+    const m=raw.match(/"value":\s*([\d.]+)/); return m?+m[1]||0:0;
+  }
+  const hrc=findCol(hr[0],['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE','value','restingHeartRate']);
   const stc=findCol((D.stress||[])[0],['averageStressLevel','avgStressLevel']);
 
   const avgSteps=sc?avg(daily.map(r=>+r[sc]||0)):0;
   const avgCals=cc?avg(daily.map(r=>+r[cc]||0)):0;
   const avgSleep=slc?(avg(sleep.map(r=>+r[slc]||0))/3600).toFixed(1):'—';
   const avgHrv=hvc?avg(hrv.map(r=>+r[hvc]||0)):0;
-  const avgHr=hrc?avg(hr.map(r=>+r[hrc]||0)):0;
+  const avgHr=avg(hr.map(r=>parseHRval(r)));
   const avgStress=stc?avg(filterRows(D.stress||[],'date',days).map(r=>+r[stc]||0)):0;
 
   document.getElementById('metricsGrid').innerHTML=[
@@ -346,9 +352,23 @@ function showTab(name) {
       title:'Resting heart rate (bpm)',
       build:()=>{
         const rows=filterRows(D.hr||[],'date',days);
-        const c=findCol(rows[0],['value','restingHeartRate','allDayHR_restingHeartRate']);
+        function parseHR(r){
+          // Try simple columns first
+          const simple = +r['value']||+r['restingHeartRate']||0;
+          if(simple) return simple;
+          // Parse from JSON string in allMetrics column
+          const raw = r['allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE']||'';
+          if(!raw) return 0;
+          try {
+            const parsed = JSON.parse(raw);
+            if(Array.isArray(parsed) && parsed[0]) return +parsed[0].value||0;
+          } catch(e){}
+          // Fallback: regex extract value
+          const m = raw.match(/"value":\s*([\d.]+)/);
+          return m ? +m[1]||0 : 0;
+        }
         return {labels:rows.map(r=>r.date.slice(5)),
-          ds:[{label:'HR',data:rows.map(r=>c?+r[c]||0:0),borderColor:'#f472b6',backgroundColor:'#f472b618',fill:true,tension:.35,pointRadius:2}],extra:{}};
+          ds:[{label:'Resting HR',data:rows.map(r=>parseHR(r)),borderColor:'#f472b6',backgroundColor:'#f472b618',fill:true,tension:.35,pointRadius:2,pointBackgroundColor:'#f472b6'}],extra:{}};
       }
     }
   };
