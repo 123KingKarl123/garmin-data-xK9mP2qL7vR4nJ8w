@@ -551,8 +551,7 @@ async function generateInsight(force=false) {
     const res = await fetch(GH + 'insight.json?t=' + Date.now());
     if (!res.ok) throw new Error('not found');
     const data = await res.json();
-    const paragraphs = data.insight.trim().split(/
-+/).filter(Boolean);
+    const paragraphs = data.insight.trim().split(/\n+/).filter(Boolean);
     const labels = ['Yesterday', "Today's session", 'Tip'];
     const html = paragraphs.map((p,i) => `
       <div class="${i>0?'insight-section':''}">
