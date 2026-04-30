@@ -413,11 +413,12 @@ function renderActivities(el) {
 
 // ── training plan ─────────────────────────────────────────────
 const planWeeks=[
-  {label:'Week 1 — 28 Apr to 4 May · Last big week',days:[
-    {date:'28 Apr',day:'Tue · Today',today:true,type:'bz2',badge:'Zone 2',title:'Zone 2 cycle',detail:'Easy steady-state ride, HR in zone 2 throughout.',segs:['Full Z2'],note:'Priming session before tomorrow\'s run.'},
-    {date:'29 Apr',day:'Wed',type:'bmx',badge:'Mixed',title:'9km structured run',detail:'2km Z2 · 5km threshold · 2km Z2',segs:['2km Z2','5km threshold','2km Z2'],note:'Quality session of the week. ~80–85% max HR on threshold.'},
-    {date:'30 Apr',day:'Thu',type:'brs',badge:'Rest',title:'Rest / active recovery',detail:'Full rest, walk, or light stretching.',segs:[],note:'Absorb Wednesday\'s effort.'},
-    {date:'1 May',day:'Fri',type:'brs',badge:'Rest',title:'Easy movement',detail:'Foam rolling or short walk.',segs:[],note:'Prep legs for long run.'},
+  {label:'Week 1 — 27 Apr to 4 May · Last big week',days:[
+    {date:'27 Apr',day:'Mon',type:'bmx',badge:'Tempo',title:'Tempo run — 5km',detail:'5km at tempo pace — comfortably hard, sustained effort.',segs:['5km tempo'],note:'Strong effort to start the week. Not all-out, but pushing.'},
+    {date:'28 Apr',day:'Tue',type:'brs',badge:'Rest',title:'Rest day',detail:'Full rest. No training.',segs:[],note:'Recovery after yesterday\'s tempo. Let it absorb.'},
+    {date:'29 Apr',day:'Wed',type:'bz2',badge:'Zone 2',title:'Zone 2 cycle',detail:'Easy steady-state ride, HR in zone 2 throughout.',segs:['Full Z2'],note:'Active recovery ride. Keep it conversational pace.'},
+    {date:'30 Apr',day:'Thu',type:'bmx',badge:'Mixed',title:'9km structured run',detail:'2km Z2 · 5km threshold · 2km Z2',segs:['2km Z2','5km threshold','2km Z2'],note:'Quality session of the week. ~80–85% max HR on threshold.'},
+    {date:'1 May',day:'Fri',type:'bz2',badge:'Zone 2',title:'Zone 2 cycle',detail:'Easy steady-state ride, HR in zone 2 throughout.',segs:['Full Z2'],note:'Flush the legs out before Saturday\'s long run.'},
     {date:'2 May',day:'Sat',type:'bz2',badge:'Zone 2',title:'Long run — 19–20km',detail:'Full zone 2 throughout.',segs:['19–20km Z2','Fuel every 45min'],note:'Last big long run. Nail nutrition from 45min onward.'},
     {date:'3 May',day:'Sun',type:'brs',badge:'Rest',title:'Full rest',detail:'No training. Sleep, hydrate, eat.',segs:[],note:'Non-negotiable.'},
     {date:'4 May',day:'Mon',type:'btp',badge:'Taper',title:'Easy 5–6km zone 2',detail:'Short shakeout, very easy.',segs:['5–6km Z2'],note:'Taper begins. Volume drops from here.'},
@@ -454,6 +455,13 @@ function togglePlanDone(key){
 }
 
 function renderPlan(el){
+  const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  function isToday(dateStr){
+    const m=dateStr.match(/(\d+)\s+(\w+)/);
+    if(!m) return false;
+    const now=new Date();
+    return +m[1]===now.getDate() && months[m[2]]===now.getMonth();
+  }
   const total=totalPlanSessions(), done=donePlanCount(), pct=Math.round((done/total)*100);
   let html=`<div class="prog">
     <div class="prog-labels"><span>${done} of ${total} sessions done</span><span>${pct}%</span></div>
@@ -464,10 +472,11 @@ function renderPlan(el){
     w.days.forEach(d=>{
       const isDone=planDone[d.date];
       const isRace=d.type==='brc';
-      html+=`<div class="plan-card${d.today?' today':''}${isRace?' race-day':''}">
+      const isToday2=isToday(d.date);
+      html+=`<div class="plan-card${isToday2?' today':''}${isRace?' race-day':''}">
         <div class="plan-date-col">
           <div class="plan-date">${d.date}</div>
-          <div class="plan-day">${d.day}</div>
+          <div class="plan-day">${isToday2?d.day+' · Today':d.day}</div>
         </div>
         <div class="plan-content">
           <span class="plan-badge ${d.type}">${d.badge}</span>
