@@ -228,7 +228,19 @@ async function loadAll() {
     }
     document.getElementById('statusMsg').style.display='none';
     document.getElementById('mainContent').style.display='';
-    document.getElementById('updatedLabel').textContent='Last synced: today at 07:00 · auto-updates daily';
+    // Fetch actual last commit timestamp from GitHub API
+    fetch('https://api.github.com/repos/123KingKarl123/garmin-data-xK9mP2qL7vR4nJ8w/commits?path=activities.csv&per_page=1')
+      .then(r=>r.json())
+      .then(data=>{
+        if(data && data[0] && data[0].commit){
+          const d = new Date(data[0].commit.committer.date);
+          const fmt = d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}) + ' at ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+          document.getElementById('updatedLabel').textContent='Last synced: ' + fmt;
+        } else {
+          document.getElementById('updatedLabel').textContent='Last synced: unknown';
+        }
+      })
+      .catch(()=>{ document.getElementById('updatedLabel').textContent='Last synced: unknown'; });
     renderMetrics();
     showTab('activities');
   } catch(e) {
