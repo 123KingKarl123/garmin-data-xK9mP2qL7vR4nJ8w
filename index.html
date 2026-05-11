@@ -6,6 +6,8 @@
 <title>Garmin Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   :root {
@@ -155,6 +157,7 @@
       <button class="tab" onclick="showTab('stress')">Stress</button>
       <button class="tab" onclick="showTab('hr')">Heart rate</button>
       <button class="tab" onclick="showTab('plan')">Race plan</button>
+      <button class="tab" onclick="showTab('heatmap')">Heatmap</button>
     </div>
 
     <div id="tabContent"></div>
@@ -343,6 +346,7 @@ function showTab(name) {
 
   if(name==='activities') { renderActivities(el); return; }
   if(name==='plan') { renderPlan(el); return; }
+  if(name==='heatmap') { renderHeatmap(el); return; }
 
   const cfg={
     steps:{
@@ -563,6 +567,93 @@ async function generateInsight(force=false) {
     document.getElementById('insightContent').innerHTML =
       `<div class="insight-text" style="color:var(--color-text-tertiary)">Could not load insight. Error: ${err.message}</div>`;
   }
+}
+
+// ── heatmap ──────────────────────────────────────────────────
+let heatmapInstance = null;
+let heatmapRoutes = [];
+let activeFilter = 'all';
+
+function decodePolyline(encoded) {
+  let index = 0, lat = 0, lng = 0, coords = [];
+  while (index < encoded.length) {
+    let b, shift = 0, result = 0;
+    do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+    lat += (result & 1) ? ~(result >> 1) : (result >> 1);
+    shift = 0; result = 0;
+    do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+    lng += (result & 1) ? ~(result >> 1) : (result >> 1);
+    coords.push([lat / 1e5, lng / 1e5]);
+  }
+  return coords;
+}
+
+function getRouteColor(type) {
+  const t = (type||'').toLowerCase();
+  if (t.includes('run')) return '#4ade80';
+  if (t.includes('ride') || t.includes('cycling') || t.includes('virtual')) return '#60a5fa';
+  if (t.includes('swim')) return '#f472b6';
+  return '#fb923c';
+}
+
+async function renderHeatmap(el) {
+  el.innerHTML = `
+    <div class="heatmap-filters" id="hmFilters">
+      <button class="hf-btn on" onclick="filterHeatmap('all')">All</button>
+      <button class="hf-btn" onclick="filterHeatmap('run')">Runs</button>
+      <button class="hf-btn" onclick="filterHeatmap('ride')">Rides</button>
+    </div>
+    <div id="heatmapContainer"></div>`;
+
+  if (!heatmapRoutes.length) {
+    try {
+      const res = await fetch(GH + 'strava_routes.json?t=' + Date.now());
+      if (!res.ok) throw new Error('not found');
+      heatmapRoutes = await res.json();
+    } catch(e) {
+      el.innerHTML = '<div class="status">No Strava route data found. Run the workflow to fetch your routes.</div>';
+      return;
+    }
+  }
+
+  if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
+
+  heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO', maxZoom: 19
+  }).addTo(heatmapInstance);
+
+  const filtered = activeFilter === 'all' ? heatmapRoutes :
+    heatmapRoutes.filter(r => r.type.toLowerCase().includes(activeFilter));
+
+  const allCoords = [];
+  filtered.forEach(route => {
+    if (!route.polyline) return;
+    const coords = decodePolyline(route.polyline);
+    if (!coords.length) return;
+    allCoords.push(...coords);
+    L.polyline(coords, {
+      color: getRouteColor(route.type),
+      weight: 2,
+      opacity: 0.7
+    }).bindPopup(`<b>${route.name}</b><br>${route.type} · ${(route.distance/1000).toFixed(1)}km<br>${route.date}`)
+      .addTo(heatmapInstance);
+  });
+
+  if (allCoords.length) {
+    heatmapInstance.fitBounds(allCoords);
+  } else {
+    el.innerHTML = '<div class="status">No routes to display for this filter.</div>';
+  }
+}
+
+function filterHeatmap(type) {
+  activeFilter = type;
+  document.querySelectorAll('.hf-btn').forEach(b => b.classList.remove('on'));
+  event.target.classList.add('on');
+  const el = document.getElementById('tabContent');
+  if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
+  renderHeatmap(el);
 }
 
 loadAll();
