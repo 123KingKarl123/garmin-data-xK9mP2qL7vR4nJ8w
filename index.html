@@ -618,6 +618,12 @@ async function renderHeatmap(el) {
 
   if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
 
+  // Force container to be visible before Leaflet init
+  const container = document.getElementById('heatmapContainer');
+  container.style.height = '460px';
+  container.style.width = '100%';
+  container.style.display = 'block';
+  
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO', maxZoom: 19
