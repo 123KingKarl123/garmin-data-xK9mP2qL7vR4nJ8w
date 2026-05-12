@@ -578,13 +578,26 @@ async function renderTraining(el) {
     if (!res.ok) throw new Error('not found');
     const d = await res.json();
 
-    // Extract key fields
-    const status = d.trainingStatusPhase || d.latestTrainingStatusPhase || d.trainingStatus || '—';
-    const loadFocus = d.trainingLoadBalancePhase || d.latestLoadFocusPhase || d.loadFocus || '—';
-    const acuteLoad = d.acuteTrainingLoad || d.latestAcuteTrainingLoad || '—';
-    const chronicLoad = d.chronicTrainingLoad || d.latestChronicTrainingLoad || '—';
-    const vo2max = d.vo2MaxValue || d.latestVo2Max || '—';
-    const fitnessAge = d.fitnessAge || d.fitnessAgeDescriptionKey || '—';
+    // Extract key fields using actual Garmin field names
+    const deviceKey = Object.keys(d).find(k => k.includes('latestTrainingStatusData') && k.endsWith('trainingStatusFeedbackPhrase'));
+    const prefix = deviceKey ? deviceKey.replace('trainingStatusFeedbackPhrase','') : '';
+
+    const statusPhrase = d[prefix + 'trainingStatusFeedbackPhrase'] || '—';
+    const acuteLoad = d[prefix + 'acuteTrainingLoadDTO_dailyTrainingLoadAcute'] || '—';
+    const chronicLoad = d[prefix + 'acuteTrainingLoadDTO_dailyTrainingLoadChronic'] || '—';
+    const acwrStatus = d[prefix + 'acuteTrainingLoadDTO_acwrStatus'] || '—';
+
+    const lbKey = Object.keys(d).find(k => k.includes('trainingBalanceFeedbackPhrase'));
+    const loadFocus = lbKey ? d[lbKey] : '—';
+
+    const aerobicLow = d[Object.keys(d).find(k => k.includes('monthlyLoadAerobicLow') && !k.includes('Target'))] || 0;
+    const aerobicHigh = d[Object.keys(d).find(k => k.includes('monthlyLoadAerobicHigh') && !k.includes('Target'))] || 0;
+    const anaerobic = d[Object.keys(d).find(k => k.includes('monthlyLoadAnaerobic') && !k.includes('Target'))] || 0;
+
+    const vo2max = d['mostRecentVO2Max_generic_vo2MaxValue'] || '—';
+    const vo2maxPrecise = d['mostRecentVO2Max_generic_vo2MaxPreciseValue'] || '';
+    const fitnessAge = d['mostRecentVO2Max_generic_fitnessAge'] || d['mostRecentVO2Max_generic_fitnessAgeDescription'] || '—';
+    const status = statusPhrase;
 
     function statusColor(s) {
       s = (s||'').toLowerCase();
@@ -595,9 +608,30 @@ async function renderTraining(el) {
       return 'var(--color-text-primary)';
     }
 
-    function fmtStatus(s) {
-      return (s||'—').replace(/_/g,' ').toLowerCase().replace(/\w/g, c => c.toUpperCase());
-    }
+    const statusLabels = {
+      'RECOVERY_1': 'Recovery', 'RECOVERY_2': 'Recovery',
+      'MAINTAINING_1': 'Maintaining', 'MAINTAINING_2': 'Maintaining',
+      'PRODUCTIVE_1': 'Productive', 'PRODUCTIVE_2': 'Productive',
+      'PEAKING_1': 'Peaking', 'PEAKING_2': 'Peaking',
+      'OVERREACHING_1': 'Overreaching', 'OVERREACHING_2': 'Overreaching',
+      'UNPRODUCTIVE': 'Unproductive', 'DETRAINING': 'Detraining'
+    };
+    const loadLabels = {
+      'ANAEROBIC_SHORTAGE': 'Anaerobic Shortage',
+      'ANAEROBIC_EXCESS': 'Anaerobic Excess',
+      'AEROBIC_LOW_SHORTAGE': 'Aerobic Low Shortage',
+      'AEROBIC_HIGH_SHORTAGE': 'Aerobic High Shortage',
+      'AEROBIC_LOW_EXCESS': 'Aerobic Low Excess',
+      'AEROBIC_HIGH_EXCESS': 'Aerobic High Excess',
+      'OPTIMAL': 'Optimal Balance',
+      'BALANCED': 'Balanced'
+    };
+
+    const statusLabel = statusLabels[status] || status.replace(/_/g,' ').replace(/\w/g,c=>c.toUpperCase());
+    const loadLabel = loadLabels[loadFocus] || loadFocus.replace(/_/g,' ').replace(/\w/g,c=>c.toUpperCase());
+    const acwrLabel = acwrStatus.replace(/_/g,' ').replace(/\w/g,c=>c.toUpperCase());
+
+    const totalLoad = Math.round((parseFloat(aerobicLow)||0) + (parseFloat(aerobicHigh)||0) + (parseFloat(anaerobic)||0));
 
     el.innerHTML = `
       <div style="margin-bottom:1.25rem">
@@ -605,15 +639,22 @@ async function renderTraining(el) {
         <div style="display:flex;align-items:center;gap:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1rem">
           <div style="font-size:36px">🏃</div>
           <div>
-            <div style="font-size:22px;font-weight:500;color:${statusColor(status)}">${fmtStatus(status)}</div>
-            <div style="font-size:13px;color:var(--color-text-secondary);margin-top:3px">${fmtStatus(loadFocus)}</div>
+            <div style="font-size:24px;font-weight:500;color:${statusColor(statusLabel)}">${statusLabel}</div>
+            <div style="font-size:13px;color:var(--color-text-secondary);margin-top:3px">Load focus: ${loadLabel}</div>
+            <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:2px">Acute:Chronic ratio — ${acwrLabel}</div>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
-          <div class="metric"><div class="metric-label">VO₂ Max</div><div class="metric-value blue">${vo2max}</div><div class="metric-sub">ml/kg/min</div></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1rem">
+          <div class="metric"><div class="metric-label">VO₂ Max</div><div class="metric-value blue">${vo2max}</div><div class="metric-sub">${vo2maxPrecise ? '(' + vo2maxPrecise + ' precise)' : 'ml/kg/min'}</div></div>
           <div class="metric"><div class="metric-label">Acute load</div><div class="metric-value green">${acuteLoad}</div><div class="metric-sub">last 7 days</div></div>
           <div class="metric"><div class="metric-label">Chronic load</div><div class="metric-value">${chronicLoad}</div><div class="metric-sub">last 28 days</div></div>
-          <div class="metric"><div class="metric-label">Fitness age</div><div class="metric-value orange">${fmtStatus(fitnessAge)}</div><div class="metric-sub">estimated</div></div>
+          <div class="metric"><div class="metric-label">Monthly total</div><div class="metric-value orange">${totalLoad}</div><div class="metric-sub">this month</div></div>
+        </div>
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Monthly load breakdown</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div class="metric"><div class="metric-label">Aerobic low</div><div class="metric-value" style="font-size:16px">${Math.round(aerobicLow)}</div><div class="metric-sub">zone 1-2</div></div>
+          <div class="metric"><div class="metric-label">Aerobic high</div><div class="metric-value" style="font-size:16px">${Math.round(aerobicHigh)}</div><div class="metric-sub">zone 3-4</div></div>
+          <div class="metric"><div class="metric-label">Anaerobic</div><div class="metric-value" style="font-size:16px">${Math.round(anaerobic)}</div><div class="metric-sub">zone 5</div></div>
         </div>
       </div>
       <div style="font-size:11px;color:var(--color-text-tertiary);font-style:italic">Updated daily with your morning sync</div>`;
