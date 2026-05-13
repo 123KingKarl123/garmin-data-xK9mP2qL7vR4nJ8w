@@ -313,6 +313,8 @@ function renderMetrics() {
     {l:'Resting HR',v:avgHr?avgHr+' bpm':'—',s:'average',cls:'orange'},
     {l:'Avg stress',v:avgStress||'—',s:'0–100 scale',cls:''},
     {l:'Activities',v:acts.length,s:`last ${days} days`,cls:'blue'},
+    {l:'Total km run',v:totalRunKm>0?totalRunKm.toFixed(1)+'km':'—',s:`last ${days} days`,cls:'green'},
+    {l:'Total km cycled',v:totalCycleKm>0?totalCycleKm.toFixed(1)+'km':'—',s:`last ${days} days`,cls:'blue'},
   ].map(m=>`<div class="metric">
     <div class="metric-label">${m.l}</div>
     <div class="metric-value ${m.cls}">${m.v}</div>
