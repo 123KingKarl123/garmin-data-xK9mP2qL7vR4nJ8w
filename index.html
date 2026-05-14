@@ -707,12 +707,36 @@ function decodePolyline(encoded) {
   return coords;
 }
 
-function getRouteColor(type) {
+function getFilterType(type) {
   const t = (type||'').toLowerCase();
-  if (t.includes('run')) return '#4ade80';
-  if (t.includes('ride') || t.includes('cycling') || t.includes('virtual')) return '#60a5fa';
-  if (t.includes('swim')) return '#f472b6';
-  return '#fb923c';
+  if (t.includes('run') || t.includes('walk') || t.includes('hike')) return 'run';
+  if (t.includes('ride') || t.includes('cycl') || t.includes('virtual')) return 'cycle';
+  return 'other';
+}
+
+function getHeatColor(filter) {
+  if (filter === 'run') return { r: 74, g: 222, b: 128 };   // green
+  if (filter === 'cycle') return { r: 96, g: 165, b: 250 };  // blue
+  return { r: 251, g: 146, b: 60 };                           // orange
+}
+
+function buildSegmentMap(routes) {
+  // Count how many times each ~50m segment is covered
+  // We grid the world into cells and count route passes through each
+  const GRID = 1000; // grid resolution (higher = finer)
+  const counts = new Map();
+
+  routes.forEach(route => {
+    if (!route.polyline) return;
+    const coords = decodePolyline(route.polyline);
+    for (let i = 0; i < coords.length - 1; i++) {
+      const lat = Math.round((coords[i][0] + coords[i+1][0]) / 2 * GRID) / GRID;
+      const lng = Math.round((coords[i][1] + coords[i+1][1]) / 2 * GRID) / GRID;
+      const key = `${lat},${lng}`;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+  });
+  return counts;
 }
 
 async function renderHeatmap(el) {
@@ -720,9 +744,13 @@ async function renderHeatmap(el) {
     <div class="heatmap-filters" id="hmFilters">
       <button class="hf-btn on" onclick="filterHeatmap('all')">All</button>
       <button class="hf-btn" onclick="filterHeatmap('run')">Runs</button>
-      <button class="hf-btn" onclick="filterHeatmap('ride')">Rides</button>
+      <button class="hf-btn" onclick="filterHeatmap('cycle')">Cycles</button>
+      <button class="hf-btn" onclick="filterHeatmap('other')">Other</button>
     </div>
-    <div id="heatmapContainer"></div>`;
+    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px">
+      Brighter = more times covered · Faint = once or twice
+    </div>
+    <div id="heatmapContainer" style="height:460px;width:100%;display:block;position:relative;z-index:0;"></div>`;
 
   if (!heatmapRoutes.length) {
     try {
@@ -737,38 +765,74 @@ async function renderHeatmap(el) {
 
   if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
 
-  // Force container to be visible before Leaflet init
   const container = document.getElementById('heatmapContainer');
   container.style.height = '460px';
   container.style.width = '100%';
-  container.style.display = 'block';
-  
+
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO', maxZoom: 19
   }).addTo(heatmapInstance);
 
-  const filtered = activeFilter === 'all' ? heatmapRoutes :
-    heatmapRoutes.filter(r => r.type.toLowerCase().includes(activeFilter));
+  // Filter routes
+  const filtered = activeFilter === 'all'
+    ? heatmapRoutes
+    : heatmapRoutes.filter(r => getFilterType(r.type) === activeFilter);
 
+  if (!filtered.length) {
+    container.innerHTML = '<div class="status">No routes for this filter.</div>';
+    return;
+  }
+
+  // Build segment usage counts for density
+  const segCounts = buildSegmentMap(filtered);
+  const maxCount = Math.max(...segCounts.values());
+
+  // Determine base colour per filter
+  const colorFilter = activeFilter === 'all' ? 'run' : activeFilter;
+
+  // Draw each route with opacity/weight based on how many times that path is covered
   const allCoords = [];
   filtered.forEach(route => {
     if (!route.polyline) return;
     const coords = decodePolyline(route.polyline);
     if (!coords.length) return;
     allCoords.push(...coords);
+
+    // Calculate average coverage for this route's segments
+    let totalCount = 0, segCount = 0;
+    for (let i = 0; i < coords.length - 1; i++) {
+      const lat = Math.round((coords[i][0] + coords[i+1][0]) / 2 * 1000) / 1000;
+      const lng = Math.round((coords[i][1] + coords[i+1][1]) / 2 * 1000) / 1000;
+      const key = `${lat},${lng}`;
+      totalCount += segCounts.get(key) || 1;
+      segCount++;
+    }
+    const avgCoverage = segCount > 0 ? totalCount / segCount : 1;
+    const ratio = Math.min(avgCoverage / Math.max(maxCount * 0.6, 1), 1);
+
+    // Get type-specific colour if showing all
+    const typeFilter = activeFilter === 'all' ? getFilterType(route.type) : activeFilter;
+    const col = getHeatColor(typeFilter);
+
+    // Opacity: 0.08 for single use, up to 0.85 for heavily used
+    const opacity = 0.08 + ratio * 0.77;
+    // Weight: thinner for single, thicker for heavy
+    const weight = 1 + ratio * 2.5;
+
+    const color = `rgba(${col.r},${col.g},${col.b},${opacity.toFixed(2)})`;
+
     L.polyline(coords, {
-      color: getRouteColor(route.type),
-      weight: 2,
-      opacity: 0.7
+      color,
+      weight,
+      lineCap: 'round',
+      lineJoin: 'round'
     }).bindPopup(`<b>${route.name}</b><br>${route.type} · ${(route.distance/1000).toFixed(1)}km<br>${route.date}`)
       .addTo(heatmapInstance);
   });
 
   if (allCoords.length) {
     heatmapInstance.fitBounds(allCoords);
-  } else {
-    el.innerHTML = '<div class="status">No routes to display for this filter.</div>';
   }
 }
 
