@@ -204,6 +204,25 @@ const raceDate = new Date('2026-05-17');
 const daysLeft = Math.max(0, Math.round((raceDate - new Date()) / 86400000));
 document.getElementById('daysLeft').textContent = daysLeft;
 
+// Upcoming race events — add/remove races here as needed
+const raceEvents = [
+  { title: 'Essar Chester Half Marathon', date: '2026-05-17', distance: '21.1km' },
+  { title: 'MBNA Chester Marathon', date: '2026-10-11', distance: '42.2km' },
+];
+const today2 = new Date(); today2.setHours(0,0,0,0);
+const nextRace = raceEvents
+  .filter(e => new Date(e.date) >= today2)
+  .sort((a,b) => new Date(a.date) - new Date(b.date))[0];
+if (nextRace) {
+  const dtr = Math.round((new Date(nextRace.date) - today2) / 86400000);
+  const nel = document.getElementById('nextEvent');
+  if (nel) nel.innerHTML = `<div class="race-chip" style="text-align:left;margin-top:6px">
+    <div style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:.05em;margin-bottom:3px">NEXT RACE</div>
+    <div style="font-size:13px;font-weight:500;color:var(--text)">${nextRace.title}</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px">${nextRace.date} · ${nextRace.distance} · ${dtr} days away</div>
+  </div>`;
+}
+
 // ── CSV parser (handles both comma and tab separated) ───────
 function parseCSV(txt) {
   const lines = txt.trim().split('\n');
