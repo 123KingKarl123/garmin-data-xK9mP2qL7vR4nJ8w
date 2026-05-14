@@ -715,9 +715,10 @@ function getFilterType(type) {
 }
 
 function getHeatColor(filter) {
-  if (filter === 'run') return { r: 74, g: 222, b: 128 };   // green
-  if (filter === 'cycle') return { r: 96, g: 165, b: 250 };  // blue
-  return { r: 251, g: 146, b: 60 };                           // orange
+  // Strava-style: orange/coral for runs, blue for cycles, purple for other
+  if (filter === 'run') return { r: 252, g: 82, b: 0 };    // Strava orange
+  if (filter === 'cycle') return { r: 0, g: 130, b: 255 };  // Strava blue
+  return { r: 180, g: 100, b: 255 };                         // purple for other
 }
 
 function buildSegmentMap(routes) {
@@ -747,8 +748,9 @@ async function renderHeatmap(el) {
       <button class="hf-btn" onclick="filterHeatmap('cycle')">Cycles</button>
       <button class="hf-btn" onclick="filterHeatmap('other')">Other</button>
     </div>
-    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px">
-      Brighter = more times covered · Faint = once or twice
+    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px;display:flex;gap:16px">
+      <span>🔴 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span>
+      <span style="margin-left:8px">Brighter + thicker = more times covered</span>
     </div>
     <div id="heatmapContainer" style="height:460px;width:100%;display:block;position:relative;z-index:0;"></div>`;
 
@@ -770,8 +772,12 @@ async function renderHeatmap(el) {
   container.style.width = '100%';
 
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_matter_no_labels/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO', maxZoom: 19
+  }).addTo(heatmapInstance);
+  // Add subtle labels on top
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+    attribution: '', maxZoom: 19, opacity: 0.4
   }).addTo(heatmapInstance);
 
   // Filter routes
@@ -815,12 +821,22 @@ async function renderHeatmap(el) {
     const typeFilter = activeFilter === 'all' ? getFilterType(route.type) : activeFilter;
     const col = getHeatColor(typeFilter);
 
-    // Opacity: 0.08 for single use, up to 0.85 for heavily used
-    const opacity = 0.08 + ratio * 0.77;
-    // Weight: thinner for single, thicker for heavy
-    const weight = 1 + ratio * 2.5;
+    // Strava style: very faint for once, glowing for frequent routes
+    const opacity = 0.06 + ratio * 0.88;
+    const weight = 0.8 + ratio * 3;
 
+    // Add a subtle glow effect for heavily used routes by layering
     const color = `rgba(${col.r},${col.g},${col.b},${opacity.toFixed(2)})`;
+
+    if (ratio > 0.4) {
+      // Glow layer underneath for popular routes
+      L.polyline(coords, {
+        color: `rgba(${col.r},${col.g},${col.b},${(opacity * 0.3).toFixed(2)})`,
+        weight: weight * 3,
+        lineCap: 'round',
+        lineJoin: 'round'
+      }).addTo(heatmapInstance);
+    }
 
     L.polyline(coords, {
       color,
