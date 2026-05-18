@@ -200,9 +200,21 @@ let curTab = 'activities';
 let chart = null;
 
 // ── race countdown ──────────────────────────────────────────
-const raceDate = new Date('2026-05-17');
-const daysLeft = Math.max(0, Math.round((raceDate - new Date()) / 86400000));
+const racesList = [
+  { title: 'Essar Chester Half Marathon', date: '2026-05-17', distance: '21.1km' },
+  { title: 'MBNA Chester Marathon', date: '2026-10-11', distance: '42.2km' },
+];
+const todayRace = new Date(); todayRace.setHours(0,0,0,0);
+const nextCountdownRace = racesList
+  .filter(r => new Date(r.date) >= todayRace)
+  .sort((a,b) => new Date(a.date) - new Date(b.date))[0];
+const daysLeft = nextCountdownRace ? Math.round((new Date(nextCountdownRace.date) - todayRace) / 86400000) : 0;
 document.getElementById('daysLeft').textContent = daysLeft;
+const rlEl = document.getElementById('raceLabel');
+if (rlEl && nextCountdownRace) {
+  const words = nextCountdownRace.title.split(' ');
+  rlEl.textContent = 'days to ' + words.slice(-2).join(' ');
+}
 
 // Upcoming race events — add/remove races here as needed
 const raceEvents = [
