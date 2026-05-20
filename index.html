@@ -488,55 +488,220 @@ function renderActivities(el) {
 }
 
 // ── training plan ─────────────────────────────────────────────
+// Sub-4 Marathon Plan · Chester 11 Oct 2026 · Starting 17 May 2026
 const planWeeks=[
-  {label:'Week 1 — 27 Apr to 4 May · Last big week',days:[
-    {date:'27 Apr',day:'Mon',type:'bmx',badge:'Tempo',title:'Tempo run — 5km',detail:'5km at tempo pace — comfortably hard, sustained effort.',segs:['5km tempo'],note:'Strong effort to start the week. Not all-out, but pushing.'},
-    {date:'28 Apr',day:'Tue',type:'brs',badge:'Rest',title:'Rest day',detail:'Full rest. No training.',segs:[],note:'Recovery after yesterday\'s tempo. Let it absorb.'},
-    {date:'29 Apr',day:'Wed',type:'bz2',badge:'Zone 2',title:'Zone 2 cycle',detail:'Easy steady-state ride, HR in zone 2 throughout.',segs:['Full Z2'],note:'Active recovery ride. Keep it conversational pace.'},
-    {date:'30 Apr',day:'Thu',type:'bmx',badge:'Mixed',title:'9km structured run',detail:'2km Z2 · 5km threshold · 2km Z2',segs:['2km Z2','5km threshold','2km Z2'],note:'Quality session of the week. ~80–85% max HR on threshold.'},
-    {date:'1 May',day:'Fri',type:'bz2',badge:'Zone 2',title:'Zone 2 cycle',detail:'Easy steady-state ride, HR in zone 2 throughout.',segs:['Full Z2'],note:'Flush the legs out before Saturday\'s long run.'},
-    {date:'2 May',day:'Sat',type:'bz2',badge:'Zone 2',title:'Long run — 19–20km',detail:'Full zone 2 throughout.',segs:['19–20km Z2','Fuel every 45min'],note:'Last big long run. Nail nutrition from 45min onward.'},
-    {date:'3 May',day:'Sun',type:'brs',badge:'Rest',title:'Full rest',detail:'No training. Sleep, hydrate, eat.',segs:[],note:'Non-negotiable.'},
-    {date:'4 May',day:'Mon',type:'btp',badge:'Taper',title:'Easy 5–6km zone 2',detail:'Short shakeout, very easy.',segs:['5–6km Z2'],note:'Taper begins. Volume drops from here.'},
+  // ── PHASE 1: Recovery + Controlled Aerobic Build (Weeks 1–4) ──
+  {label:'Phase 1 — Recovery + Aerobic Build · Week 1 — 17–23 May · 44km',phase:'Phase 1',days:[
+    {date:'2026-05-18',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km at easy recovery pace (6:45–7:15/km). HR in Z1.',segs:['6km recovery'],note:'First week off the half. Keep it very easy — legs still absorbing the race.'},
+    {date:'2026-05-19',day:'Tue',type:'bmx',badge:'Threshold',title:'Threshold intro — 7km',detail:'7km with light threshold blocks. Warm up 2km, 3×5min at threshold, cool down.',segs:['2km warm-up','3×5min threshold','cool down'],note:'Light intro to threshold work. Comfortably hard, not race effort.'},
+    {date:'2026-05-20',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 7km',detail:'7km easy aerobic (6:15–6:45/km) + strength session after.',segs:['7km easy','Strength <30min'],note:'Glute bridges, split squats, calf raises, core.'},
+    {date:'2026-05-21',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 7km',detail:'7km at steady aerobic pace (5:55–6:10/km).',segs:['7km steady'],note:'Controlled effort. Should feel sustainable but purposeful.'},
+    {date:'2026-05-22',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest. No training.',segs:[],note:''},
+    {date:'2026-05-23',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run + strides — 5km',detail:'5km easy + 4–6×20sec strides at the end.',segs:['5km easy','4–6× strides'],note:'Strides should feel quick and light, not strained.'},
+    {date:'2026-05-24',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 12km',detail:'12km at easy/aerobic pace (6:15–6:45/km). Fuel from 45min.',segs:['12km easy','Fuel every 45min'],note:'First long run of the block. Keep it very controlled.'},
   ]},
-  {label:'Week 2 — 5 to 11 May · Taper',days:[
-    {date:'5 May',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'6 May',day:'Wed',type:'bmx',badge:'Mixed',title:'6km structured run',detail:'1km Z2 · 4km threshold · 1km Z2',segs:['1km Z2','4km threshold','1km Z2'],note:'Shorter quality session — keeps legs sharp.'},
-    {date:'7 May',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest or easy walk.',segs:[],note:''},
-    {date:'8 May',day:'Fri',type:'bz2',badge:'Zone 2',title:'Easy 8km zone 2',detail:'Comfortable, easy effort throughout.',segs:['8km Z2'],note:'Last run of real length.'},
-    {date:'9 May',day:'Sat',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'8 days out.'},
-    {date:'10 May',day:'Sun',type:'bz2',badge:'Zone 2',title:'Easy 5km zone 2',detail:'Short and relaxed.',segs:['5km Z2'],note:'Just keep the legs moving.'},
-    {date:'11 May',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'6 days to race day. Trust the training.'},
+  {label:'Phase 1 — Week 2 — 24–30 May · 48km',phase:'Phase 1',days:[
+    {date:'2026-05-25',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km easy recovery pace.',segs:['6km recovery'],note:''},
+    {date:'2026-05-26',day:'Tue',type:'bmx',badge:'Threshold',title:'Threshold — 8km',detail:'8km with 2×8min threshold. 2km warm-up, 2×8min at 5:00–5:10/km, recovery jog between, cool down.',segs:['2km warm-up','2×8min threshold','cool down'],note:'Build on last week. Slightly longer threshold blocks.'},
+    {date:'2026-05-27',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy aerobic + strength session.',segs:['8km easy','Strength <30min'],note:'Step-ups, single-leg RDLs, band walks, core.'},
+    {date:'2026-05-28',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 8km',detail:'8km at steady pace (5:55–6:10/km).',segs:['8km steady'],note:''},
+    {date:'2026-05-29',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-05-30',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy aerobic.',segs:['6km easy'],note:''},
+    {date:'2026-05-31',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 12km',detail:'12km easy aerobic. Fuelling practice.',segs:['12km easy','Fuel every 45min'],note:'Cadence focus: 145–150 spm target.'},
   ]},
-  {label:'Race week — 12 to 17 May',days:[
-    {date:'12 May',day:'Tue',type:'btp',badge:'Shakeout',title:'Easy 4km shakeout',detail:'Very easy, fully relaxed.',segs:['4km Z2'],note:'5 days out.'},
-    {date:'13 May',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Fitness is locked in.'},
-    {date:'14 May',day:'Thu',type:'btp',badge:'Shakeout',title:'3km + strides',detail:'3km easy with 4×20sec race-pace strides.',segs:['3km easy','4× strides'],note:'Wakes up fast-twitch fibres.'},
-    {date:'15 May',day:'Fri',type:'brs',badge:'Rest',title:'Rest & prep',detail:'Lay out kit. Carb load begins.',segs:[],note:'Pasta, rice, potatoes — top up glycogen.'},
-    {date:'16 May',day:'Sat',type:'btp',badge:'Pre-race',title:'10–15min easy jog',detail:'Very short, just to stay loose.',segs:['10–15min easy'],note:'Race eve. Sleep early, eat well, hydrate.'},
-    {date:'17 May',day:'Sun · Race day',type:'brc',badge:'Race day',title:'Chester Half Marathon 🏁',detail:'21.1km · Go get it.',segs:['Start easy','Build through middle','Leave it all at 18km'],note:'Trust your training. Start slower than feels right.'},
-  ]}
+  {label:'Phase 1 — Week 3 — 31 May–6 Jun · 52km',phase:'Phase 1',days:[
+    {date:'2026-06-01',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 7km',detail:'7km easy recovery.',segs:['7km recovery'],note:''},
+    {date:'2026-06-02',day:'Tue',type:'bmx',badge:'Threshold',title:'6×1km threshold',detail:'Warm up 2km, then 6×1km at threshold pace (5:00–5:10/km) with 90sec recovery jog between. Cool down.',segs:['2km warm-up','6×1km threshold','90sec recovery between'],note:'First proper interval session. Focus on consistency across all 6 reps.'},
+    {date:'2026-06-03',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-06-04',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 9km',detail:'9km at steady pace (5:55–6:10/km).',segs:['9km steady'],note:''},
+    {date:'2026-06-05',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-06',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy aerobic.',segs:['6km easy'],note:''},
+    {date:'2026-06-07',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 16km',detail:'16km easy/aerobic. Fuel every 45min from start.',segs:['16km easy','Fuel every 45min'],note:'Longest run yet in this block — keep pace honest.'},
+  ]},
+  {label:'Phase 1 — Week 4 — Recovery — 7–13 Jun · 42km',phase:'Phase 1',days:[
+    {date:'2026-06-08',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Recovery week — let adaptations settle.'},
+    {date:'2026-06-09',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km very easy aerobic.',segs:['6km easy'],note:''},
+    {date:'2026-06-10',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 7km',detail:'7km easy + strength session.',segs:['7km easy','Strength <30min'],note:''},
+    {date:'2026-06-11',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 7km',detail:'7km steady.',segs:['7km steady'],note:''},
+    {date:'2026-06-12',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-13',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:''},
+    {date:'2026-06-14',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 12km',detail:'12km easy. Recovery week long run.',segs:['12km easy'],note:'Don\'t try to push — this week is about absorbing.'},
+  ]},
+
+  // ── PHASE 2: Base Development (Weeks 5–8) ──
+  {label:'Phase 2 — Base Development · Week 5 — 14–20 Jun · 50km',phase:'Phase 2',days:[
+    {date:'2026-06-15',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy aerobic.',segs:['7km easy'],note:'Back into proper training after the recovery week.'},
+    {date:'2026-06-16',day:'Tue',type:'bmx',badge:'Threshold',title:'3×8min threshold',detail:'Warm up, 3×8min at threshold pace (5:00–5:10/km), 2min recovery jog between. Cool down.',segs:['2km warm-up','3×8min threshold','2min jog recovery'],note:''},
+    {date:'2026-06-17',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:'Cadence focus: 145–150 spm.'},
+    {date:'2026-06-18',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 9km',detail:'9km steady (5:55–6:10/km).',segs:['9km steady'],note:''},
+    {date:'2026-06-19',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-20',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-06-21',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 15km',detail:'15km easy aerobic. Fuel and hydrate.',segs:['15km easy','Fuel every 45min'],note:''},
+  ]},
+  {label:'Phase 2 — Week 6 — 21–27 Jun · 54km',phase:'Phase 2',days:[
+    {date:'2026-06-22',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 7km',detail:'7km easy recovery.',segs:['7km recovery'],note:''},
+    {date:'2026-06-23',day:'Tue',type:'bmx',badge:'Threshold',title:'5×1km threshold',detail:'5×1km at threshold (5:00–5:10/km), 90sec recovery jog.',segs:['2km warm-up','5×1km threshold','90sec recovery'],note:''},
+    {date:'2026-06-24',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 9km',detail:'9km easy + strength.',segs:['9km easy','Strength <30min'],note:''},
+    {date:'2026-06-25',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 10km',detail:'10km steady.',segs:['10km steady'],note:''},
+    {date:'2026-06-26',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-27',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-06-28',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 17km',detail:'17km easy/aerobic.',segs:['17km easy','Fuel every 45min'],note:'Longest run of the block so far.'},
+  ]},
+  {label:'Phase 2 — Week 7 — 28 Jun–4 Jul · 58km',phase:'Phase 2',days:[
+    {date:'2026-06-29',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy aerobic.',segs:['8km easy'],note:''},
+    {date:'2026-06-30',day:'Tue',type:'bmx',badge:'Threshold',title:'2×15min threshold',detail:'2×15min continuous threshold (5:00–5:10/km) with 3min recovery jog between.',segs:['2km warm-up','2×15min threshold','3min recovery'],note:'Longer continuous threshold — building lactate clearance.'},
+    {date:'2026-07-01',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 9km',detail:'9km easy + strength.',segs:['9km easy','Strength <30min'],note:'Cadence target now 150–158 spm.'},
+    {date:'2026-07-02',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 11km',detail:'11km steady.',segs:['11km steady'],note:''},
+    {date:'2026-07-03',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-04',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-05',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 18km',detail:'18km easy aerobic.',segs:['18km easy','Fuel every 45min'],note:'Progress only if HRV/RHR are stable.'},
+  ]},
+  {label:'Phase 2 — Week 8 — Recovery — 5–11 Jul · 46km',phase:'Phase 2',days:[
+    {date:'2026-07-06',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-07',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-08',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-07-09',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 8km',detail:'8km steady.',segs:['8km steady'],note:''},
+    {date:'2026-07-10',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-11',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-12',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 18km',detail:'18km easy. Keep recovery week effort very controlled.',segs:['18km easy'],note:'Same distance as last week but at true recovery effort.'},
+  ]},
+
+  // ── PHASE 3: Aerobic + Marathon Prep (Weeks 9–14) ──
+  {label:'Phase 3 — Aerobic + Marathon Prep · Week 9 — 12–18 Jul · 60km',phase:'Phase 3',days:[
+    {date:'2026-07-13',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy aerobic.',segs:['8km easy'],note:'Back to full load after recovery week.'},
+    {date:'2026-07-14',day:'Tue',type:'bmx',badge:'Threshold',title:'6×1km threshold',detail:'6×1km at threshold (5:00–5:10/km), 90sec recovery.',segs:['2km warm-up','6×1km threshold','90sec recovery'],note:''},
+    {date:'2026-07-15',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 9km',detail:'9km easy + strength.',segs:['9km easy','Strength <30min'],note:''},
+    {date:'2026-07-16',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 12km',detail:'12km at steady pace.',segs:['12km steady'],note:''},
+    {date:'2026-07-17',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-18',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-19',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 19km',detail:'19km easy aerobic.',segs:['19km easy','Fuel every 45min'],note:''},
+  ]},
+  {label:'Phase 3 — Week 10 — 19–25 Jul · 62km',phase:'Phase 3',days:[
+    {date:'2026-07-20',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-07-21',day:'Tue',type:'bmx',badge:'Threshold',title:'4×2km threshold',detail:'4×2km at threshold (5:00–5:10/km), 2min recovery jog.',segs:['2km warm-up','4×2km threshold','2min recovery'],note:'Longer threshold reps — great marathon prep.'},
+    {date:'2026-07-22',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-07-23',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 12km',detail:'12km steady.',segs:['12km steady'],note:''},
+    {date:'2026-07-24',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-25',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-26',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 20km',detail:'20km easy aerobic. First 20km run of the block.',segs:['20km easy','Fuel every 45min'],note:'Big milestone. Focus on fuelling strategy.'},
+  ]},
+  {label:'Phase 3 — Week 11 — 26 Jul–1 Aug · 65km',phase:'Phase 3',days:[
+    {date:'2026-07-27',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 8km',detail:'8km easy recovery.',segs:['8km recovery'],note:''},
+    {date:'2026-07-28',day:'Tue',type:'bmx',badge:'Threshold',title:'3×12min threshold',detail:'3×12min threshold, 2min recovery jog between.',segs:['2km warm-up','3×12min threshold','2min recovery'],note:''},
+    {date:'2026-07-29',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-07-30',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'13km with 6km marathon pace',detail:'13km total: warm-up miles, then 6km at marathon pace (5:35–5:40/km), easy cool down.',segs:['Easy warm-up','6km marathon pace','Easy cool down'],note:'First marathon pace work. Lock in 5:35–5:40/km.'},
+    {date:'2026-07-31',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-01',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:'Cadence target: 150–158 spm.'},
+    {date:'2026-08-02',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 22km',detail:'22km easy/aerobic.',segs:['22km easy','Fuel every 45min'],note:''},
+  ]},
+  {label:'Phase 3 — Week 12 — Recovery — 2–8 Aug · 50km',phase:'Phase 3',days:[
+    {date:'2026-08-03',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-04',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-08-05',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-08-06',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 10km',detail:'10km steady.',segs:['10km steady'],note:''},
+    {date:'2026-08-07',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-08',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-08-09',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 18km',detail:'18km easy. Recovery week.',segs:['18km easy'],note:''},
+  ]},
+  {label:'Phase 3 — Week 13 — 9–15 Aug · 68km',phase:'Phase 3',days:[
+    {date:'2026-08-10',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-08-11',day:'Tue',type:'bmx',badge:'Threshold',title:'7×1km threshold',detail:'7×1km at threshold (5:00–5:10/km), 90sec recovery.',segs:['2km warm-up','7×1km threshold','90sec recovery'],note:'Hardest interval session of the plan.'},
+    {date:'2026-08-12',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-08-13',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'14km with marathon pace',detail:'14km total with a sustained marathon pace (5:35–5:40/km) section through the middle.',segs:['Easy warm-up','Marathon pace section','Easy cool down'],note:'This is the bread and butter of marathon training.'},
+    {date:'2026-08-14',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-15',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-08-16',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 24km',detail:'24km easy aerobic. Major long run milestone.',segs:['24km easy','Fuel every 45min'],note:'Biggest confidence builder of Phase 3.'},
+  ]},
+  {label:'Phase 3 — Week 14 — 16–22 Aug · 70km',phase:'Phase 3',days:[
+    {date:'2026-08-17',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 8km',detail:'8km easy recovery.',segs:['8km recovery'],note:''},
+    {date:'2026-08-18',day:'Tue',type:'bmx',badge:'Threshold',title:'4×2km threshold',detail:'4×2km at threshold, 2min recovery.',segs:['2km warm-up','4×2km threshold','2min recovery'],note:''},
+    {date:'2026-08-19',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-08-20',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 14km',detail:'14km at steady pace.',segs:['14km steady'],note:''},
+    {date:'2026-08-21',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-22',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-08-23',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 26km',detail:'26km easy aerobic. Longest run so far.',segs:['26km easy','Fuel every 45min'],note:'Dial in your fuelling — 60–75g carbs/hour.'},
+  ]},
+
+  // ── PHASE 4: Peak Block (Weeks 15–17) ──
+  {label:'Phase 4 — Peak Block · Week 15 — 23–29 Aug · 72km',phase:'Phase 4',days:[
+    {date:'2026-08-24',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:'Peak phase begins. Volume peaks here.'},
+    {date:'2026-08-25',day:'Tue',type:'bmx',badge:'Threshold',title:'35–40min threshold',detail:'35–40min continuous threshold at 5:00–5:10/km. Warm up and cool down either side.',segs:['Warm-up','35–40min threshold','Cool down'],note:'Longest threshold block of the plan.'},
+    {date:'2026-08-26',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:'Cadence target: 160+ spm during marathon pace.'},
+    {date:'2026-08-27',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'16km marathon pace run',detail:'16km at marathon pace (5:35–5:40/km). This is a confidence-builder.',segs:['16km marathon pace'],note:'The most specific marathon session of the plan. Nail the pace.'},
+    {date:'2026-08-28',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-29',day:'Sat',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km easy recovery.',segs:['6km recovery'],note:'Very easy after Thursday\'s big session.'},
+    {date:'2026-08-30',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 24km',detail:'24km easy aerobic.',segs:['24km easy','Fuel every 45min'],note:''},
+  ]},
+  {label:'Phase 4 — Week 16 — 30 Aug–5 Sep · 74km',phase:'Phase 4',days:[
+    {date:'2026-08-31',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-09-01',day:'Tue',type:'bmx',badge:'Threshold',title:'6×1km threshold',detail:'6×1km threshold, 90sec recovery.',segs:['2km warm-up','6×1km threshold','90sec recovery'],note:''},
+    {date:'2026-09-02',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-09-03',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 14km',detail:'14km steady.',segs:['14km steady'],note:''},
+    {date:'2026-09-04',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-05',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-09-06',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 26km',detail:'26km easy aerobic.',segs:['26km easy','Fuel every 45min'],note:'Second 26km run — this one should feel more controlled.'},
+  ]},
+  {label:'Phase 4 — Week 17 — Peak — 6–12 Sep · 76km',phase:'Phase 4',days:[
+    {date:'2026-09-07',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 8km',detail:'8km easy recovery.',segs:['8km recovery'],note:''},
+    {date:'2026-09-08',day:'Tue',type:'bmx',badge:'Marathon Pace',title:'3×4km marathon pace',detail:'3×4km at marathon pace (5:35–5:40/km), 3min easy jog between.',segs:['Warm-up','3×4km marathon pace','3min recovery jog'],note:'Peak marathon-specific session.'},
+    {date:'2026-09-09',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-09-10',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 14km',detail:'14km steady.',segs:['14km steady'],note:''},
+    {date:'2026-09-11',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-12',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-09-13',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 28km',detail:'28km easy aerobic. Peak long run of the plan.',segs:['28km easy','Fuel every 45min'],note:'This is the peak. After this, it\'s all downhill to race day. Well done.'},
+  ]},
+
+  // ── PHASE 5: Taper (Weeks 18–20) ──
+  {label:'Phase 5 — Taper · Week 18 — 13–19 Sep · 60km',phase:'Phase 5',days:[
+    {date:'2026-09-14',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy. Taper begins.',segs:['7km easy'],note:'Volume starts dropping. Freshness is the goal now.'},
+    {date:'2026-09-15',day:'Tue',type:'bmx',badge:'Threshold',title:'5×1km threshold',detail:'5×1km threshold to stay sharp.',segs:['Warm-up','5×1km threshold','Cool down'],note:''},
+    {date:'2026-09-16',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-09-17',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'12km marathon pace',detail:'12km at marathon pace (5:35–5:40/km).',segs:['12km marathon pace'],note:'Last significant marathon pace session.'},
+    {date:'2026-09-18',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-19',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-09-20',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 20km',detail:'20km easy. Taper long run.',segs:['20km easy','Fuel every 45min'],note:''},
+  ]},
+  {label:'Phase 5 — Week 19 — 20–26 Sep · 45km',phase:'Phase 5',days:[
+    {date:'2026-09-21',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km easy recovery.',segs:['6km recovery'],note:'Getting fresher every day.'},
+    {date:'2026-09-22',day:'Tue',type:'bmx',badge:'Marathon Pace',title:'3×2km marathon pace',detail:'3×2km at marathon pace, 2min easy jog recovery.',segs:['Warm-up','3×2km marathon pace','Cool down'],note:'Last true quality session. Should feel good at this pace.'},
+    {date:'2026-09-23',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-09-24',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 10km',detail:'10km steady.',segs:['10km steady'],note:''},
+    {date:'2026-09-25',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-26',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:''},
+    {date:'2026-09-27',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 17km',detail:'17km easy. Last longer long run.',segs:['17km easy'],note:'After this, just stay fresh. Fitness is locked in.'},
+  ]},
+  {label:'Phase 5 — Race Week — 4–11 Oct',phase:'Phase 5',days:[
+    {date:'2026-10-05',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],note:'6 days out. Keep it very easy.'},
+    {date:'2026-10-06',day:'Tue',type:'btp',badge:'Shakeout',title:'6km with strides',detail:'6km easy with 4×20sec strides at the end.',segs:['6km easy','4× strides'],note:'Wakes up fast-twitch fibres without fatiguing.'},
+    {date:'2026-10-07',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Fitness is locked in. Nothing you do now makes you fitter.'},
+    {date:'2026-10-08',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:'3 days out. Shake the legs out, nothing more.'},
+    {date:'2026-10-09',day:'Fri',type:'brs',badge:'Rest',title:'Rest & prep',detail:'Lay out kit. Begin carb loading.',segs:[],note:'Pasta, rice, potatoes. Top up glycogen stores. No high fibre foods.'},
+    {date:'2026-10-10',day:'Sat',type:'btp',badge:'Pre-race',title:'20min shakeout',detail:'20min very easy jog. Just to stay loose.',segs:['20min easy'],note:'Race eve. Sleep early, hydrate well, eat familiar foods.'},
+    {date:'2026-10-11',day:'Sun · Race day',type:'brc',badge:'Race day',title:'MBNA Chester Marathon 🏁',detail:'42.2km · Sub-4 · 5:40/km. Start 5:45/km, lock in 5:38–5:40/km from 10km. Maintain form from 30km. Fuel every 45min from the gun.',segs:['0–10km: 5:40–5:45/km','10–30km: 5:38–5:40/km','30–42km: hold form'],note:'20 weeks of work. Trust it. Start slower than feels right — you\'ll thank yourself at 35km.'},
+  ]},
 ];
 
 let planDone={};
-try{planDone=JSON.parse(localStorage.getItem('chesterPlan')||'{}');}catch(e){}
+try{planDone=JSON.parse(localStorage.getItem('chesterMarathon2026')||'{}');}catch(e){}
 
 function totalPlanSessions(){let t=0;planWeeks.forEach(w=>w.days.forEach(d=>{if(d.type!=='brs')t++;}));return t;}
 function donePlanCount(){return Object.values(planDone).filter(Boolean).length;}
 
 function togglePlanDone(key){
   planDone[key]=!planDone[key];
-  try{localStorage.setItem('chesterPlan',JSON.stringify(planDone));}catch(e){}
+  try{localStorage.setItem('chesterMarathon2026',JSON.stringify(planDone));}catch(e){}
   renderPlan(document.getElementById('tabContent'));
 }
 
 function renderPlan(el){
-  const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
   function isToday(dateStr){
-    const m=dateStr.match(/(\d+)\s+(\w+)/);
-    if(!m) return false;
     const now=new Date();
-    return +m[1]===now.getDate() && months[m[2]]===now.getMonth();
+    const d=new Date(dateStr);
+    return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth() && d.getDate()===now.getDate();
+  }
+  function fmtDate(dateStr){
+    const d=new Date(dateStr);
+    return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   }
   const total=totalPlanSessions(), done=donePlanCount(), pct=Math.round((done/total)*100);
   let html=`<div class="prog">
@@ -551,7 +716,7 @@ function renderPlan(el){
       const isToday2=isToday(d.date);
       html+=`<div class="plan-card${isToday2?' today':''}${isRace?' race-day':''}">
         <div class="plan-date-col">
-          <div class="plan-date">${d.date}</div>
+          <div class="plan-date">${fmtDate(d.date)}</div>
           <div class="plan-day">${isToday2?d.day+' · Today':d.day}</div>
         </div>
         <div class="plan-content">
