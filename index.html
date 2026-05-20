@@ -81,140 +81,29 @@
   .act-date { margin-left: auto; font-size: 11px; color: var(--muted); font-family: var(--mono); }
 
   /* training plan */
-// ── training plan (MARATHON BUILD) ─────────────────────────────
-const planWeeks = [
+  .plan-section { margin-top: 2rem; }
+  .plan-week { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin: 1.25rem 0 .5rem; padding-bottom: 4px; border-bottom: 0.5px solid var(--border); }
+  .plan-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .85rem 1rem; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .plan-card.today { border-color: var(--accent); }
+  .plan-card.race-day { border-color: var(--accent4); background: #1a1510; }
+  .plan-date-col { min-width: 80px; }
+  .plan-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .plan-day { font-size: 12px; font-weight: 500; color: var(--text); margin-top: 2px; }
+  .plan-content { flex: 1; }
+  .plan-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .plan-detail { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .plan-note { font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: .7; }
+  .plan-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; margin-bottom: 5px; display: inline-block; }
+  .bz2 { background: #0d2e1e; color: var(--accent); }
+  .bmx { background: #2a1a0a; color: var(--accent4); }
+  .brs { background: #1e1e22; color: var(--muted); }
+  .btp { background: #161230; color: var(--accent2); }
+  .brc { background: #2a1205; color: var(--accent4); }
+  .plan-segs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .plan-seg { font-size: 10px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--border); color: var(--muted); }
+  .plan-done-btn { margin-top: 6px; font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .plan-done-btn.done { background: #0d2e1e; color: var(--accent); border-color: var(--accent); }
 
-  {
-    label: 'Week 1 — 18 to 24 May · 44km',
-    days: [
-      { date:'18 May', day:'Mon', type:'brs', badge:'Recovery', title:'6km easy', detail:'Very easy shakeout run.', segs:['6km Z2'], note:'' },
-      { date:'19 May', day:'Tue', type:'bmx', badge:'Threshold', title:'7km threshold intro', detail:'Light threshold blocks.', segs:['3x5min T'], note:'' },
-      { date:'20 May', day:'Wed', type:'bz2', badge:'Easy', title:'7km easy + strength', detail:'Aerobic base work.', segs:['Z2'], note:'' },
-      { date:'21 May', day:'Thu', type:'bmx', badge:'Steady', title:'7km steady', detail:'Controlled pace.', segs:['Steady'], note:'' },
-      { date:'22 May', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Full rest.', segs:[], note:'' },
-      { date:'23 May', day:'Sat', type:'bz2', badge:'Easy', title:'5km + strides', detail:'Easy with strides.', segs:['5km Z2','4x20s'], note:'' },
-      { date:'24 May', day:'Sun', type:'bz2', badge:'Long run', title:'12km long run', detail:'Easy aerobic.', segs:['12km Z2'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 2 — 25 to 31 May · 48km',
-    days: [
-      { date:'25 May', day:'Mon', type:'brs', badge:'Recovery', title:'6km easy', detail:'Recovery run.', segs:['Z2'], note:'' },
-      { date:'26 May', day:'Tue', type:'bmx', badge:'Threshold', title:'8km (2x8min)', detail:'Threshold intervals.', segs:['2x8min T'], note:'' },
-      { date:'27 May', day:'Wed', type:'bz2', badge:'Easy', title:'8km + strength', detail:'Aerobic base.', segs:['Z2'], note:'' },
-      { date:'28 May', day:'Thu', type:'bmx', badge:'Steady', title:'8km steady', detail:'Controlled aerobic.', segs:['Steady'], note:'' },
-      { date:'29 May', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Full rest.', segs:[], note:'' },
-      { date:'30 May', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Relaxed run.', segs:['Z2'], note:'' },
-      { date:'31 May', day:'Sun', type:'bz2', badge:'Long run', title:'12km long run', detail:'Aerobic endurance.', segs:['12km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 3 — 1 to 7 Jun · 52km',
-    days: [
-      { date:'1 Jun', day:'Mon', type:'brs', badge:'Recovery', title:'7km easy', detail:'Easy run.', segs:['Z2'], note:'' },
-      { date:'2 Jun', day:'Tue', type:'bmx', badge:'Threshold', title:'6x1km', detail:'Threshold reps.', segs:['6x1km T'], note:'' },
-      { date:'3 Jun', day:'Wed', type:'bz2', badge:'Easy', title:'8km + strength', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'4 Jun', day:'Thu', type:'bmx', badge:'Steady', title:'9km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'5 Jun', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'6 Jun', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'7 Jun', day:'Sun', type:'bz2', badge:'Long run', title:'16km long run', detail:'Endurance.', segs:['16km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 4 — Recovery 42km',
-    days: [
-      { date:'8 Jun', day:'Mon', type:'brs', badge:'Rest', title:'Rest', detail:'Full rest.', segs:[], note:'' },
-      { date:'9 Jun', day:'Tue', type:'bz2', badge:'Easy', title:'6km easy', detail:'Recovery.', segs:['Z2'], note:'' },
-      { date:'10 Jun', day:'Wed', type:'bz2', badge:'Easy', title:'7km + strength', detail:'Light aerobic.', segs:['Z2'], note:'' },
-      { date:'11 Jun', day:'Thu', type:'bmx', badge:'Steady', title:'7km steady', detail:'Easy steady.', segs:['Steady'], note:'' },
-      { date:'12 Jun', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'13 Jun', day:'Sat', type:'bz2', badge:'Easy', title:'5km easy', detail:'Relaxed.', segs:['Z2'], note:'' },
-      { date:'14 Jun', day:'Sun', type:'bz2', badge:'Long run', title:'12km long run', detail:'Easy endurance.', segs:['12km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 5 — 50km',
-    days: [
-      { date:'15 Jun', day:'Mon', type:'bz2', badge:'Easy', title:'7km easy', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'16 Jun', day:'Tue', type:'bmx', badge:'Threshold', title:'3x8min', detail:'Threshold work.', segs:['3x8min'], note:'' },
-      { date:'17 Jun', day:'Wed', type:'bz2', badge:'Easy', title:'8km + strength', detail:'Base.', segs:['Z2'], note:'' },
-      { date:'18 Jun', day:'Thu', type:'bmx', badge:'Steady', title:'9km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'19 Jun', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'20 Jun', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'21 Jun', day:'Sun', type:'bz2', badge:'Long run', title:'15km long run', detail:'Endurance.', segs:['15km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 6 — 54km',
-    days: [
-      { date:'22 Jun', day:'Mon', type:'brs', badge:'Recovery', title:'7km easy', detail:'Recovery.', segs:['Z2'], note:'' },
-      { date:'23 Jun', day:'Tue', type:'bmx', badge:'Threshold', title:'5x1km', detail:'Intervals.', segs:['5x1km'], note:'' },
-      { date:'24 Jun', day:'Wed', type:'bz2', badge:'Easy', title:'9km + strength', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'25 Jun', day:'Thu', type:'bmx', badge:'Steady', title:'10km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'26 Jun', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'27 Jun', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'28 Jun', day:'Sun', type:'bz2', badge:'Long run', title:'17km long run', detail:'Endurance.', segs:['17km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 7 — 58km',
-    days: [
-      { date:'29 Jun', day:'Mon', type:'bz2', badge:'Easy', title:'8km easy', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'30 Jun', day:'Tue', type:'bmx', badge:'Threshold', title:'2x15min', detail:'Threshold blocks.', segs:['2x15min'], note:'' },
-      { date:'1 Jul', day:'Wed', type:'bz2', badge:'Easy', title:'9km + strength', detail:'Base.', segs:['Z2'], note:'' },
-      { date:'2 Jul', day:'Thu', type:'bmx', badge:'Steady', title:'11km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'3 Jul', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'4 Jul', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'5 Jul', day:'Sun', type:'bz2', badge:'Long run', title:'18km long run', detail:'Endurance.', segs:['18km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 8 — Recovery 46km',
-    days: [
-      { date:'6 Jul', day:'Mon', type:'brs', badge:'Rest', title:'Rest', detail:'Full rest.', segs:[], note:'' },
-      { date:'7 Jul', day:'Tue', type:'bz2', badge:'Easy', title:'6km easy', detail:'Recovery.', segs:['Z2'], note:'' },
-      { date:'8 Jul', day:'Wed', type:'bz2', badge:'Easy', title:'8km + strength', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'9 Jul', day:'Thu', type:'bmx', badge:'Steady', title:'8km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'10 Jul', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'11 Jul', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'12 Jul', day:'Sun', type:'bz2', badge:'Long run', title:'18km long run', detail:'Endurance.', segs:['18km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 9 — 60km',
-    days: [
-      { date:'13 Jul', day:'Mon', type:'bz2', badge:'Easy', title:'8km easy', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'14 Jul', day:'Tue', type:'bmx', badge:'Threshold', title:'6x1km', detail:'Threshold reps.', segs:['6x1km'], note:'' },
-      { date:'15 Jul', day:'Wed', type:'bz2', badge:'Easy', title:'9km + strength', detail:'Base.', segs:['Z2'], note:'' },
-      { date:'16 Jul', day:'Thu', type:'bmx', badge:'Steady', title:'12km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'17 Jul', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'18 Jul', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'19 Jul', day:'Sun', type:'bz2', badge:'Long run', title:'19km long run', detail:'Endurance.', segs:['19km'], note:'' }
-    ]
-  },
-
-  {
-    label: 'Week 10 — 62km',
-    days: [
-      { date:'20 Jul', day:'Mon', type:'bz2', badge:'Easy', title:'8km easy', detail:'Aerobic.', segs:['Z2'], note:'' },
-      { date:'21 Jul', day:'Tue', type:'bmx', badge:'Threshold', title:'4x2km', detail:'Threshold strength.', segs:['4x2km'], note:'' },
-      { date:'22 Jul', day:'Wed', type:'bz2', badge:'Easy', title:'10km + strength', detail:'Base.', segs:['Z2'], note:'' },
-      { date:'23 Jul', day:'Thu', type:'bmx', badge:'Steady', title:'12km steady', detail:'Controlled.', segs:['Steady'], note:'' },
-      { date:'24 Jul', day:'Fri', type:'brs', badge:'Rest', title:'Rest', detail:'Recovery.', segs:[], note:'' },
-      { date:'25 Jul', day:'Sat', type:'bz2', badge:'Easy', title:'6km easy', detail:'Easy.', segs:['Z2'], note:'' },
-      { date:'26 Jul', day:'Sun', type:'bz2', badge:'Long run', title:'20km long run', detail:'Endurance.', segs:['20km'], note:'' }
-    ]
-  }
-
-];
   /* status */
   .status { text-align: center; padding: 3rem; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 
