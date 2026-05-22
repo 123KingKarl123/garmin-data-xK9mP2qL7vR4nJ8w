@@ -101,8 +101,12 @@
   .brc { background: #2a1205; color: var(--accent4); }
   .plan-segs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
   .plan-seg { font-size: 10px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--border); color: var(--muted); }
-  .plan-done-btn { margin-top: 6px; font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .plan-done-btn { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
   .plan-done-btn.done { background: #0d2e1e; color: var(--accent); border-color: var(--accent); }
+  .plan-missed-btn { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid #7f1d1d; background: transparent; color: #f87171; letter-spacing: .04em; }
+  .plan-adapt-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--accent); background: #0d2e1e; color: var(--accent); letter-spacing: .04em; }
+  .plan-card.missed-card { border-color: #7f1d1d; opacity: 0.85; }
+  .bmissed { background: #2d0a0a; color: #f87171; }
 
   /* status */
   .status { text-align: center; padding: 3rem; font-family: var(--mono); font-size: 12px; color: var(--muted); }
@@ -498,8 +502,8 @@ const planWeeks=[
     {date:'2026-05-18',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km at easy recovery pace (6:45–7:15/km). HR in Z1.',segs:['6km recovery'],note:'First week off the half. Keep it very easy — legs still absorbing the race.'},
     {date:'2026-05-19',day:'Tue',type:'bmx',badge:'Threshold',title:'Threshold intro — 7km',detail:'7km with light threshold blocks. Warm up 2km, 3×5min at threshold, cool down.',segs:['2km warm-up','3×5min threshold','cool down'],note:'Light intro to threshold work. Comfortably hard, not race effort.'},
     {date:'2026-05-20',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 7km',detail:'7km easy aerobic (6:15–6:45/km) + strength session after.',segs:['7km easy','Strength <30min'],note:'Glute bridges, split squats, calf raises, core.'},
-    {date:'2026-05-21',day:'Thu',type:'bmx',badge:'Rest',title:'Rest',detail:'Full rest. No training.',segs:[],note:''},
-    {date:'2026-05-22',day:'Fri',type:'bz2',badge:'Steady',title:'Steady run — 7km',detail:'7km at steady aerobic pace (5:55–6:10/km).',segs:['7km steady'],note:'Controlled effort. Should feel sustainable but purposeful.'},
+    {date:'2026-05-21',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 7km',detail:'7km at steady aerobic pace (5:55–6:10/km).',segs:['7km steady'],note:'Controlled effort. Should feel sustainable but purposeful.'},
+    {date:'2026-05-22',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest. No training.',segs:[],note:''},
     {date:'2026-05-23',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run + strides — 5km',detail:'5km easy + 4–6×20sec strides at the end.',segs:['5km easy','4–6× strides'],note:'Strides should feel quick and light, not strained.'},
     {date:'2026-05-24',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 12km',detail:'12km at easy/aerobic pace (6:15–6:45/km). Fuel from 45min.',segs:['12km easy','Fuel every 45min'],note:'First long run of the block. Keep it very controlled.'},
   ]},
@@ -686,6 +690,68 @@ const planWeeks=[
 
 let planDone={};
 try{planDone=JSON.parse(localStorage.getItem('chesterMarathon2026')||'{}');}catch(e){}
+let planMissed={};
+try{planMissed=JSON.parse(localStorage.getItem('chesterMarathon2026_missed')||'{}');}catch(e){}
+
+function markMissed(key, title){
+  planMissed[key]=title;
+  try{localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));}catch(e){}
+  renderPlan(document.getElementById('tabContent'));
+}
+function unmarkMissed(key){
+  delete planMissed[key];
+  try{localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));}catch(e){}
+  renderPlan(document.getElementById('tabContent'));
+}
+
+async function adaptPlan(missedDate, missedTitle){
+  const el=document.getElementById('tabContent');
+  const missedKeys=Object.keys(planMissed);
+  const missedList=missedKeys.map(k=>`${k}: ${planMissed[k]}`).join(', ');
+  const today=new Date();
+  const local=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  const raceDate='2026-10-11';
+  const daysLeft=Math.round((new Date(raceDate)-today)/86400000);
+
+  // Show loading in a modal-style panel at top of tab
+  el.insertAdjacentHTML('afterbegin',`<div id="adaptPanel" style="background:#0d1f12;border:1px solid var(--accent);border-radius:10px;padding:1rem;margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:8px">↻ CLAUDE IS ADAPTING YOUR PLAN</div>
+    <div id="adaptText" style="font-size:13px;color:var(--text);line-height:1.6">Analysing missed sessions and rebuilding recommendations...</div>
+  </div>`);
+
+  const ANTHROPIC_KEY = window.ANTHROPIC_KEY || '';
+  if (!ANTHROPIC_KEY) {
+    document.getElementById('adaptText').innerHTML = '<span style="color:#f87171">No Anthropic API key set. Add <code>window.ANTHROPIC_KEY="sk-ant-..."</code> to the page or use the garmin_export.py insight generator instead.</span>';
+    return;
+  }
+
+  const prompt = `You are Karl's running coach. He is training for the MBNA Chester Marathon on 11 October 2026 (${daysLeft} days away), targeting sub-4 hours (5:40/km). He is currently in a 20-week structured plan.
+
+Today is ${local}. He has missed the following training session(s):
+${missedList}
+
+His weekly structure is: Mon recovery, Tue threshold/intervals, Wed easy+strength, Thu steady/marathon pace, Fri rest, Sat easy+strides, Sun long run.
+
+Give Karl a brief, practical adaptation in 3 short paragraphs:
+1. What missing this session means for his training load and fitness (be honest but reassuring)
+2. Exactly how to reschedule or compensate this week — which day, what session, what modification
+3. One key thing to watch for in the next 7 days to get back on track
+
+Be specific and direct. Use actual days. No bullet points. Max 150 words.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'No response received.';
+    document.getElementById('adaptText').innerHTML = text.split(/\n+/).filter(Boolean).map(p=>`<p style="margin:0 0 8px">${p}</p>`).join('');
+  } catch(e) {
+    document.getElementById('adaptText').textContent = 'Error: '+e.message;
+  }
+}
 
 function totalPlanSessions(){let t=0;planWeeks.forEach(w=>w.days.forEach(d=>{if(d.type!=='brs')t++;}));return t;}
 function donePlanCount(){return Object.values(planDone).filter(Boolean).length;}
@@ -699,8 +765,13 @@ function togglePlanDone(key){
 function renderPlan(el){
   function isToday(dateStr){
     const now=new Date();
-    const d=new Date(dateStr);
-    return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth() && d.getDate()===now.getDate();
+    const local=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+    return dateStr===local;
+  }
+  function isPast(dateStr){
+    const now=new Date();
+    const local=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+    return dateStr<local;
   }
   function fmtDate(dateStr){
     const d=new Date(dateStr);
@@ -717,19 +788,32 @@ function renderPlan(el){
       const isDone=planDone[d.date];
       const isRace=d.type==='brc';
       const isToday2=isToday(d.date);
-      html+=`<div class="plan-card${isToday2?' today':''}${isRace?' race-day':''}">
+      const isMissed=planMissed[d.date];
+      const isPast2=isPast(d.date);
+      const isActionable=d.type!=='brs'&&!isRace;
+      html+=`<div class="plan-card${isToday2?' today':''}${isRace?' race-day':''}${isMissed?' missed-card':''}">
         <div class="plan-date-col">
           <div class="plan-date">${fmtDate(d.date)}</div>
           <div class="plan-day">${isToday2?d.day+' · Today':d.day}</div>
         </div>
         <div class="plan-content">
-          <span class="plan-badge ${d.type}">${d.badge}</span>
-          ${isDone?'<span class="plan-badge bz2" style="margin-left:4px">Done ✓</span>':''}
+          <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:5px">
+            <span class="plan-badge ${d.type}">${d.badge}</span>
+            ${isDone?'<span class="plan-badge bz2">Done ✓</span>':''}
+            ${isMissed?'<span class="plan-badge bmissed">Missed ✗</span>':''}
+          </div>
           <div class="plan-title">${d.title}</div>
           <div class="plan-detail">${d.detail}</div>
           ${d.segs.length?`<div class="plan-segs">${d.segs.map(s=>`<span class="plan-seg">${s}</span>`).join('')}</div>`:''}
           ${d.note?`<div class="plan-note">${d.note}</div>`:''}
-          ${d.type!=='brs'?`<button class="plan-done-btn${isDone?' done':''}" onclick="togglePlanDone('${d.date}')">${isDone?'Completed':'Mark done'}</button>`:''}
+          ${isActionable&&!isMissed?`<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+            <button class="plan-done-btn${isDone?' done':''}" onclick="togglePlanDone('${d.date}')">${isDone?'✓ Completed':'Mark done'}</button>
+            ${(isPast2||isToday2)&&!isDone?`<button class="plan-missed-btn" onclick="markMissed('${d.date}','${d.title.replace(/'/g,"\\'")}')"">✗ Missed</button>`:''}
+          </div>`:''}
+          ${isMissed?`<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+            <button class="plan-adapt-btn" onclick="adaptPlan('${d.date}','${d.title.replace(/'/g,"\\'")}')")">↻ Adapt plan with Claude</button>
+            <button class="plan-missed-btn" style="opacity:.6" onclick="unmarkMissed('${d.date}')">Undo</button>
+          </div>`:''}
         </div>
       </div>`;
     });
