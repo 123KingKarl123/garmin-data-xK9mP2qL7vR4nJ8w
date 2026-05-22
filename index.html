@@ -316,6 +316,9 @@ function renderMetrics() {
   const hr=filterRows(D.hr||[],'date',days);
   const acts=filterRows(D.activities||[],'startTimeLocal',days);
 
+  const totalRunKm=acts.filter(a=>{const t=(a.activityType_typeKey||a.activityType||a.activityName||'').toLowerCase();return t.includes('run');}).reduce((s,a)=>s+(parseFloat(a.distance)||0)/1000,0);
+  const totalCycleKm=acts.filter(a=>{const t=(a.activityType_typeKey||a.activityType||a.activityName||'').toLowerCase();return t.includes('cycl')||t.includes('bike')||t.includes('ride');}).reduce((s,a)=>s+(parseFloat(a.distance)||0)/1000,0);
+
   const sc=findCol(daily[0],['totalSteps','steps']);
   const cc=findCol(daily[0],['totalKilocalories','activeKilocalories','calories']);
   const slc=findCol(sleep[0],['sleepTimeSeconds','dailySleepDTO_sleepTimeSeconds','totalSleepTimeInSeconds']);
@@ -737,8 +740,9 @@ function renderPlan(el){
 // ── range ─────────────────────────────────────────────────────
 function setRange(n){
   days=n;
-  document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('on'));
-  event.target.classList.add('on');
+  document.querySelectorAll('.range-btn').forEach(b=>{
+    b.classList.toggle('on', (b.textContent.trim()===(n+'D')));
+  });
   renderMetrics();
   showTab(curTab);
 }
@@ -949,7 +953,7 @@ async function renderHeatmap(el) {
   container.style.width = '100%';
 
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO', maxZoom: 19
   }).addTo(heatmapInstance);
 
