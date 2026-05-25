@@ -1,60 +1,5 @@
 [
   {
-    "id": "2026-02-23",
-    "ctl": 3.2589736,
-    "atl": 0.5593515,
-    "rampRate": -0.59104896,
-    "ctlLoad": 0.0,
-    "atlLoad": 0.0,
-    "sportInfo": [
-      {
-        "type": "Ride",
-        "eftp": 206.23705,
-        "wPrime": 17290.725,
-        "pMax": 906.16516
-      }
-    ],
-    "updated": "2026-05-14T11:06:37.921+00:00",
-    "weight": null,
-    "restingHR": null,
-    "hrv": null,
-    "hrvSDNN": null,
-    "menstrualPhase": null,
-    "menstrualPhasePredicted": null,
-    "kcalConsumed": null,
-    "sleepSecs": null,
-    "sleepScore": null,
-    "sleepQuality": null,
-    "avgSleepingHR": null,
-    "soreness": null,
-    "fatigue": null,
-    "stress": null,
-    "mood": null,
-    "motivation": null,
-    "injury": null,
-    "spO2": null,
-    "systolic": null,
-    "diastolic": null,
-    "hydration": null,
-    "hydrationVolume": null,
-    "readiness": null,
-    "baevskySI": null,
-    "bloodGlucose": null,
-    "lactate": null,
-    "bodyFat": null,
-    "abdomen": null,
-    "vo2max": null,
-    "comments": null,
-    "steps": null,
-    "respiration": null,
-    "carbohydrates": null,
-    "protein": null,
-    "fatTotal": null,
-    "locked": null,
-    "tempWeight": false,
-    "tempRestingHR": false
-  },
-  {
     "id": "2026-02-24",
     "ctl": 3.1822956,
     "atl": 0.48488945,
@@ -67,9 +12,15 @@
         "eftp": 206.0308,
         "wPrime": 17273.434,
         "pMax": 905.25903
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.921+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -122,9 +73,15 @@
         "eftp": 205.82478,
         "wPrime": 17256.16,
         "pMax": 904.35376
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.922+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -177,9 +134,15 @@
         "eftp": 205.61896,
         "wPrime": 17238.904,
         "pMax": 903.4494
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.922+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -232,9 +195,15 @@
         "eftp": 205.41335,
         "wPrime": 17221.666,
         "pMax": 902.54596
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.922+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -287,9 +256,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.923+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -342,9 +317,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:38.045+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -397,9 +378,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.924+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -452,9 +439,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.924+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -507,9 +500,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.925+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -562,9 +561,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.925+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -617,9 +622,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.926+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -672,9 +683,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.926+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -727,9 +744,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:38.045+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -782,9 +805,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.927+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -837,9 +866,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.927+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -892,9 +927,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.927+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -947,9 +988,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.928+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1002,9 +1049,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.928+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1057,9 +1110,15 @@
         "eftp": 205.20793,
         "wPrime": 17204.445,
         "pMax": 901.64343
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.929+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1112,9 +1171,15 @@
         "eftp": 205.00273,
         "wPrime": 17187.24,
         "pMax": 900.7418
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.929+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1167,9 +1232,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.929+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1222,9 +1293,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:38.045+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1277,9 +1354,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.930+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1332,9 +1415,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.930+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1387,9 +1476,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.931+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1442,9 +1537,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.931+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1497,9 +1598,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.932+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1552,9 +1659,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:38.045+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1607,9 +1720,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:38.045+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1662,9 +1781,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.932+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1717,9 +1842,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.932+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1772,9 +1903,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:37.933+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -1827,9 +1964,15 @@
         "eftp": 204.79773,
         "wPrime": 17170.053,
         "pMax": 899.84106
+      },
+      {
+        "type": "Run",
+        "eftp": null,
+        "wPrime": null,
+        "pMax": null
       }
     ],
-    "updated": "2026-05-14T11:06:38.045+00:00",
+    "updated": "2026-05-24T20:36:02.851+00:00",
     "weight": null,
     "restingHR": null,
     "hrv": null,
@@ -5287,36 +5430,97 @@
   },
   {
     "id": "2026-05-24",
-    "ctl": 32.155624,
-    "atl": 40.150055,
-    "rampRate": -1.6915703,
+    "ctl": 35.520172,
+    "atl": 59.186516,
+    "rampRate": 1.6729774,
+    "ctlLoad": 143.0,
+    "atlLoad": 143.0,
+    "sportInfo": [
+      {
+        "type": "Ride",
+        "eftp": 204.18396,
+        "wPrime": 17118.596,
+        "pMax": 1111.6583
+      },
+      {
+        "type": "Run",
+        "eftp": 330.0,
+        "wPrime": 28700.0,
+        "pMax": 681.0
+      }
+    ],
+    "updated": "2026-05-24T22:02:45.156+00:00",
+    "weight": 91.879,
+    "restingHR": 44,
+    "hrv": 104.0,
+    "hrvSDNN": null,
+    "menstrualPhase": null,
+    "menstrualPhasePredicted": null,
+    "kcalConsumed": null,
+    "sleepSecs": 20985,
+    "sleepScore": 71.0,
+    "sleepQuality": 3,
+    "avgSleepingHR": null,
+    "soreness": null,
+    "fatigue": null,
+    "stress": null,
+    "mood": null,
+    "motivation": null,
+    "injury": null,
+    "spO2": null,
+    "systolic": null,
+    "diastolic": null,
+    "hydration": null,
+    "hydrationVolume": null,
+    "readiness": null,
+    "baevskySI": null,
+    "bloodGlucose": null,
+    "lactate": null,
+    "bodyFat": 31.5,
+    "abdomen": null,
+    "vo2max": 47.0,
+    "comments": null,
+    "steps": 11526,
+    "respiration": null,
+    "carbohydrates": null,
+    "protein": null,
+    "fatTotal": null,
+    "locked": null,
+    "tempWeight": false,
+    "tempRestingHR": false
+  },
+  {
+    "id": "2026-05-25",
+    "ctl": 34.68444,
+    "atl": 51.307484,
+    "rampRate": 1.6336136,
     "ctlLoad": 0.0,
     "atlLoad": 0.0,
     "sportInfo": [
       {
         "type": "Ride",
-        "eftp": 203.97978,
-        "wPrime": 17101.477,
-        "pMax": 1110.5466
+        "eftp": 204.18396,
+        "wPrime": 17118.596,
+        "pMax": 1111.6583
       },
       {
         "type": "Run",
-        "eftp": 329.67,
-        "wPrime": 28671.3,
-        "pMax": 680.31903
+        "eftp": 330.0,
+        "wPrime": 28700.0,
+        "pMax": 681.0
       }
     ],
-    "updated": "2026-05-24T00:21:02.844+00:00",
+    "updated": "2026-05-25T06:40:27.584+00:00",
     "weight": null,
-    "restingHR": 50,
-    "hrv": null,
+    "restingHR": 52,
+    "hrv": 94.0,
     "hrvSDNN": null,
     "menstrualPhase": null,
     "menstrualPhasePredicted": null,
     "kcalConsumed": null,
-    "sleepSecs": null,
-    "sleepScore": null,
-    "sleepQuality": null,
+    "sleepSecs": 24240,
+    "sleepScore": 67.0,
+    "sleepQuality": 3,
     "avgSleepingHR": null,
     "soreness": null,
     "fatigue": null,
@@ -5337,7 +5541,7 @@
     "abdomen": null,
     "vo2max": null,
     "comments": null,
-    "steps": 12,
+    "steps": 52,
     "respiration": null,
     "carbohydrates": null,
     "protein": null,
