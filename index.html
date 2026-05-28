@@ -108,6 +108,13 @@
   .plan-card.missed-card { border-color: #7f1d1d; opacity: 0.85; }
   .bmissed { background: #2d0a0a; color: #f87171; }
 
+  /* heatmap filter + mode buttons */
+  .hf-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .hf-btn.on { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+  .hf-btn.mode-btn { padding: 3px 12px; }
+  .hf-btn.mode-btn.on { background: #0d2235; color: #60aaff; border-color: #60aaff; }
+  .heatmap-filters { display: flex; gap: 4px; }
+
   /* status */
   .status { text-align: center; padding: 3rem; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 
@@ -957,6 +964,7 @@ async function renderTraining(el) {
 let heatmapInstance = null;
 let heatmapRoutes = [];
 let activeFilter = 'all';
+let heatmapMode = 'heatmap'; // 'heatmap' | 'coverage'
 
 function decodePolyline(encoded) {
   let index = 0, lat = 0, lng = 0, coords = [];
@@ -1006,16 +1014,25 @@ function buildSegmentMap(routes) {
 }
 
 async function renderHeatmap(el) {
+  const heatLegend = heatmapMode === 'heatmap'
+    ? '<span>🔴 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span><span style="margin-left:8px">Brighter + thicker = more times covered</span>'
+    : '<span>🟠 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span><span style="margin-left:8px">Every unique road or trail you have ever covered</span>';
+
   el.innerHTML = `
-    <div class="heatmap-filters" id="hmFilters">
-      <button class="hf-btn on" onclick="filterHeatmap('all')">All</button>
-      <button class="hf-btn" onclick="filterHeatmap('run')">Runs</button>
-      <button class="hf-btn" onclick="filterHeatmap('cycle')">Cycles</button>
-      <button class="hf-btn" onclick="filterHeatmap('other')">Other</button>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px">
+      <div class="heatmap-filters" id="hmFilters" style="margin-bottom:0">
+        <button class="hf-btn ${activeFilter==='all'?'on':''}" onclick="filterHeatmap('all')">All</button>
+        <button class="hf-btn ${activeFilter==='run'?'on':''}" onclick="filterHeatmap('run')">Runs</button>
+        <button class="hf-btn ${activeFilter==='cycle'?'on':''}" onclick="filterHeatmap('cycle')">Cycles</button>
+        <button class="hf-btn ${activeFilter==='other'?'on':''}" onclick="filterHeatmap('other')">Other</button>
+      </div>
+      <div style="display:flex;gap:4px;margin-left:auto">
+        <button class="hf-btn mode-btn ${heatmapMode==='heatmap'?'on':''}" onclick="setHeatmapMode('heatmap')" title="Density heatmap — brighter where you run more often">🔥 Heatmap</button>
+        <button class="hf-btn mode-btn ${heatmapMode==='coverage'?'on':''}" onclick="setHeatmapMode('coverage')" title="Coverage map — every road or trail you have ever covered">🗺 Coverage</button>
+      </div>
     </div>
-    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px;display:flex;gap:16px">
-      <span>🔴 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span>
-      <span style="margin-left:8px">Brighter + thicker = more times covered</span>
+    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px;display:flex;gap:16px;flex-wrap:wrap">
+      ${heatLegend}
     </div>
     <div id="heatmapContainer" style="height:460px;width:100%;display:block;position:relative;z-index:0;"></div>`;
 
@@ -1051,62 +1068,105 @@ async function renderHeatmap(el) {
     return;
   }
 
-  // Build segment usage counts for density
-  const segCounts = buildSegmentMap(filtered);
-  const maxCount = Math.max(...segCounts.values());
-
-  // Determine base colour per filter
-  const colorFilter = activeFilter === 'all' ? 'run' : activeFilter;
-
-  // Draw each route with opacity/weight based on how many times that path is covered
   const allCoords = [];
-  filtered.forEach(route => {
-    if (!route.polyline) return;
-    const coords = decodePolyline(route.polyline);
-    if (!coords.length) return;
-    allCoords.push(...coords);
 
-    // Calculate average coverage for this route's segments
-    let totalCount = 0, segCount = 0;
-    for (let i = 0; i < coords.length - 1; i++) {
-      const lat = Math.round((coords[i][0] + coords[i+1][0]) / 2 * 1000) / 1000;
-      const lng = Math.round((coords[i][1] + coords[i+1][1]) / 2 * 1000) / 1000;
-      const key = `${lat},${lng}`;
-      totalCount += segCounts.get(key) || 1;
-      segCount++;
-    }
-    const avgCoverage = segCount > 0 ? totalCount / segCount : 1;
-    const ratio = Math.min(avgCoverage / Math.max(maxCount * 0.6, 1), 1);
+  if (heatmapMode === 'heatmap') {
+    // ── HEATMAP MODE: density-weighted opacity & thickness ──
+    const segCounts = buildSegmentMap(filtered);
+    const maxCount = Math.max(...segCounts.values());
 
-    // Get type-specific colour if showing all
-    const typeFilter = activeFilter === 'all' ? getFilterType(route.type) : activeFilter;
-    const col = getHeatColor(typeFilter);
+    filtered.forEach(route => {
+      if (!route.polyline) return;
+      const coords = decodePolyline(route.polyline);
+      if (!coords.length) return;
+      allCoords.push(...coords);
 
-    // Strava style: very faint for once, glowing for frequent routes
-    const opacity = 0.06 + ratio * 0.88;
-    const weight = 0.8 + ratio * 3;
+      let totalCount = 0, segCount = 0;
+      for (let i = 0; i < coords.length - 1; i++) {
+        const lat = Math.round((coords[i][0] + coords[i+1][0]) / 2 * 1000) / 1000;
+        const lng = Math.round((coords[i][1] + coords[i+1][1]) / 2 * 1000) / 1000;
+        totalCount += segCounts.get(`${lat},${lng}`) || 1;
+        segCount++;
+      }
+      const avgCoverage = segCount > 0 ? totalCount / segCount : 1;
+      const ratio = Math.min(avgCoverage / Math.max(maxCount * 0.6, 1), 1);
+      const typeFilter = activeFilter === 'all' ? getFilterType(route.type) : activeFilter;
+      const col = getHeatColor(typeFilter);
+      const opacity = 0.06 + ratio * 0.88;
+      const weight = 0.8 + ratio * 3;
+      const color = `rgba(${col.r},${col.g},${col.b},${opacity.toFixed(2)})`;
 
-    // Add a subtle glow effect for heavily used routes by layering
-    const color = `rgba(${col.r},${col.g},${col.b},${opacity.toFixed(2)})`;
+      if (ratio > 0.4) {
+        L.polyline(coords, {
+          color: `rgba(${col.r},${col.g},${col.b},${(opacity * 0.3).toFixed(2)})`,
+          weight: weight * 3, lineCap: 'round', lineJoin: 'round'
+        }).addTo(heatmapInstance);
+      }
+      L.polyline(coords, { color, weight, lineCap: 'round', lineJoin: 'round' })
+        .bindPopup(`<b>${route.name}</b><br>${route.type} · ${(route.distance/1000).toFixed(1)}km<br>${route.date}`)
+        .addTo(heatmapInstance);
+    });
 
-    if (ratio > 0.4) {
-      // Glow layer underneath for popular routes
-      L.polyline(coords, {
-        color: `rgba(${col.r},${col.g},${col.b},${(opacity * 0.3).toFixed(2)})`,
-        weight: weight * 3,
-        lineCap: 'round',
-        lineJoin: 'round'
-      }).addTo(heatmapInstance);
-    }
+  } else {
+    // ── COVERAGE MODE: deduplicate segments, show every unique road bold & solid ──
+    // Build a set of unique segments across all routes at ~25m resolution
+    const GRID = 4000;
+    const seen = new Set();
+    // We still draw per-route but skip segment cells already drawn
+    // This makes every road you've ever covered show as one bold line
 
-    L.polyline(coords, {
-      color,
-      weight,
-      lineCap: 'round',
-      lineJoin: 'round'
-    }).bindPopup(`<b>${route.name}</b><br>${route.type} · ${(route.distance/1000).toFixed(1)}km<br>${route.date}`)
-      .addTo(heatmapInstance);
-  });
+    filtered.forEach(route => {
+      if (!route.polyline) return;
+      const coords = decodePolyline(route.polyline);
+      if (!coords.length) return;
+      allCoords.push(...coords);
+    });
+
+    // Deduplicate: merge all routes into unique segment cells, then draw as one layer per type
+    const typeGroups = { run: [], cycle: [], other: [] };
+    filtered.forEach(route => {
+      if (!route.polyline) return;
+      const coords = decodePolyline(route.polyline);
+      const ft = getFilterType(route.type);
+      const group = typeGroups[ft] || typeGroups.other;
+      // Build unique segments for this route
+      const uniqueSegs = [];
+      let seg = [];
+      for (let i = 0; i < coords.length; i++) {
+        const lat = Math.round(coords[i][0] * GRID) / GRID;
+        const lng = Math.round(coords[i][1] * GRID) / GRID;
+        const key = `${ft}:${lat},${lng}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          seg.push(coords[i]);
+        } else {
+          if (seg.length > 1) uniqueSegs.push(seg);
+          seg = [];
+        }
+      }
+      if (seg.length > 1) uniqueSegs.push(seg);
+      uniqueSegs.forEach(s => group.push(s));
+    });
+
+    // Draw each type group as bold solid lines with a glow underneath
+    const coverageColors = {
+      run:   { main: 'rgba(255,100,20,0.95)',  glow: 'rgba(255,120,40,0.25)' },
+      cycle: { main: 'rgba(30,140,255,0.95)',  glow: 'rgba(30,140,255,0.22)' },
+      other: { main: 'rgba(180,80,255,0.95)',  glow: 'rgba(180,80,255,0.22)' },
+    };
+
+    Object.entries(typeGroups).forEach(([type, segs]) => {
+      if (!segs.length) return;
+      const c = coverageColors[type];
+      segs.forEach(seg => {
+        if (seg.length < 2) return;
+        // Glow layer
+        L.polyline(seg, { color: c.glow, weight: 10, lineCap: 'round', lineJoin: 'round', interactive: false }).addTo(heatmapInstance);
+        // Bold solid line on top
+        L.polyline(seg, { color: c.main, weight: 3.5, lineCap: 'round', lineJoin: 'round' }).addTo(heatmapInstance);
+      });
+    });
+  }
 
   if (allCoords.length) {
     heatmapInstance.fitBounds(allCoords);
@@ -1115,8 +1175,13 @@ async function renderHeatmap(el) {
 
 function filterHeatmap(type) {
   activeFilter = type;
-  document.querySelectorAll('.hf-btn').forEach(b => b.classList.remove('on'));
-  event.target.classList.add('on');
+  const el = document.getElementById('tabContent');
+  if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
+  renderHeatmap(el);
+}
+
+function setHeatmapMode(mode) {
+  heatmapMode = mode;
   const el = document.getElementById('tabContent');
   if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
   renderHeatmap(el);
