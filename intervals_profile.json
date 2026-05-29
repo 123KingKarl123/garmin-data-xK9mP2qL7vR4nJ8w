@@ -31,8 +31,8 @@
   "icu_last_seen": "2026-05-20T14:07:32.956+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 45,
-  "icu_weight": 91.62,
+  "icu_resting_hr": 50,
+  "icu_weight": 89.98,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -166,7 +166,6 @@
   "icu_tags": [],
   "icu_notes": null,
   "strava_authorized": false,
-  "custom_items": [],
   "sportSettings": [
     {
       "id": 2416821,
@@ -260,13 +259,14 @@
       "updated": "2026-05-20T07:29:53.580+00:00",
       "mmp_model": {
         "type": "FFT_CURVES",
-        "criticalPower": 172,
-        "wPrime": 11880,
+        "criticalPower": 187,
+        "wPrime": 15450,
         "pMax": 1115,
         "inputPointIndexes": [
-          107
+          74,
+          89
         ],
-        "ftp": 175
+        "ftp": 190
       },
       "display": {
         "colorScheme": "SOLID",
@@ -749,5 +749,6 @@
       "eFTPSupported": false,
       "use_distance_for_intervals": false
     }
-  ]
+  ],
+  "custom_items": []
 }
