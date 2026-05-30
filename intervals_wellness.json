@@ -5449,7 +5449,7 @@
         "pMax": 681.0
       }
     ],
-    "updated": "2026-05-29T14:58:06.364+00:00",
+    "updated": "2026-05-30T08:48:20.079+00:00",
     "weight": 89.98,
     "restingHR": 50,
     "hrv": 100.0,
@@ -5480,7 +5480,7 @@
     "abdomen": null,
     "vo2max": null,
     "comments": null,
-    "steps": 2471,
+    "steps": 6325,
     "respiration": null,
     "carbohydrates": null,
     "protein": null,
@@ -5491,11 +5491,11 @@
   },
   {
     "id": "2026-05-30",
-    "ctl": 40.288815,
-    "atl": 63.7517,
-    "rampRate": 7.3583946,
-    "ctlLoad": 0.0,
-    "atlLoad": 0.0,
+    "ctl": 44.970947,
+    "atl": 90.243004,
+    "rampRate": 12.040527,
+    "ctlLoad": 199.0,
+    "atlLoad": 199.0,
     "sportInfo": [
       {
         "type": "Ride",
@@ -5510,17 +5510,17 @@
         "pMax": 681.0
       }
     ],
-    "updated": "2026-05-28T22:40:35.748+00:00",
+    "updated": "2026-05-30T08:49:11.472+00:00",
     "weight": null,
-    "restingHR": null,
-    "hrv": null,
+    "restingHR": 49,
+    "hrv": 100.0,
     "hrvSDNN": null,
     "menstrualPhase": null,
     "menstrualPhasePredicted": null,
     "kcalConsumed": null,
-    "sleepSecs": null,
-    "sleepScore": null,
-    "sleepQuality": null,
+    "sleepSecs": 21472,
+    "sleepScore": 75.0,
+    "sleepQuality": 3,
     "avgSleepingHR": null,
     "soreness": null,
     "fatigue": null,
@@ -5539,15 +5539,15 @@
     "lactate": null,
     "bodyFat": null,
     "abdomen": null,
-    "vo2max": null,
+    "vo2max": 47.0,
     "comments": null,
-    "steps": null,
+    "steps": 13138,
     "respiration": null,
     "carbohydrates": null,
     "protein": null,
     "fatTotal": null,
     "locked": null,
-    "tempWeight": false,
+    "tempWeight": true,
     "tempRestingHR": false
   }
 ]
