@@ -80,33 +80,59 @@
   .act-stat { font-size: 12px; color: var(--muted); font-family: var(--mono); }
   .act-date { margin-left: auto; font-size: 11px; color: var(--muted); font-family: var(--mono); }
 
-  /* training plan */
-  .plan-section { margin-top: 2rem; }
-  .plan-week { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin: 1.25rem 0 .5rem; padding-bottom: 4px; border-bottom: 0.5px solid var(--border); }
-  .plan-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .85rem 1rem; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
-  .plan-card.today { border-color: var(--accent); }
+  /* ── training plan ── */
+  .plan-today-pin { background: #0a1f12; border: 1px solid var(--accent); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 1.2rem; position: relative; }
+  .plan-today-pin::before { content: 'TODAY'; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: var(--accent); display: block; margin-bottom: 6px; }
+  .plan-phase-header { display: flex; align-items: center; gap: 10px; margin: 1.4rem 0 .6rem; }
+  .plan-phase-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; flex: 1; padding-bottom: 4px; border-bottom: 0.5px solid var(--border); }
+  .plan-phase-pill { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .phase-1 { background: #0d2e1e; color: var(--accent); }
+  .phase-2 { background: #0d2235; color: #60aaff; }
+  .phase-3 { background: #1e1230; color: #b08aff; }
+  .phase-4 { background: #2a1500; color: var(--accent4); }
+  .phase-5 { background: #1a1010; color: #f87171; }
+  .plan-history-toggle { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .08em; cursor: pointer; background: none; border: 0.5px solid var(--border); border-radius: 5px; padding: 2px 8px; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .plan-history-toggle:hover { color: var(--text); border-color: var(--muted); }
+  .plan-history-block { overflow: hidden; transition: max-height .35s ease; }
+  .plan-history-block.collapsed { max-height: 0; }
+  .plan-history-block.expanded { max-height: 9999px; }
+  .plan-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .85rem 1rem; margin-bottom: 7px; display: flex; gap: 12px; align-items: flex-start; transition: border-color .2s; }
+  .plan-card.is-past { opacity: .55; }
+  .plan-card.is-past.done-card { opacity: .7; }
+  .plan-card.today { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(52,211,153,.08); }
   .plan-card.race-day { border-color: var(--accent4); background: #1a1510; }
-  .plan-date-col { min-width: 80px; }
+  .plan-card.missed-card { border-color: #7f1d1d; }
+  .plan-card.rescheduled-card { border-color: #60aaff; background: #060f1a; }
+  .plan-date-col { min-width: 78px; }
   .plan-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
   .plan-day { font-size: 12px; font-weight: 500; color: var(--text); margin-top: 2px; }
-  .plan-content { flex: 1; }
+  .plan-content { flex: 1; min-width: 0; }
+  .plan-badges { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 5px; }
   .plan-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
   .plan-detail { font-size: 12px; color: var(--muted); line-height: 1.5; }
   .plan-note { font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: .7; }
-  .plan-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; margin-bottom: 5px; display: inline-block; }
+  .plan-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; display: inline-block; }
   .bz2 { background: #0d2e1e; color: var(--accent); }
   .bmx { background: #2a1a0a; color: var(--accent4); }
   .brs { background: #1e1e22; color: var(--muted); }
   .btp { background: #161230; color: var(--accent2); }
   .brc { background: #2a1205; color: var(--accent4); }
+  .bmissed { background: #2d0a0a; color: #f87171; }
+  .bdone { background: #0d2e1e; color: var(--accent); }
+  .brescheduled { background: #060f1a; color: #60aaff; }
   .plan-segs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
   .plan-seg { font-size: 10px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--border); color: var(--muted); }
-  .plan-done-btn { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .plan-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .plan-done-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; transition: all .15s; }
+  .plan-done-btn:hover { border-color: var(--accent); color: var(--accent); }
   .plan-done-btn.done { background: #0d2e1e; color: var(--accent); border-color: var(--accent); }
   .plan-missed-btn { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid #7f1d1d; background: transparent; color: #f87171; letter-spacing: .04em; }
-  .plan-adapt-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--accent); background: #0d2e1e; color: var(--accent); letter-spacing: .04em; }
-  .plan-card.missed-card { border-color: #7f1d1d; opacity: 0.85; }
-  .bmissed { background: #2d0a0a; color: #f87171; }
+  .plan-adapt-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--accent); background: #0d2e1e; color: var(--accent); letter-spacing: .04em; display: flex; align-items: center; gap: 4px; }
+  .plan-adapt-btn.loading { opacity: .6; pointer-events: none; }
+  .plan-replan-panel { background: #060f1a; border: 1px solid #60aaff33; border-radius: 8px; padding: .75rem; margin-top: 8px; font-size: 12px; color: var(--text); line-height: 1.6; }
+  .plan-replan-panel p { margin: 0 0 6px; }
+  .plan-replan-panel p:last-child { margin: 0; }
+  @media(max-width:600px) { .plan-card { flex-direction: column; gap: 6px; } .plan-date-col { min-width: unset; } }
 
   /* heatmap filter + mode buttons */
   .hf-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
@@ -695,138 +721,268 @@ const planWeeks=[
   ]},
 ];
 
+// ── plan state ───────────────────────────────────────────────
 let planDone={};
 try{planDone=JSON.parse(localStorage.getItem('chesterMarathon2026')||'{}');}catch(e){}
 let planMissed={};
 try{planMissed=JSON.parse(localStorage.getItem('chesterMarathon2026_missed')||'{}');}catch(e){}
+let planRescheduled={};
+try{planRescheduled=JSON.parse(localStorage.getItem('chesterMarathon2026_rescheduled')||'{}');}catch(e){}
+let planHistoryOpen={};  // tracks which week history blocks are expanded
 
-function markMissed(key, title){
-  planMissed[key]=title;
-  try{localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));}catch(e){}
+function savePlanState(){
+  try{
+    localStorage.setItem('chesterMarathon2026',JSON.stringify(planDone));
+    localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));
+    localStorage.setItem('chesterMarathon2026_rescheduled',JSON.stringify(planRescheduled));
+  }catch(e){}
+}
+
+function togglePlanDone(key){
+  planDone[key]=!planDone[key];
+  if(planDone[key]) delete planMissed[key];
+  savePlanState();
   renderPlan(document.getElementById('tabContent'));
 }
+
+function markMissed(key,title){
+  planMissed[key]=title;
+  delete planDone[key];
+  savePlanState();
+  renderPlan(document.getElementById('tabContent'));
+}
+
 function unmarkMissed(key){
   delete planMissed[key];
-  try{localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));}catch(e){}
+  savePlanState();
   renderPlan(document.getElementById('tabContent'));
 }
 
-async function adaptPlan(missedDate, missedTitle){
-  const el=document.getElementById('tabContent');
-  const missedKeys=Object.keys(planMissed);
-  const missedList=missedKeys.map(k=>`${k}: ${planMissed[k]}`).join(', ');
-  const today=new Date();
-  const local=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+function toggleHistory(weekKey){
+  planHistoryOpen[weekKey]=!planHistoryOpen[weekKey];
+  const block=document.getElementById('history-'+weekKey);
+  const btn=document.getElementById('histbtn-'+weekKey);
+  if(block){
+    block.classList.toggle('collapsed',!planHistoryOpen[weekKey]);
+    block.classList.toggle('expanded',!!planHistoryOpen[weekKey]);
+  }
+  if(btn) btn.textContent=planHistoryOpen[weekKey]?'▲ hide history':'▼ show history';
+}
+
+// ── replanning engine ─────────────────────────────────────────
+// Build a flat list of all plan days in order
+function flatPlanDays(){
+  const days=[];
+  planWeeks.forEach(w=>w.days.forEach(d=>days.push({...d,weekLabel:w.label,phase:w.phase})));
+  return days;
+}
+
+function localToday(){
+  const now=new Date();
+  return now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+}
+
+async function replanFromMissed(missedDate, missedTitle, btnEl){
+  if(btnEl){ btnEl.classList.add('loading'); btnEl.textContent='⟳ Replanning...'; }
+
+  const allDays=flatPlanDays();
+  const today=localToday();
   const raceDate='2026-10-11';
-  const daysLeft=Math.round((new Date(raceDate)-today)/86400000);
+  const daysLeft=Math.round((new Date(raceDate)-new Date(today))/86400000);
 
-  // Show loading in a modal-style panel at top of tab
-  el.insertAdjacentHTML('afterbegin',`<div id="adaptPanel" style="background:#0d1f12;border:1px solid var(--accent);border-radius:10px;padding:1rem;margin-bottom:12px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:8px">↻ CLAUDE IS ADAPTING YOUR PLAN</div>
-    <div id="adaptText" style="font-size:13px;color:var(--text);line-height:1.6">Analysing missed sessions and rebuilding recommendations...</div>
-  </div>`);
+  // Build context: what's upcoming from today
+  const upcoming=allDays.filter(d=>d.date>=today&&d.date!==raceDate&&d.type!=='brs').slice(0,14);
+  const upcomingStr=upcoming.map(d=>`${d.date} (${d.day}): ${d.title}`).join('\n');
 
-  const ANTHROPIC_KEY = window.ANTHROPIC_KEY || '';
-  if (!ANTHROPIC_KEY) {
-    document.getElementById('adaptText').innerHTML = '<span style="color:#f87171">No Anthropic API key set. Add <code>window.ANTHROPIC_KEY="sk-ant-..."</code> to the page or use the garmin_export.py insight generator instead.</span>';
+  // All current missed sessions
+  const allMissed=Object.keys(planMissed).map(k=>`${k}: ${planMissed[k]}`).join('\n');
+
+  const ANTHROPIC_KEY=window.ANTHROPIC_KEY||'';
+  if(!ANTHROPIC_KEY){
+    showReplanResult(missedDate,'No Anthropic API key set. Set <code>window.ANTHROPIC_KEY</code> on the page.');
+    if(btnEl){btnEl.classList.remove('loading');btnEl.textContent='↻ Replan with Claude';}
     return;
   }
 
-  const prompt = `You are Karl's running coach. He is training for the MBNA Chester Marathon on 11 October 2026 (${daysLeft} days away), targeting sub-4 hours (5:40/km). He is currently in a 20-week structured plan.
+  const prompt=`You are Karl's running coach. He is training for the MBNA Chester Marathon on 11 October 2026 (${daysLeft} days away), targeting sub-4 hours (5:40/km). He is in a 20-week structured plan.
 
-Today is ${local}. He has missed the following training session(s):
-${missedList}
+Today is ${today}. Karl has missed:
+${allMissed}
 
-His weekly structure is: Mon recovery, Tue threshold/intervals, Wed easy+strength, Thu steady/marathon pace, Fri rest, Sat easy+strides, Sun long run.
+His upcoming scheduled sessions (next 14 training days):
+${upcomingStr}
 
-Give Karl a brief, practical adaptation in 3 short paragraphs:
-1. What missing this session means for his training load and fitness (be honest but reassuring)
-2. Exactly how to reschedule or compensate this week — which day, what session, what modification
-3. One key thing to watch for in the next 7 days to get back on track
+His weekly structure: Mon recovery, Tue threshold/intervals, Wed easy+strength, Thu steady/marathon pace, Fri rest, Sat easy+strides, Sun long run.
 
-Be specific and direct. Use actual days. No bullet points. Max 150 words.`;
+Give a practical replanning response in exactly 3 paragraphs:
+1. What the missed session(s) mean for his fitness and training load — honest but brief.
+2. Exactly how to adjust the NEXT 7 DAYS — name specific days and modified sessions. Be precise: e.g. "Move Thursday's 12km steady to Wednesday and drop it to 10km."
+3. One recovery or nutrition priority to support getting back on track.
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
+No bullet points. Max 180 words. Use Karl's name once.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})
     });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || 'No response received.';
-    document.getElementById('adaptText').innerHTML = text.split(/\n+/).filter(Boolean).map(p=>`<p style="margin:0 0 8px">${p}</p>`).join('');
-  } catch(e) {
-    document.getElementById('adaptText').textContent = 'Error: '+e.message;
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'No response.';
+    showReplanResult(missedDate,text);
+  }catch(e){
+    showReplanResult(missedDate,'Error: '+e.message);
   }
+  if(btnEl){btnEl.classList.remove('loading');btnEl.textContent='↻ Replan with Claude';}
+}
+
+function showReplanResult(dateKey,text){
+  const panel=document.getElementById('replan-'+dateKey);
+  if(!panel)return;
+  const paras=text.split(/\n+/).filter(Boolean).map(p=>`<p>${p}</p>`).join('');
+  panel.innerHTML=paras;
+  panel.style.display='block';
 }
 
 function totalPlanSessions(){let t=0;planWeeks.forEach(w=>w.days.forEach(d=>{if(d.type!=='brs')t++;}));return t;}
 function donePlanCount(){return Object.values(planDone).filter(Boolean).length;}
 
-function togglePlanDone(key){
-  planDone[key]=!planDone[key];
-  try{localStorage.setItem('chesterMarathon2026',JSON.stringify(planDone));}catch(e){}
-  renderPlan(document.getElementById('tabContent'));
-}
+
 
 function renderPlan(el){
-  function isToday(dateStr){
-    const now=new Date();
-    const local=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-    return dateStr===local;
+  const today=localToday();
+  function isPast(d){ return d<today; }
+  function isToday2(d){ return d===today; }
+  function fmtDate(ds){
+    const [y,m,dd]=ds.split('-').map(Number);
+    return new Date(y,m-1,dd).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   }
-  function isPast(dateStr){
-    const now=new Date();
-    const local=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-    return dateStr<local;
+  function phaseClass(phase){
+    if(!phase) return 'phase-1';
+    const n=phase.match(/Phase\s*(\d)/i);
+    return n?'phase-'+n[1]:'phase-1';
   }
-  function fmtDate(dateStr){
-    const d=new Date(dateStr);
-    return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  function buildCard(d,opts){
+    opts=opts||{};
+    const pinned=opts.pinned||false;
+    const isDone=!!planDone[d.date];
+    const isMissed=!!planMissed[d.date];
+    const isRace=d.type==='brc';
+    const isPast2=isPast(d.date);
+    const isTod=isToday2(d.date);
+    const isActionable=d.type!=='brs'&&!isRace;
+    const isRescheduled=!!planRescheduled[d.date];
+    const safeTitle=d.title.replace(/'/g,"\'").replace(/"/g,'&quot;');
+    let cardCls='plan-card';
+    if(isTod&&!pinned) cardCls+=' today';
+    if(isRace) cardCls+=' race-day';
+    if(isMissed) cardCls+=' missed-card';
+    if(isRescheduled&&!isMissed) cardCls+=' rescheduled-card';
+    if(isPast2&&!isTod) cardCls+=' is-past';
+    if(isPast2&&isDone) cardCls+=' done-card';
+    const badges='<span class="plan-badge '+d.type+'">'+d.badge+'</span>'
+      +(isDone?'<span class="plan-badge bdone">\u2713 Done</span>':'')
+      +(isMissed?'<span class="plan-badge bmissed">\u2717 Missed</span>':'')
+      +(isRescheduled&&!isMissed?'<span class="plan-badge brescheduled">\u21bb Rescheduled</span>':'');
+    const segsHtml=d.segs&&d.segs.length
+      ?'<div class="plan-segs">'+d.segs.map(function(s){return '<span class="plan-seg">'+s+'</span>';}).join('')+'</div>':'';
+    const noteHtml=d.note?'<div class="plan-note">'+d.note+'</div>':'';
+    let actionsHtml='';
+    if(isActionable&&!isMissed){
+      actionsHtml='<div class="plan-actions">'
+        +'<button class="plan-done-btn'+(isDone?' done':'')+'" onclick="togglePlanDone(''+d.date+'')">'+(isDone?'\u2713 Completed':'Mark done')+'</button>'
+        +((isPast2||isTod)&&!isDone?'<button class="plan-missed-btn" onclick="markMissed(''+d.date+'',''+safeTitle+'')">\u2717 Missed</button>':'')
+        +'</div>';
+    } else if(isMissed){
+      actionsHtml='<div class="plan-actions">'
+        +'<button class="plan-adapt-btn" id="replan-btn-'+d.date+'" onclick="replanFromMissed(''+d.date+'',''+safeTitle+'',this)">\u21bb Replan with Claude</button>'
+        +'<button class="plan-missed-btn" style="opacity:.6" onclick="unmarkMissed(''+d.date+'')">Undo</button>'
+        +'</div>'
+        +'<div class="plan-replan-panel" id="replan-'+d.date+'" style="display:none"></div>';
+    }
+    return '<div class="'+cardCls+'">'
+      +'<div class="plan-date-col">'
+        +'<div class="plan-date">'+fmtDate(d.date)+'</div>'
+        +'<div class="plan-day">'+(isTod&&!pinned?d.day+' \u00b7 Today':d.day)+'</div>'
+      +'</div>'
+      +'<div class="plan-content">'
+        +'<div class="plan-badges">'+badges+'</div>'
+        +'<div class="plan-title">'+d.title+'</div>'
+        +'<div class="plan-detail">'+d.detail+'</div>'
+        +segsHtml+noteHtml+actionsHtml
+      +'</div></div>';
   }
+
+  // progress bar
   const total=totalPlanSessions(), done=donePlanCount(), pct=Math.round((done/total)*100);
-  let html=`<div class="prog">
-    <div class="prog-labels"><span>${done} of ${total} sessions done</span><span>${pct}%</span></div>
-    <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
-  </div>`;
-  planWeeks.forEach(w=>{
-    html+=`<div class="plan-week">${w.label}</div>`;
-    w.days.forEach(d=>{
-      const isDone=planDone[d.date];
-      const isRace=d.type==='brc';
-      const isToday2=isToday(d.date);
-      const isMissed=planMissed[d.date];
-      const isPast2=isPast(d.date);
-      const isActionable=d.type!=='brs'&&!isRace;
-      html+=`<div class="plan-card${isToday2?' today':''}${isRace?' race-day':''}${isMissed?' missed-card':''}">
-        <div class="plan-date-col">
-          <div class="plan-date">${fmtDate(d.date)}</div>
-          <div class="plan-day">${isToday2?d.day+' · Today':d.day}</div>
-        </div>
-        <div class="plan-content">
-          <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:5px">
-            <span class="plan-badge ${d.type}">${d.badge}</span>
-            ${isDone?'<span class="plan-badge bz2">Done ✓</span>':''}
-            ${isMissed?'<span class="plan-badge bmissed">Missed ✗</span>':''}
-          </div>
-          <div class="plan-title">${d.title}</div>
-          <div class="plan-detail">${d.detail}</div>
-          ${d.segs.length?`<div class="plan-segs">${d.segs.map(s=>`<span class="plan-seg">${s}</span>`).join('')}</div>`:''}
-          ${d.note?`<div class="plan-note">${d.note}</div>`:''}
-          ${isActionable&&!isMissed?`<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-            <button class="plan-done-btn${isDone?' done':''}" onclick="togglePlanDone('${d.date}')">${isDone?'✓ Completed':'Mark done'}</button>
-            ${(isPast2||isToday2)&&!isDone?`<button class="plan-missed-btn" onclick="markMissed('${d.date}','${d.title.replace(/'/g,"\\'")}')"">✗ Missed</button>`:''}
-          </div>`:''}
-          ${isMissed?`<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-            <button class="plan-adapt-btn" onclick="adaptPlan('${d.date}','${d.title.replace(/'/g,"\\'")}')")">↻ Adapt plan with Claude</button>
-            <button class="plan-missed-btn" style="opacity:.6" onclick="unmarkMissed('${d.date}')">Undo</button>
-          </div>`:''}
-        </div>
-      </div>`;
-    });
+  const missedCount=Object.keys(planMissed).length;
+  let html='<div class="prog">'
+    +'<div class="prog-labels"><span>'+done+' of '+total+' sessions done'+(missedCount>0?' &middot; <span style="color:#f87171">'+missedCount+' missed</span>':'')+'</span><span>'+pct+'%</span></div>'
+    +'<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
+    +'</div>';
+
+  // find today entry
+  var todayEntry=null;
+  planWeeks.forEach(function(w){ w.days.forEach(function(d){ if(d.date===today){ todayEntry=d; } }); });
+
+  // pinned today / next session card
+  if(todayEntry){
+    html+='<div class="plan-today-pin">'+buildCard(todayEntry,{pinned:true})+'</div>';
+  } else {
+    var allDays=flatPlanDays();
+    var next=null; for(var i=0;i<allDays.length;i++){ if(allDays[i].date>today){next=allDays[i];break;} }
+    if(next) html+='<div class="plan-today-pin" style="border-color:var(--border)"><div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;margin-bottom:6px">NEXT SESSION</div>'+buildCard(next,{pinned:true})+'</div>';
+  }
+
+  // weeks
+  planWeeks.forEach(function(w,wi){
+    var wDays=w.days;
+    var pastDays=wDays.filter(function(d){return isPast(d.date)&&!isToday2(d.date);});
+    var futureDays=wDays.filter(function(d){return !isPast(d.date)||isToday2(d.date);});
+    var weekStart=wDays.length?wDays[0].date:'';
+    var weekEnd=wDays.length?wDays[wDays.length-1].date:'';
+    var weekContainsToday=wDays.some(function(d){return isToday2(d.date);});
+    var weekIsEntirelyPast=weekEnd<today;
+    var histKey='w'+wi;
+    var isOpen=!!planHistoryOpen[histKey];
+    var phasePill=w.phase?'<span class="plan-phase-pill '+phaseClass(w.phase)+'">'+w.phase+'</span>':'';
+
+    html+='<div class="plan-phase-header">'
+      +'<span class="plan-phase-label">'+w.label+'</span>'
+      +phasePill
+      +(weekIsEntirelyPast?'<button class="plan-history-toggle" id="histbtn-'+histKey+'" onclick="toggleHistory(''+histKey+'')">'+(isOpen?'\u25b2 hide history':'\u25bc show history')+'</button>':'')
+      +'</div>';
+
+    if(weekIsEntirelyPast){
+      var doneCnt=wDays.filter(function(d){return planDone[d.date];}).length;
+      var missedCnt=wDays.filter(function(d){return planMissed[d.date];}).length;
+      var trainable=wDays.filter(function(d){return d.type!=='brs'&&d.type!=='brc';}).length;
+      html+='<div class="plan-history-block '+(isOpen?'expanded':'collapsed')+'" id="history-'+histKey+'">';
+      html+='<div style="font-family:var(--mono);font-size:10px;color:var(--muted);padding:4px 2px;display:flex;gap:12px">'
+        +'<span style="color:var(--accent)">\u2713 '+doneCnt+'/'+trainable+' done</span>'
+        +(missedCnt>0?'<span style="color:#f87171">\u2717 '+missedCnt+' missed</span>':'')
+        +'</div>';
+      wDays.forEach(function(d){ html+=buildCard(d); });
+      html+='</div>';
+    } else if(weekContainsToday){
+      if(pastDays.length>0){
+        var histKey2='w'+wi+'p';
+        var isOpen2=!!planHistoryOpen[histKey2];
+        html+='<div style="margin-bottom:4px"><button class="plan-history-toggle" id="histbtn-'+histKey2+'" onclick="toggleHistory(''+histKey2+'')">'+(isOpen2?'\u25b2 hide earlier this week':'\u25bc show earlier this week')+'</button></div>';
+        html+='<div class="plan-history-block '+(isOpen2?'expanded':'collapsed')+'" id="history-'+histKey2+'">';
+        pastDays.forEach(function(d){ if(!isToday2(d.date)) html+=buildCard(d); });
+        html+='</div>';
+      }
+      futureDays.forEach(function(d){ if(!isToday2(d.date)) html+=buildCard(d); });
+    } else {
+      wDays.forEach(function(d){ html+=buildCard(d); });
+    }
   });
+
   el.innerHTML=html;
 }
+
+
 
 // ── range ─────────────────────────────────────────────────────
 function setRange(n){
