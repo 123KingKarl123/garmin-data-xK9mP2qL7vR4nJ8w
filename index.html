@@ -759,6 +759,8 @@ function unmarkMissed(key){
 }
 
 function toggleHistory(weekKey){
+  // accept either a string key or a DOM element (via this.dataset.wk)
+  if(typeof weekKey==='object') weekKey=weekKey.dataset.wk;
   planHistoryOpen[weekKey]=!planHistoryOpen[weekKey];
   const block=document.getElementById('history-'+weekKey);
   const btn=document.getElementById('histbtn-'+weekKey);
@@ -766,7 +768,12 @@ function toggleHistory(weekKey){
     block.classList.toggle('collapsed',!planHistoryOpen[weekKey]);
     block.classList.toggle('expanded',!!planHistoryOpen[weekKey]);
   }
-  if(btn) btn.textContent=planHistoryOpen[weekKey]?'▲ hide history':'▼ show history';
+  if(btn){
+    const isWeekHistory=btn.textContent.includes('week');
+    btn.textContent=planHistoryOpen[weekKey]
+      ?(isWeekHistory?'▲ hide earlier this week':'▲ hide history')
+      :(isWeekHistory?'▼ show earlier this week':'▼ show history');
+  }
 }
 
 // ── replanning engine ─────────────────────────────────────────
@@ -890,13 +897,13 @@ function renderPlan(el){
     let actionsHtml='';
     if(isActionable&&!isMissed){
       actionsHtml='<div class="plan-actions">'
-        +'<button class="plan-done-btn'+(isDone?' done':'')+'" onclick="togglePlanDone(''+d.date+'')">'+(isDone?'\u2713 Completed':'Mark done')+'</button>'
-        +((isPast2||isTod)&&!isDone?'<button class="plan-missed-btn" onclick="markMissed(''+d.date+'',''+safeTitle+'')">\u2717 Missed</button>':'')
+        +'<button class="plan-done-btn'+(isDone?' done':'')+'" onclick="togglePlanDone(\"'+d.date+'\")">'+(isDone?'✓ Completed':'Mark done')+'</button>'
+        +((isPast2||isTod)&&!isDone?'<button class="plan-missed-btn" onclick="markMissed(\"'+d.date+'\",\"'+safeTitle+'\")">✗ Missed</button>':'')
         +'</div>';
     } else if(isMissed){
       actionsHtml='<div class="plan-actions">'
-        +'<button class="plan-adapt-btn" id="replan-btn-'+d.date+'" onclick="replanFromMissed(''+d.date+'',''+safeTitle+'',this)">\u21bb Replan with Claude</button>'
-        +'<button class="plan-missed-btn" style="opacity:.6" onclick="unmarkMissed(''+d.date+'')">Undo</button>'
+        +'<button class="plan-adapt-btn" id="replan-btn-'+d.date+'" onclick="replanFromMissed(\"'+d.date+'\",\"'+safeTitle+'\",this)">↻ Replan with Claude</button>'
+        +'<button class="plan-missed-btn" style="opacity:.6" onclick="unmarkMissed(\"'+d.date+'\")"">Undo</button>'
         +'</div>'
         +'<div class="plan-replan-panel" id="replan-'+d.date+'" style="display:none"></div>';
     }
@@ -950,7 +957,7 @@ function renderPlan(el){
     html+='<div class="plan-phase-header">'
       +'<span class="plan-phase-label">'+w.label+'</span>'
       +phasePill
-      +(weekIsEntirelyPast?'<button class="plan-history-toggle" id="histbtn-'+histKey+'" onclick="toggleHistory(''+histKey+'')">'+(isOpen?'\u25b2 hide history':'\u25bc show history')+'</button>':'')
+      +(weekIsEntirelyPast?'<button class="plan-history-toggle" id="histbtn-'+histKey+'" onclick="toggleHistory(this.dataset.wk)" data-wk="'+histKey+'">'+(isOpen?'\u25b2 hide history':'\u25bc show history')+'</button>':'')
       +'</div>';
 
     if(weekIsEntirelyPast){
@@ -968,7 +975,7 @@ function renderPlan(el){
       if(pastDays.length>0){
         var histKey2='w'+wi+'p';
         var isOpen2=!!planHistoryOpen[histKey2];
-        html+='<div style="margin-bottom:4px"><button class="plan-history-toggle" id="histbtn-'+histKey2+'" onclick="toggleHistory(''+histKey2+'')">'+(isOpen2?'\u25b2 hide earlier this week':'\u25bc show earlier this week')+'</button></div>';
+        html+='<div style="margin-bottom:4px"><button class="plan-history-toggle" id="histbtn-'+histKey2+'" onclick="toggleHistory(this.dataset.wk)" data-wk="'+histKey2+'">'+(isOpen2?'\u25b2 hide earlier this week':'\u25bc show earlier this week')+'</button></div>';
         html+='<div class="plan-history-block '+(isOpen2?'expanded':'collapsed')+'" id="history-'+histKey2+'">';
         pastDays.forEach(function(d){ if(!isToday2(d.date)) html+=buildCard(d); });
         html+='</div>';
