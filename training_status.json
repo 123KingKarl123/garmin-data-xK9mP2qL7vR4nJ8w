@@ -4,5 +4,9 @@
   "mostRecentTrainingLoadBalance": null,
   "mostRecentTrainingStatus": null,
   "heatAltitudeAcclimationDTO": null,
+  "maxMetrics_vo2Max": null,
+  "maxMetrics_date": null,
+  "maxMetrics_fitnessAge": null,
+  "maxMetrics_fitnessAgeDesc": null,
   "date": "2026-06-08"
 }
