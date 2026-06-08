@@ -1,5 +1,4 @@
-userProfileId,allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE,date,groupedMetrics,statisticsEndDate,statisticsStartDate
-96589030,"[{""value"": 55.0, ""calendarDate"": ""2026-03-09""}]",2026-03-09,,2026-03-09,2026-03-09
+userProfileId,allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE,statisticsEndDate,groupedMetrics,date,statisticsStartDate
 96589030,"[{""value"": 52.0, ""calendarDate"": ""2026-03-10""}]",2026-03-10,,2026-03-10,2026-03-10
 96589030,"[{""value"": 49.0, ""calendarDate"": ""2026-03-11""}]",2026-03-11,,2026-03-11,2026-03-11
 96589030,"[{""value"": 48.0, ""calendarDate"": ""2026-03-12""}]",2026-03-12,,2026-03-12,2026-03-12
@@ -90,3 +89,4 @@ userProfileId,allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE,date,groupedMetr
 96589030,"[{""value"": 49.0, ""calendarDate"": ""2026-06-05""}]",2026-06-05,,2026-06-05,2026-06-05
 96589030,"[{""value"": 44.0, ""calendarDate"": ""2026-06-06""}]",2026-06-06,,2026-06-06,2026-06-06
 96589030,"[{""value"": 45.0, ""calendarDate"": ""2026-06-07""}]",2026-06-07,,2026-06-07,2026-06-07
+96589030,"[{""value"": 50.0, ""calendarDate"": ""2026-06-08""}]",2026-06-08,,2026-06-08,2026-06-08
