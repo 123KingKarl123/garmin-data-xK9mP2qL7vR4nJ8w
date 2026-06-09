@@ -5449,7 +5449,7 @@
         "pMax": 680.31903
       }
     ],
-    "updated": "2026-06-09T04:55:02.784+00:00",
+    "updated": "2026-06-09T05:32:50.310+00:00",
     "weight": null,
     "restingHR": 49,
     "hrv": 99.0,
@@ -5457,9 +5457,9 @@
     "menstrualPhase": null,
     "menstrualPhasePredicted": null,
     "kcalConsumed": null,
-    "sleepSecs": 14700,
-    "sleepScore": 55.0,
-    "sleepQuality": 4,
+    "sleepSecs": 25472,
+    "sleepScore": 65.0,
+    "sleepQuality": 3,
     "avgSleepingHR": null,
     "soreness": null,
     "fatigue": null,
