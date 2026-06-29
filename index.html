@@ -273,6 +273,8 @@ function findCol(row, opts) { if(!row) return null; for(const o of opts) if(row[
 function avg(arr) { const f=arr.filter(Boolean); return f.length?Math.round(f.reduce((a,b)=>a+b,0)/f.length):0; }
 
 // ── fetch all ───────────────────────────────────────────────
+let dataLoaded = false;
+
 async function loadAll() {
   try {
     const results = await Promise.all(FILES.map(f =>
@@ -572,10 +574,20 @@ function renderPlan(el){
 // ── range ─────────────────────────────────────────────────────
 function setRange(n){
   days=n;
+  console.log('Range changed to', days, 'days');
   document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('on'));
   event.target.classList.add('on');
   renderMetrics();
-  showTab(curTab);
+  // Force re-render of current tab
+  const el=document.getElementById('tabContent');
+  if(el) {
+    console.log('Re-rendering tab:', curTab);
+    // Destroy any active charts before re-rendering
+    if(chart){chart.destroy();chart=null;}
+    showTab(curTab);
+  } else {
+    console.warn('tabContent element not found');
+  }
 }
 
 async function generateInsight(force=false) {
