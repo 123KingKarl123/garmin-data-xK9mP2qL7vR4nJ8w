@@ -64,9 +64,9 @@
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_acuteTrainingLoadDTO_dailyTrainingLoadChronic": 238,
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_acuteTrainingLoadDTO_dailyAcuteChronicWorkloadRatio": 0.6,
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_primaryTrainingDevice": true,
-  "mostRecentTrainingStatus_recordedDevices": "[{\"deviceId\": 3495376439, \"imageURL\": \"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png\", \"deviceName\": \"Forerunner 965\", \"category\": 0}]",
+  "mostRecentTrainingStatus_recordedDevices": "[{\"deviceId\": 3495376439, \"imageURL\": null, \"deviceName\": \"other.device\", \"category\": null}]",
   "mostRecentTrainingStatus_showSelector": false,
-  "mostRecentTrainingStatus_lastPrimarySyncDate": "2026-06-30",
+  "mostRecentTrainingStatus_lastPrimarySyncDate": null,
   "heatAltitudeAcclimationDTO": null,
   "date": "2026-06-30"
 }
