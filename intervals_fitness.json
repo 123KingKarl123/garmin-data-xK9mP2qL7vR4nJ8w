@@ -5510,7 +5510,7 @@
         "pMax": 669.51544
       }
     ],
-    "updated": "2026-07-01T04:40:35.164+00:00",
+    "updated": "2026-07-01T09:44:14.885+00:00",
     "weight": null,
     "restingHR": 41,
     "hrv": 124.0,
@@ -5541,7 +5541,7 @@
     "abdomen": null,
     "vo2max": null,
     "comments": null,
-    "steps": 126,
+    "steps": 977,
     "respiration": null,
     "carbohydrates": null,
     "protein": null,
