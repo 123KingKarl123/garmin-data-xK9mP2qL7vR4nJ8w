@@ -726,7 +726,6 @@ function renderWeekly(el) {
   const weekData = [];
   const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
   
-  // Helper to parse date string like "4 Jul" to Date object
   function parseDate(dateStr) {
     const m = dateStr.match(/(\d+)\s+(\w+)/);
     if (!m) return null;
@@ -736,19 +735,14 @@ function renderWeekly(el) {
     return new Date(2026, month, day);
   }
   
-  // Collect planned distances by week
-  planWeeks.forEach((week, weekIdx) => {
-    let plannedRun = 0;
+  planWeeks.forEach((week) => {
     const weekStart = parseDate(week.days[0].date);
     const weekEnd = parseDate(week.days[week.days.length - 1].date);
-    
     if (!weekStart || !weekEnd) return;
     
-    // Extract planned total from label (e.g., "Week 1 — 4 to 10 July · Build phase (54 km)")
     const planMatch = week.label.match(/\((\d+)\s*km\)/);
-    plannedRun = planMatch ? +planMatch[1] : 0;
+    const plannedRun = planMatch ? +planMatch[1] : 0;
     
-    // Calculate actual distances from activities for this week
     let actualRun = 0;
     const acts = D.activities || [];
     acts.forEach(a => {
@@ -757,16 +751,12 @@ function renderWeekly(el) {
         if (actDate >= weekStart && actDate <= weekEnd) {
           const dist = (parseFloat(a.distance) || 0) / 1000;
           const type = (a.activityType_typeKey || '').toLowerCase();
-          
-          if (type.includes('run')) {
-            actualRun += dist;
-          }
+          if (type.includes('run')) actualRun += dist;
         }
       } catch(e) {}
     });
     
-    const weekLabel = week.label.split('—')[0].trim();
-    const weekNum = weekLabel.match(/Week (\d+)/)?.[1] || '?';
+    const weekNum = week.label.match(/Week (\d+)/)?.[1] || '?';
     weekData.push({
       week: 'W' + weekNum,
       plannedRun: Math.round(plannedRun * 10) / 10,
@@ -774,7 +764,6 @@ function renderWeekly(el) {
     });
   });
   
-  // Build dual bar chart
   const labels = weekData.map(w => w.week);
   const pRunData = weekData.map(w => w.plannedRun);
   const aRunData = weekData.map(w => w.actualRun);
@@ -782,70 +771,53 @@ function renderWeekly(el) {
   makeChart('weekChart', 'bar', labels, [
     {label: 'Planned (km)', data: pRunData, backgroundColor: '#ef443380', borderColor: '#ef4433', borderWidth: 1.5},
     {label: 'Actual (km)', data: aRunData, backgroundColor: '#10b98180', borderColor: '#10b981', borderWidth: 1.5},
-  ], {
-    y: {stacked: false}
-  });
+  ], {y: {stacked: false}});
   
-  // Build summary table
   let totalPlanned = 0, totalActual = 0;
-  const summary = weekData.map((w, i) => {
-    const diff = w.actualRun - w.plannedRun;
+  let html = '<div style="height:350px;margin-bottom:24px"><canvas id="weekChart"></canvas></div>';
+  html += '<div style="margin-bottom:24px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)">';
+  html += '<table style="width:100%;border-collapse:collapse;font-size:13px">';
+  html += '<thead style="background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.1)"><tr>';
+  html += '<th style="padding:12px;text-align:left;font-weight:600">Week</th>';
+  html += '<th style="padding:12px;text-align:right;font-weight:600">Planned</th>';
+  html += '<th style="padding:12px;text-align:right;font-weight:600">Actual</th>';
+  html += '<th style="padding:12px;text-align:right;font-weight:600">%</th>';
+  html += '<th style="padding:12px;text-align:right;font-weight:600">Status</th></tr></thead><tbody>';
+  
+  weekData.forEach(w => {
     const pct = w.plannedRun > 0 ? Math.round(w.actualRun / w.plannedRun * 100) : 0;
     totalPlanned += w.plannedRun;
     totalActual += w.actualRun;
     
-    let status = '';
+    let status = '○ Not started';
     if (pct >= 95) status = '✓ On track';
     else if (pct >= 80) status = '⚠ Below target';
-    else if (pct > 0) status = '↓ Low volume';
-    else if (w.actualRun === 0) status = '○ Not started';
+    else if (pct > 0) status = 'Low volume';
     
     const color = pct >= 90 ? '#10b981' : pct >= 80 ? '#f59e0b' : '#ef4433';
-    
-    return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
-      <td style="padding:10px;text-align:left">${w.week}</td>
-      <td style="padding:10px;text-align:right">${w.plannedRun}km</td>
-      <td style="padding:10px;text-align:right;color:${color};font-weight:600">${w.actualRun}km</td>
-      <td style="padding:10px;text-align:right;font-size:12px;color:var(--muted)">${pct}%</td>
-      <td style="padding:10px;text-align:right;font-size:12px;color:${color}">${status}</td>
-    </tr>`;
-  }).join('');
+    html += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05)">';
+    html += '<td style="padding:10px;text-align:left">' + w.week + '</td>';
+    html += '<td style="padding:10px;text-align:right">' + w.plannedRun + 'km</td>';
+    html += '<td style="padding:10px;text-align:right;color:' + color + ';font-weight:600">' + w.actualRun + 'km</td>';
+    html += '<td style="padding:10px;text-align:right;font-size:12px;color:var(--muted)">' + pct + '%</td>';
+    html += '<td style="padding:10px;text-align:right;font-size:12px;color:' + color + '">' + status + '</td></tr>';
+  });
   
-  el.innerHTML = `
-    <div style="height:350px;margin-bottom:24px">
-      <canvas id="weekChart"></canvas>
-    </div>
-    <div style="margin-bottom:24px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)">
-      <table style="width:100%;border-collapse:collapse;font-size:13px">
-        <thead style="background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.1)">
-          <tr>
-            <th style="padding:12px;text-align:left;font-weight:600">Week</th>
-            <th style="padding:12px;text-align:right;font-weight:600">Planned</th>
-            <th style="padding:12px;text-align:right;font-weight:600">Actual</th>
-            <th style="padding:12px;text-align:right;font-weight:600">%</th>
-            <th style="padding:12px;text-align:right;font-weight:600">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${summary}
-          <tr style="background:rgba(255,255,255,0.05);font-weight:600">
-            <td style="padding:12px;text-align:left">Total</td>
-            <td style="padding:12px;text-align:right">${totalPlanned}km</td>
-            <td style="padding:12px;text-align:right">${totalActual}km</td>
-            <td style="padding:12px;text-align:right;color:${totalPlanned > 0 && totalActual/totalPlanned >= 0.9 ? '#10b981' : '#f59e0b'}">${totalPlanned > 0 ? Math.round(totalActual/totalPlanned*100) : 0}%</td>
-            <td style="padding:12px;text-align:right;color:${totalPlanned > 0 && totalActual/totalPlanned >= 0.9 ? '#10b981' : '#f59e0b'}">
-              ${totalPlanned > 0 && totalActual/totalPlanned >= 0.9 ? '✓ On pace' : totalActual/totalPlanned >= 0.8 ? '⚠ Catch up' : '↓ Need volume'}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:12px;color:var(--muted);line-height:1.6">
-      <strong>How to read:</strong> Target is 90%+ of planned distance each week. <br>
-      ✓ = On track (90%+) | ⚠ = Below target (80-89%) | ↓ = Low volume (&lt;80%) | ○ = Not started<br><br>
-      <strong>Goal:</strong> Hit 80-90% of planned volume to build fitness while staying injury-free. Missing sessions? Focus on quality over quantity on the runs you do complete.
-    </div>
-  `;
+  const totalPct = totalPlanned > 0 ? Math.round(totalActual/totalPlanned*100) : 0;
+  const totalColor = totalPct >= 90 ? '#10b981' : '#f59e0b';
+  const totalStatus = totalPct >= 90 ? 'On pace' : totalPct >= 80 ? 'Catch up' : 'Need volume';
+  
+  html += '<tr style="background:rgba(255,255,255,0.05);font-weight:600"><td style="padding:12px;text-align:left">Total</td>';
+  html += '<td style="padding:12px;text-align:right">' + totalPlanned + 'km</td>';
+  html += '<td style="padding:12px;text-align:right">' + totalActual + 'km</td>';
+  html += '<td style="padding:12px;text-align:right;color:' + totalColor + '">' + totalPct + '%</td>';
+  html += '<td style="padding:12px;text-align:right;color:' + totalColor + '">' + totalStatus + '</td></tr>';
+  html += '</tbody></table></div>';
+  html += '<div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:12px;color:var(--muted);line-height:1.6">';
+  html += '<strong>Target:</strong> Hit 90%+ of planned distance. Green = On track | Yellow = Below target | Red = Low volume';
+  html += '</div>';
+  
+  el.innerHTML = html;
 }
 
 // ── training status ──────────────────────────────────────────
