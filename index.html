@@ -278,10 +278,17 @@ let dataLoaded = false;
 
 async function loadAll() {
   try {
-    const results = await Promise.all(FILES.map(f =>
+    // Set a 15-second timeout for loading
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Data load timeout')), 15000)
+    );
+    
+    const loadPromise = Promise.all(FILES.map(f =>
       fetch(GH+f+'?t='+Date.now())
         .then(r=>r.ok?r.text():'').then(t=>t?parseCSV(t):[]).catch(()=>[])
     ));
+    
+    const results = await Promise.race([loadPromise, timeoutPromise]);
     D.activities=results[0]; D.daily=results[1]; D.sleep=results[2];
     D.hrv=results[3]; D.hr=results[4]; D.stress=results[5];
 
@@ -291,7 +298,8 @@ async function loadAll() {
     }
     document.getElementById('statusMsg').style.display='none';
     document.getElementById('mainContent').style.display='';
-    // Fetch actual last commit timestamp from GitHub API
+    
+    // Get last updated time
     fetch('https://api.github.com/repos/123KingKarl123/garmin-data-xK9mP2qL7vR4nJ8w/commits?path=activities.csv&per_page=1')
       .then(r=>r.json())
       .then(data=>{
@@ -304,10 +312,14 @@ async function loadAll() {
         }
       })
       .catch(()=>{ document.getElementById('updatedLabel').textContent='Last synced: unknown'; });
+    
     renderMetrics();
     showTab('activities');
+    generateInsight();
   } catch(e) {
-    document.getElementById('statusMsg').textContent='Error: '+e.message;
+    console.error('Error loading data:', e);
+    document.getElementById('statusMsg').textContent='Error loading data. Try refreshing the page.';
+    document.getElementById('mainContent').style.display='none';
   }
 }
 
