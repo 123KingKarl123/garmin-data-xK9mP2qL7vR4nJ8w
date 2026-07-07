@@ -80,29 +80,66 @@
   .act-stat { font-size: 12px; color: var(--muted); font-family: var(--mono); }
   .act-date { margin-left: auto; font-size: 11px; color: var(--muted); font-family: var(--mono); }
 
-  /* training plan */
-  .plan-section { margin-top: 2rem; }
-  .plan-week { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin: 1.25rem 0 .5rem; padding-bottom: 4px; border-bottom: 0.5px solid var(--border); }
-  .plan-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .85rem 1rem; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
-  .plan-card.today { border-color: var(--accent); }
+  /* ── training plan ── */
+  .plan-today-pin { background: #0a1f12; border: 1px solid var(--accent); border-radius: 12px; padding: 1rem 1.1rem; margin-bottom: 1.2rem; position: relative; }
+  .plan-today-pin::before { content: 'TODAY'; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; color: var(--accent); display: block; margin-bottom: 6px; }
+  .plan-phase-header { display: flex; align-items: center; gap: 10px; margin: 1.4rem 0 .6rem; }
+  .plan-phase-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; flex: 1; padding-bottom: 4px; border-bottom: 0.5px solid var(--border); }
+  .plan-phase-pill { font-family: var(--mono); font-size: 9px; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .phase-1 { background: #0d2e1e; color: var(--accent); }
+  .phase-2 { background: #0d2235; color: #60aaff; }
+  .phase-3 { background: #1e1230; color: #b08aff; }
+  .phase-4 { background: #2a1500; color: var(--accent4); }
+  .phase-5 { background: #1a1010; color: #f87171; }
+  .plan-history-toggle { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .08em; cursor: pointer; background: none; border: 0.5px solid var(--border); border-radius: 5px; padding: 2px 8px; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .plan-history-toggle:hover { color: var(--text); border-color: var(--muted); }
+  .plan-history-block { overflow: hidden; transition: max-height .35s ease; }
+  .plan-history-block.collapsed { max-height: 0; }
+  .plan-history-block.expanded { max-height: 9999px; }
+  .plan-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: .85rem 1rem; margin-bottom: 7px; display: flex; gap: 12px; align-items: flex-start; transition: border-color .2s; }
+  .plan-card.is-past { opacity: .55; }
+  .plan-card.is-past.done-card { opacity: .7; }
+  .plan-card.today { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(52,211,153,.08); }
   .plan-card.race-day { border-color: var(--accent4); background: #1a1510; }
-  .plan-date-col { min-width: 80px; }
+  .plan-card.missed-card { border-color: #7f1d1d; }
+  .plan-card.rescheduled-card { border-color: #60aaff; background: #060f1a; }
+  .plan-date-col { min-width: 78px; }
   .plan-date { font-family: var(--mono); font-size: 10px; color: var(--muted); }
   .plan-day { font-size: 12px; font-weight: 500; color: var(--text); margin-top: 2px; }
-  .plan-content { flex: 1; }
+  .plan-content { flex: 1; min-width: 0; }
+  .plan-badges { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; margin-bottom: 5px; }
   .plan-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
   .plan-detail { font-size: 12px; color: var(--muted); line-height: 1.5; }
   .plan-note { font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: .7; }
-  .plan-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; margin-bottom: 5px; display: inline-block; }
+  .plan-badge { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; display: inline-block; }
   .bz2 { background: #0d2e1e; color: var(--accent); }
   .bmx { background: #2a1a0a; color: var(--accent4); }
   .brs { background: #1e1e22; color: var(--muted); }
   .btp { background: #161230; color: var(--accent2); }
   .brc { background: #2a1205; color: var(--accent4); }
+  .bmissed { background: #2d0a0a; color: #f87171; }
+  .bdone { background: #0d2e1e; color: var(--accent); }
+  .brescheduled { background: #060f1a; color: #60aaff; }
   .plan-segs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
   .plan-seg { font-size: 10px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--border); color: var(--muted); }
-  .plan-done-btn { margin-top: 6px; font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .plan-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .plan-done-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; transition: all .15s; }
+  .plan-done-btn:hover { border-color: var(--accent); color: var(--accent); }
   .plan-done-btn.done { background: #0d2e1e; color: var(--accent); border-color: var(--accent); }
+  .plan-missed-btn { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 5px; cursor: pointer; border: 0.5px solid #7f1d1d; background: transparent; color: #f87171; letter-spacing: .04em; }
+  .plan-adapt-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--accent); background: #0d2e1e; color: var(--accent); letter-spacing: .04em; display: flex; align-items: center; gap: 4px; }
+  .plan-adapt-btn.loading { opacity: .6; pointer-events: none; }
+  .plan-replan-panel { background: #060f1a; border: 1px solid #60aaff33; border-radius: 8px; padding: .75rem; margin-top: 8px; font-size: 12px; color: var(--text); line-height: 1.6; }
+  .plan-replan-panel p { margin: 0 0 6px; }
+  .plan-replan-panel p:last-child { margin: 0; }
+  @media(max-width:600px) { .plan-card { flex-direction: column; gap: 6px; } .plan-date-col { min-width: unset; } }
+
+  /* heatmap filter + mode buttons */
+  .hf-btn { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 5px; cursor: pointer; border: 0.5px solid var(--border); background: transparent; color: var(--muted); letter-spacing: .04em; }
+  .hf-btn.on { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+  .hf-btn.mode-btn { padding: 3px 12px; }
+  .hf-btn.mode-btn.on { background: #0d2235; color: #60aaff; border-color: #60aaff; }
+  .heatmap-filters { display: flex; gap: 4px; }
 
   /* status */
   .status { text-align: center; padding: 3rem; font-family: var(--mono); font-size: 12px; color: var(--muted); }
@@ -160,7 +197,6 @@
       <button class="tab" onclick="showTab('stress')">Stress</button>
       <button class="tab" onclick="showTab('hr')">Heart rate</button>
       <button class="tab" onclick="showTab('plan')">Race plan</button>
-      <button class="tab" onclick="showTab('weekly')">Weekly distance</button>
       <button class="tab" onclick="showTab('training')">Training status</button>
       <button class="tab" onclick="showTab('heatmap')">Heatmap</button>
     </div>
@@ -274,8 +310,6 @@ function findCol(row, opts) { if(!row) return null; for(const o of opts) if(row[
 function avg(arr) { const f=arr.filter(Boolean); return f.length?Math.round(f.reduce((a,b)=>a+b,0)/f.length):0; }
 
 // ── fetch all ───────────────────────────────────────────────
-let dataLoaded = false;
-
 async function loadAll() {
   try {
     const results = await Promise.all(FILES.map(f =>
@@ -318,6 +352,9 @@ function renderMetrics() {
   const hrv=filterRows(D.hrv||[],'date',days);
   const hr=filterRows(D.hr||[],'date',days);
   const acts=filterRows(D.activities||[],'startTimeLocal',days);
+
+  const totalRunKm=acts.filter(a=>{const t=(a.activityType_typeKey||a.activityType||a.activityName||'').toLowerCase();return t.includes('run');}).reduce((s,a)=>s+(parseFloat(a.distance)||0)/1000,0);
+  const totalCycleKm=acts.filter(a=>{const t=(a.activityType_typeKey||a.activityType||a.activityName||'').toLowerCase();return t.includes('cycl')||t.includes('bike')||t.includes('ride');}).reduce((s,a)=>s+(parseFloat(a.distance)||0)/1000,0);
 
   const sc=findCol(daily[0],['totalSteps','steps']);
   const cc=findCol(daily[0],['totalKilocalories','activeKilocalories','calories']);
@@ -379,14 +416,13 @@ function makeChart(id, type, labels, datasets, extraOpts={}) {
 function showTab(name) {
   curTab=name;
   document.querySelectorAll('.tab').forEach((b,i)=>{
-    b.classList.toggle('on',['activities','steps','sleep','hrv','stress','hr','plan','weekly','training','heatmap'][i]===name);
+    b.classList.toggle('on',['activities','steps','sleep','hrv','stress','hr','plan'][i]===name);
   });
   const el=document.getElementById('tabContent');
   if(chart){chart.destroy();chart=null;}
 
   if(name==='activities') { renderActivities(el); return; }
   if(name==='plan') { renderPlan(el); return; }
-  if(name==='weekly') { renderWeekly(el); return; }
   if(name==='heatmap') { renderHeatmap(el); return; }
   if(name==='training') { renderTraining(el); return; }
 
@@ -492,279 +528,496 @@ function renderActivities(el) {
 }
 
 // ── training plan ─────────────────────────────────────────────
+// Sub-4 Marathon Plan · Chester 11 Oct 2026 · Starting 17 May 2026
 const planWeeks=[
-  // Week 1: Build fitness
-  {label:'Week 1 — 18 to 24 May · Build phase',days:[
-    {date:'18 May',day:'Sat',type:'bz2',badge:'Easy',title:'Recovery run — 8km',detail:'Very easy, day after race.',segs:['8km easy'],note:'Flush out the system. Celebrate the Half!'},
-    {date:'19 May',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 20km',detail:'Steady Z2, focus on feel.',segs:['20km Z2','Fuel every 45min'],note:'Start building toward marathon distance.'},
-    {date:'20 May',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Monday after a race effort.'},
-    {date:'21 May',day:'Tue',type:'bmx',badge:'Tempo',title:'6km tempo run',detail:'2km easy · 4km tempo · 1km easy',segs:['2km easy','4km tempo','1km easy'],note:'Marathon pace focus (≈5:00/km).'},
-    {date:'22 May',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Comfortable pace throughout.',segs:['6km easy'],note:'Steady recovery.'},
-    {date:'23 May',day:'Thu',type:'bmx',badge:'Mixed',title:'10km structured',detail:'2km Z2 · 6km threshold · 2km Z2',segs:['2km Z2','6km threshold','2km Z2'],note:'Build lactate threshold.'},
-    {date:'24 May',day:'Fri',type:'bz2',badge:'Rest',title:'Rest or 4km easy',detail:'Flex day — rest if tired, easy if fresh.',segs:['4km easy (optional)'],note:'Assess readiness for Sunday.'},
+  // ── PHASE 1: Recovery + Aerobic Build (Weeks 1–3 kept as completed) ──
+  {label:'Phase 1 — Week 1 — 17–23 May · 44km',phase:'Phase 1',days:[
+    {date:'2026-05-18',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km at easy recovery pace (6:45–7:15/km). HR in Z1.',segs:['6km recovery'],note:'First week off the half. Keep it very easy.'},
+    {date:'2026-05-19',day:'Tue',type:'bmx',badge:'Threshold',title:'Threshold intro — 7km',detail:'7km with light threshold blocks. Warm up 2km, 3×5min at threshold, cool down.',segs:['2km warm-up','3×5min threshold','cool down'],note:'Light intro to threshold work.'},
+    {date:'2026-05-20',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 7km',detail:'7km easy aerobic + strength session.',segs:['7km easy','Strength <30min'],note:'Glute bridges, split squats, calf raises, core.'},
+    {date:'2026-05-21',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 7km',detail:'7km at steady aerobic pace (5:55–6:10/km).',segs:['7km steady'],note:'Controlled effort.'},
+    {date:'2026-05-22',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-05-23',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run + strides — 5km',detail:'5km easy + 4–6×20sec strides.',segs:['5km easy','4–6× strides'],note:'Quick and light.'},
+    {date:'2026-05-24',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 12km',detail:'12km easy/aerobic.',segs:['12km easy','Fuel every 45min'],note:'First long run of the block.'},
   ]},
-  // Week 2
-  {label:'Week 2 — 25 to 31 May · Build phase',days:[
-    {date:'25 May',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Short recovery run.',segs:['6km easy'],note:'Day before long run.'},
-    {date:'26 May',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 22km',detail:'Steady Z2 throughout.',segs:['22km Z2','Fuel every 50min'],note:'Progressive build.'},
-    {date:'27 May',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'28 May',day:'Tue',type:'bmx',badge:'Tempo',title:'6km tempo run',detail:'2km easy · 4km tempo · 1km easy',segs:['2km easy','4km tempo','1km easy'],note:'Hold marathon pace.'},
-    {date:'29 May',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Comfortable, conversational.',segs:['6km easy'],note:'Recovery.'},
-    {date:'30 May',day:'Thu',type:'bmx',badge:'Mixed',title:'10km structured',detail:'2km Z2 · 6km threshold · 2km Z2',segs:['2km Z2','6km threshold','2km Z2'],note:'Quality session.'},
-    {date:'31 May',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short and easy.',segs:['5km easy'],note:'Prepare for weekend long run.'},
+  {label:'Phase 1 — Week 2 — 24–30 May · 48km',phase:'Phase 1',days:[
+    {date:'2026-05-25',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km easy recovery.',segs:['6km recovery'],note:''},
+    {date:'2026-05-26',day:'Tue',type:'bmx',badge:'Threshold',title:'Threshold — 8km',detail:'8km with 2×8min threshold.',segs:['2km warm-up','2×8min threshold','cool down'],note:''},
+    {date:'2026-05-27',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-05-28',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 8km',detail:'8km steady.',segs:['8km steady'],note:''},
+    {date:'2026-05-29',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-05-30',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-05-31',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 14km',detail:'14km easy aerobic.',segs:['14km easy','Fuel every 45min'],note:''},
   ]},
-  // Week 3
-  {label:'Week 3 — 1 to 7 June · Build phase',days:[
-    {date:'1 Jun',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Short shakeout.',segs:['6km easy'],note:''},
-    {date:'2 Jun',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 24km',detail:'Steady Z2 throughout.',segs:['24km Z2','Fuel every 50min'],note:'Getting into longer territory.'},
-    {date:'3 Jun',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'4 Jun',day:'Tue',type:'bmx',badge:'Tempo',title:'7km tempo',detail:'2km easy · 5km tempo · 1km easy',segs:['2km easy','5km tempo','1km easy'],note:'Increase quality volume.'},
-    {date:'5 Jun',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Very easy, conversational pace.',segs:['6km easy'],note:'Recovery.'},
-    {date:'6 Jun',day:'Thu',type:'bmx',badge:'Mixed',title:'11km structured',detail:'2km Z2 · 7km threshold · 2km Z2',segs:['2km Z2','7km threshold','2km Z2'],note:'Build aerobic base.'},
-    {date:'7 Jun',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short and easy.',segs:['5km easy'],note:''},
+  {label:'Phase 1 — Week 3 — 31 May–6 Jun · 52km',phase:'Phase 1',days:[
+    {date:'2026-06-01',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 7km',detail:'7km easy recovery.',segs:['7km recovery'],note:''},
+    {date:'2026-06-02',day:'Tue',type:'bmx',badge:'Threshold',title:'6×1km threshold',detail:'6×1km at threshold (5:00–5:10/km), 90sec recovery.',segs:['2km warm-up','6×1km threshold','90sec recovery'],note:'Focus on consistency across all 6 reps.'},
+    {date:'2026-06-03',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-06-04',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 9km',detail:'9km steady.',segs:['9km steady'],note:''},
+    {date:'2026-06-05',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-06',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-06-07',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 16km',detail:'16km easy aerobic.',segs:['16km easy','Fuel every 45min'],note:'Building steadily.'},
   ]},
-  // Week 4 (recovery)
-  {label:'Week 4 — 8 to 14 June · Recovery week',days:[
-    {date:'8 Jun',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Short shakeout.',segs:['6km easy'],note:'Recovery week — dial it back.'},
-    {date:'9 Jun',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 20km',detail:'Steady, comfortable Z2.',segs:['20km Z2','Fuel every 50min'],note:'Consolidate fitness, build aerobic base.'},
-    {date:'10 Jun',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'11 Jun',day:'Tue',type:'bmx',badge:'Tempo',title:'5km tempo',detail:'1km easy · 3km tempo · 1km easy',segs:['1km easy','3km tempo','1km easy'],note:'Reduced volume for recovery.'},
-    {date:'12 Jun',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Very easy.',segs:['5km easy'],note:'Recover.'},
-    {date:'13 Jun',day:'Thu',type:'bmx',badge:'Mixed',title:'8km structured',detail:'2km Z2 · 4km threshold · 2km Z2',segs:['2km Z2','4km threshold','2km Z2'],note:'Lighter threshold work.'},
-    {date:'14 Jun',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+
+  // ── PHASE 2: Base Development — recalibrated from week 4 ──
+  // Karl is already at 30-40km/week with 11km regular runs, feels like wk5-6 fitness
+  // Long runs jump to match actual capability: 19km this weekend, build from there
+  {label:'Phase 2 — Week 4 — 7–13 Jun · 46km (Recovery)',phase:'Phase 2',days:[
+    {date:'2026-06-08',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Recovery week — let the first block absorb.'},
+    {date:'2026-06-09',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km very easy aerobic.',segs:['7km easy'],note:'Keep HR firmly in Z2.'},
+    {date:'2026-06-10',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength session.',segs:['8km easy','Strength <30min'],note:'Single-leg calf raises — Achilles maintenance.'},
+    {date:'2026-06-11',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 8km',detail:'8km at steady pace.',segs:['8km steady'],note:''},
+    {date:'2026-06-12',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-13',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run + strides — 5km',detail:'5km easy + 4×20sec strides.',segs:['5km easy','4× strides'],note:''},
+    {date:'2026-06-14',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 19km',detail:'19km easy aerobic (6:15–6:45/km). Fuel from 45min. This reflects your actual fitness — not the original 12km.',segs:['19km easy','Fuel every 45min','Electrolytes'],note:'You\'re running further than the original plan suggested. Keep it truly easy — HR under 145. Achilles check at 10km.'},
   ]},
-  // Week 5
-  {label:'Week 5 — 15 to 21 June · Build phase',days:[
-    {date:'15 Jun',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Short shakeout.',segs:['6km easy'],note:'Back to building.'},
-    {date:'16 Jun',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 26km',detail:'Steady Z2 throughout.',segs:['26km Z2','Fuel every 50min'],note:'Getting substantial.'},
-    {date:'17 Jun',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'18 Jun',day:'Tue',type:'bmx',badge:'Tempo',title:'8km tempo',detail:'2km easy · 6km tempo · 1km easy',segs:['2km easy','6km tempo','1km easy'],note:'Sustained effort at marathon pace.'},
-    {date:'19 Jun',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Conversational pace.',segs:['6km easy'],note:'Recovery.'},
-    {date:'20 Jun',day:'Thu',type:'bmx',badge:'Mixed',title:'12km structured',detail:'2km Z2 · 8km threshold · 2km Z2',segs:['2km Z2','8km threshold','2km Z2'],note:'Peak aerobic work.'},
-    {date:'21 Jun',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short and easy.',segs:['5km easy'],note:''},
+  {label:'Phase 2 — Week 5 — 14–20 Jun · 54km',phase:'Phase 2',days:[
+    {date:'2026-06-15',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 7km',detail:'7km easy recovery after Sunday\'s long run.',segs:['7km recovery'],note:'Very easy. If Achilles is grumbling, swap for 30min easy bike.'},
+    {date:'2026-06-16',day:'Tue',type:'bmx',badge:'Threshold',title:'3×8min threshold',detail:'3×8min at threshold (5:00–5:10/km), 2min recovery jog.',segs:['2km warm-up','3×8min threshold','2min jog recovery'],note:''},
+    {date:'2026-06-17',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 9km',detail:'9km easy + strength.',segs:['9km easy','Strength <30min'],note:'Cadence focus: 145–150 spm.'},
+    {date:'2026-06-18',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 10km',detail:'10km steady (5:55–6:10/km).',segs:['10km steady'],note:''},
+    {date:'2026-06-19',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-20',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run + strides — 7km',detail:'7km easy + 4–6×20sec strides.',segs:['7km easy','4–6× strides'],note:''},
+    {date:'2026-06-21',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 21km',detail:'21km easy aerobic. First time over 20km in this block.',segs:['21km easy','Fuel every 45min'],note:'20km+ territory. Nail your fuelling strategy here — 60g carbs/hour minimum.'},
   ]},
-  // Week 6
-  {label:'Week 6 — 22 to 28 June · Build phase',days:[
-    {date:'22 Jun',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Short shakeout.',segs:['6km easy'],note:''},
-    {date:'23 Jun',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 28km',detail:'Steady Z2. Mental game at play.',segs:['28km Z2','Fuel every 50min','Nutrition test'],note:'Getting into the "hitting a wall" territory. Test fueling strategy.'},
-    {date:'24 Jun',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'25 Jun',day:'Tue',type:'bmx',badge:'Tempo',title:'8km tempo',detail:'2km easy · 6km tempo · 1km easy',segs:['2km easy','6km tempo','1km easy'],note:'Maintain quality.'},
-    {date:'26 Jun',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Easy pace.',segs:['6km easy'],note:'Recovery.'},
-    {date:'27 Jun',day:'Thu',type:'bmx',badge:'Mixed',title:'13km structured',detail:'2km Z2 · 9km threshold · 2km Z2',segs:['2km Z2','9km threshold','2km Z2'],note:'Build threshold capacity.'},
-    {date:'28 Jun',day:'Fri',type:'bz2',badge:'Rest',title:'Rest or 4km easy',detail:'Listen to your body.',segs:['4km easy (optional)'],note:'Assess fatigue before long run.'},
+  {label:'Phase 2 — Week 6 — 21–27 Jun · 57km',phase:'Phase 2',days:[
+    {date:'2026-06-22',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 7km',detail:'7km easy recovery.',segs:['7km recovery'],note:''},
+    {date:'2026-06-23',day:'Tue',type:'bmx',badge:'Threshold',title:'5×1km threshold',detail:'5×1km at threshold (5:00–5:10/km), 90sec recovery.',segs:['2km warm-up','5×1km threshold','90sec recovery'],note:''},
+    {date:'2026-06-24',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 9km',detail:'9km easy + strength.',segs:['9km easy','Strength <30min'],note:''},
+    {date:'2026-06-25',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 11km',detail:'11km steady.',segs:['11km steady'],note:''},
+    {date:'2026-06-26',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-06-27',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-06-28',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 22km',detail:'22km easy aerobic.',segs:['22km easy','Fuel every 45min'],note:'Consistency over the past 3 weeks is what builds marathon fitness.'},
   ]},
-  // Week 7
-  {label:'Week 7 — 29 Jun to 5 July · Peak week',days:[
-    {date:'29 Jun',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short shakeout.',segs:['5km easy'],note:''},
-    {date:'30 Jun',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 30km',detail:'Steady Z2 throughout.',segs:['30km Z2','Fuel every 50min','Practice pacing'],note:'Peak long run volume approaching. Mental resilience critical.'},
-    {date:'1 Jul',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'2 Jul',day:'Tue',type:'bmx',badge:'Tempo',title:'9km tempo',detail:'2km easy · 7km tempo · 1km easy',segs:['2km easy','7km tempo','1km easy'],note:'Push at marathon pace.'},
-    {date:'3 Jul',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Very easy.',segs:['6km easy'],note:'Recovery.'},
-    {date:'4 Jul',day:'Thu',type:'bmx',badge:'Mixed',title:'13km structured',detail:'2km Z2 · 9km threshold · 2km Z2',segs:['2km Z2','9km threshold','2km Z2'],note:'Strong aerobic work.'},
-    {date:'5 Jul',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short.',segs:['5km easy'],note:''},
+  {label:'Phase 2 — Week 7 — Recovery — 28 Jun–4 Jul · 48km',phase:'Phase 2',days:[
+    {date:'2026-06-29',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Recovery week. Volume drops, keep intensity low.'},
+    {date:'2026-06-30',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-07-01',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength. Extra calf work.',segs:['8km easy','Strength <30min'],note:'Cadence target now 150–158 spm.'},
+    {date:'2026-07-02',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 9km',detail:'9km steady.',segs:['9km steady'],note:''},
+    {date:'2026-07-03',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-04',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-05',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 18km',detail:'18km easy. Recovery week — step back before the Phase 3 push.',segs:['18km easy'],note:'Same effort, less distance. Progress only if HRV/RHR are stable.'},
   ]},
-  // Week 8 (recovery)
-  {label:'Week 8 — 6 to 12 July · Recovery week',days:[
-    {date:'6 Jul',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Light shakeout.',segs:['6km easy'],note:'Step back to consolidate.'},
-    {date:'7 Jul',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 24km',detail:'Steady, easier Z2.',segs:['24km Z2','Fuel every 50min'],note:'Recovery long run — dial back intensity.'},
-    {date:'8 Jul',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'9 Jul',day:'Tue',type:'bmx',badge:'Tempo',title:'6km tempo',detail:'1.5km easy · 3km tempo · 1.5km easy',segs:['1.5km easy','3km tempo','1.5km easy'],note:'Reduced volume for recovery.'},
-    {date:'10 Jul',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Very easy.',segs:['5km easy'],note:'Recover.'},
-    {date:'11 Jul',day:'Thu',type:'bmx',badge:'Mixed',title:'9km structured',detail:'2km Z2 · 5km threshold · 2km Z2',segs:['2km Z2','5km threshold','2km Z2'],note:'Lighter work.'},
-    {date:'12 Jul',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+
+  // ── PHASE 3: Aerobic + Marathon Pace Prep ──
+  {label:'Phase 3 — Aerobic + MP Prep · Week 8 — 5–11 Jul · 62km',phase:'Phase 3',days:[
+    {date:'2026-07-06',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:'Phase 3 starts. Marathon pace work begins this week.'},
+    {date:'2026-07-07',day:'Tue',type:'bmx',badge:'Threshold',title:'4×2km threshold',detail:'4×2km at threshold (5:00–5:10/km), 2min recovery.',segs:['2km warm-up','4×2km threshold','2min recovery'],note:'Longer threshold reps — great marathon-specific work.'},
+    {date:'2026-07-08',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-07-09',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'12km with MP section',detail:'12km total: easy warm-up, 5km at marathon pace (5:35–5:40/km), easy cool down.',segs:['Easy warm-up','5km marathon pace','Easy cool down'],note:'First marathon pace work. Lock in 5:35–5:40/km — this should feel controlled, not hard.'},
+    {date:'2026-07-10',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-11',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-07-12',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 24km',detail:'24km easy aerobic. Big jump — but you have the base for it.',segs:['24km easy','Fuel every 45min'],note:'This is your first proper long long run. Treat fuelling as a training discipline.'},
   ]},
-  // Week 9
-  {label:'Week 9 — 13 to 19 July · Build phase',days:[
-    {date:'13 Jul',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Shakeout.',segs:['6km easy'],note:'Back to building.'},
-    {date:'14 Jul',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 32km',detail:'Steady Z2. Your longest run yet.',segs:['32km Z2','Fuel every 50min','Mental focus'],note:'Peak long run. This is almost marathon distance. Trust the training.'},
-    {date:'15 Jul',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'16 Jul',day:'Tue',type:'bmx',badge:'Tempo',title:'8km tempo',detail:'2km easy · 6km tempo · 1km easy',segs:['2km easy','6km tempo','1km easy'],note:'Sustain marathon pace.'},
-    {date:'17 Jul',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Easy pace.',segs:['6km easy'],note:'Recovery.'},
-    {date:'18 Jul',day:'Thu',type:'bmx',badge:'Mixed',title:'13km structured',detail:'2km Z2 · 9km threshold · 2km Z2',segs:['2km Z2','9km threshold','2km Z2'],note:'Quality work.'},
-    {date:'19 Jul',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short.',segs:['5km easy'],note:''},
+  {label:'Phase 3 — Week 9 — 12–18 Jul · 65km',phase:'Phase 3',days:[
+    {date:'2026-07-13',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 8km',detail:'8km easy recovery.',segs:['8km recovery'],note:''},
+    {date:'2026-07-14',day:'Tue',type:'bmx',badge:'Threshold',title:'6×1km threshold',detail:'6×1km at threshold, 90sec recovery.',segs:['2km warm-up','6×1km threshold','90sec recovery'],note:''},
+    {date:'2026-07-15',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-07-16',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'13km with 6km MP',detail:'13km total with 6km at marathon pace.',segs:['Easy warm-up','6km marathon pace','Easy cool down'],note:''},
+    {date:'2026-07-17',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-18',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:'Cadence focus: 150–158 spm.'},
+    {date:'2026-07-19',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 25km',detail:'25km easy aerobic.',segs:['25km easy','Fuel every 45min'],note:''},
   ]},
-  // Week 10
-  {label:'Week 10 — 20 to 26 July · Peak week',days:[
-    {date:'20 Jul',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Light shakeout.',segs:['5km easy'],note:''},
-    {date:'21 Jul',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 32km',detail:'Steady Z2 at race effort.',segs:['32km Z2','Fuel every 50min','Race simulation'],note:'Second peak long run. Dial in pacing and fueling.'},
-    {date:'22 Jul',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'23 Jul',day:'Tue',type:'bmx',badge:'Tempo',title:'10km tempo',detail:'2km easy · 8km tempo · 1km easy',segs:['2km easy','8km tempo','1km easy'],note:'Extended tempo at marathon pace.'},
-    {date:'24 Jul',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Very easy.',segs:['6km easy'],note:'Recovery.'},
-    {date:'25 Jul',day:'Thu',type:'bmx',badge:'Mixed',title:'14km structured',detail:'2km Z2 · 10km threshold · 2km Z2',segs:['2km Z2','10km threshold','2km Z2'],note:'Peak aerobic work.'},
-    {date:'26 Jul',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short.',segs:['5km easy'],note:''},
+  {label:'Phase 3 — Week 10 — Recovery — 19–25 Jul · 50km',phase:'Phase 3',days:[
+    {date:'2026-07-20',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Recovery week. You\'ve earned it.'},
+    {date:'2026-07-21',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-07-22',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-07-23',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 10km',detail:'10km steady.',segs:['10km steady'],note:''},
+    {date:'2026-07-24',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-07-25',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-07-26',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 20km',detail:'20km easy. Recovery week — step back protects the Achilles.',segs:['20km easy'],note:'Don\'t try to push — absorb the last 3 weeks.'},
   ]},
-  // Week 11 (recovery)
-  {label:'Week 11 — 27 Jul to 2 Aug · Recovery week',days:[
-    {date:'27 Jul',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Light.',segs:['5km easy'],note:'Back off for adaptation.'},
-    {date:'28 Jul',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 26km',detail:'Steady Z2.',segs:['26km Z2','Fuel every 50min'],note:'Recovery long run.'},
-    {date:'29 Jul',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'30 Jul',day:'Tue',type:'bmx',badge:'Tempo',title:'7km tempo',detail:'2km easy · 5km tempo · 1km easy',segs:['2km easy','5km tempo','1km easy'],note:'Reduced volume.'},
-    {date:'31 Jul',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Very easy.',segs:['5km easy'],note:'Recover.'},
-    {date:'1 Aug',day:'Thu',type:'bmx',badge:'Mixed',title:'10km structured',detail:'2km Z2 · 6km threshold · 2km Z2',segs:['2km Z2','6km threshold','2km Z2'],note:'Lighter work.'},
-    {date:'2 Aug',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+  {label:'Phase 3 — Week 11 — 26 Jul–1 Aug · 68km',phase:'Phase 3',days:[
+    {date:'2026-07-27',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-07-28',day:'Tue',type:'bmx',badge:'Threshold',title:'3×12min threshold',detail:'3×12min threshold, 2min recovery.',segs:['2km warm-up','3×12min threshold','2min recovery'],note:''},
+    {date:'2026-07-29',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-07-30',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'14km with 8km MP',detail:'14km total with 8km at marathon pace (5:35–5:40/km).',segs:['Easy warm-up','8km marathon pace','Easy cool down'],note:'Longest MP section yet. Should feel sustainable — if not, back off to 5:45/km.'},
+    {date:'2026-07-31',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-01',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-08-02',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 26km',detail:'26km easy aerobic. Longest run of the plan so far.',segs:['26km easy','Fuel every 45min'],note:'26km is the magic number — you\'re deep in marathon territory now.'},
   ]},
-  // Week 12
-  {label:'Week 12 — 3 to 9 Aug · Build phase',days:[
-    {date:'3 Aug',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Shakeout.',segs:['6km easy'],note:''},
-    {date:'4 Aug',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 30km',detail:'Steady Z2 throughout.',segs:['30km Z2','Fuel every 50min','Practice race strategy'],note:'Back to substantial volume.'},
-    {date:'5 Aug',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'6 Aug',day:'Tue',type:'bmx',badge:'Tempo',title:'8km tempo',detail:'2km easy · 6km tempo · 1km easy',segs:['2km easy','6km tempo','1km easy'],note:'Marathon pace work.'},
-    {date:'7 Aug',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Easy pace.',segs:['6km easy'],note:'Recovery.'},
-    {date:'8 Aug',day:'Thu',type:'bmx',badge:'Mixed',title:'12km structured',detail:'2km Z2 · 8km threshold · 2km Z2',segs:['2km Z2','8km threshold','2km Z2'],note:'Quality session.'},
-    {date:'9 Aug',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short.',segs:['5km easy'],note:''},
+  {label:'Phase 3 — Week 12 — 2–8 Aug · 70km',phase:'Phase 3',days:[
+    {date:'2026-08-03',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 8km',detail:'8km easy recovery.',segs:['8km recovery'],note:''},
+    {date:'2026-08-04',day:'Tue',type:'bmx',badge:'Threshold',title:'4×2km threshold',detail:'4×2km threshold, 2min recovery.',segs:['2km warm-up','4×2km threshold','2min recovery'],note:''},
+    {date:'2026-08-05',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-08-06',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'14km with 8km MP',detail:'14km with 8km at marathon pace.',segs:['Easy warm-up','8km marathon pace','Easy cool down'],note:''},
+    {date:'2026-08-07',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-08',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-08-09',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 27km',detail:'27km easy aerobic.',segs:['27km easy','Fuel every 45min'],note:'Dial in your fuelling — 60–75g carbs/hour. Practice exactly what you\'ll use on race day.'},
   ]},
-  // Week 13
-  {label:'Week 13 — 10 to 16 Aug · Build phase',days:[
-    {date:'10 Aug',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Light shakeout.',segs:['5km easy'],note:''},
-    {date:'11 Aug',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 30km',detail:'Steady Z2.',segs:['30km Z2','Fuel every 50min'],note:'Consolidate fitness.'},
-    {date:'12 Aug',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'13 Aug',day:'Tue',type:'bmx',badge:'Tempo',title:'9km tempo',detail:'2km easy · 7km tempo · 1km easy',segs:['2km easy','7km tempo','1km easy'],note:'Extended work at race pace.'},
-    {date:'14 Aug',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Very easy.',segs:['6km easy'],note:'Recovery.'},
-    {date:'15 Aug',day:'Thu',type:'bmx',badge:'Mixed',title:'13km structured',detail:'2km Z2 · 9km threshold · 2km Z2',segs:['2km Z2','9km threshold','2km Z2'],note:'Strong aerobic work.'},
-    {date:'16 Aug',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short.',segs:['5km easy'],note:''},
+
+  // ── PHASE 4: Peak Block ──
+  {label:'Phase 4 — Peak Block · Week 13 — Recovery — 9–15 Aug · 52km',phase:'Phase 4',days:[
+    {date:'2026-08-10',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Recovery week before peak block.'},
+    {date:'2026-08-11',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-08-12',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 8km',detail:'8km easy + strength.',segs:['8km easy','Strength <30min'],note:''},
+    {date:'2026-08-13',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 10km',detail:'10km steady.',segs:['10km steady'],note:''},
+    {date:'2026-08-14',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-15',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy.',segs:['6km easy'],note:''},
+    {date:'2026-08-16',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 22km',detail:'22km easy. Recovery week step-back before the peak push.',segs:['22km easy'],note:'Feeling good here = you\'re ready for the peak block.'},
   ]},
-  // Week 14
-  {label:'Week 14 — 17 to 23 Aug · Peak week',days:[
-    {date:'17 Aug',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short shakeout.',segs:['5km easy'],note:''},
-    {date:'18 Aug',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 32km',detail:'Steady Z2. Your final peak long run.',segs:['32km Z2','Fuel every 50min','Full race simulation'],note:'Last opportunity to nail fueling and mental strategy. Trust the work.'},
-    {date:'19 Aug',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'20 Aug',day:'Tue',type:'bmx',badge:'Tempo',title:'10km tempo',detail:'2km easy · 8km tempo · 1km easy',segs:['2km easy','8km tempo','1km easy'],note:'Extended marathon pace work.'},
-    {date:'21 Aug',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Easy pace.',segs:['6km easy'],note:'Recovery.'},
-    {date:'22 Aug',day:'Thu',type:'bmx',badge:'Mixed',title:'14km structured',detail:'2km Z2 · 10km threshold · 2km Z2',segs:['2km Z2','10km threshold','2km Z2'],note:'Peak aerobic work.'},
-    {date:'23 Aug',day:'Fri',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short.',segs:['5km easy'],note:''},
+  {label:'Phase 4 — Week 14 — 16–22 Aug · 74km',phase:'Phase 4',days:[
+    {date:'2026-08-17',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:'Peak block begins. Highest load of the plan.'},
+    {date:'2026-08-18',day:'Tue',type:'bmx',badge:'Threshold',title:'35–40min threshold',detail:'35–40min continuous threshold (5:00–5:10/km). Warm up and cool down either side.',segs:['Warm-up','35–40min threshold','Cool down'],note:'Longest threshold block of the plan.'},
+    {date:'2026-08-19',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:'Cadence target: 160+ spm during MP runs.'},
+    {date:'2026-08-20',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'16km marathon pace',detail:'16km at marathon pace (5:35–5:40/km). Confidence builder.',segs:['16km marathon pace'],note:'The most specific marathon session of the plan. This is what race day should feel like.'},
+    {date:'2026-08-21',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-22',day:'Sat',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km easy recovery.',segs:['6km recovery'],note:'Very easy after Thursday\'s big session.'},
+    {date:'2026-08-23',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 28km',detail:'28km easy aerobic. Peak long run of the plan.',segs:['28km easy','Fuel every 45min'],note:'This is the peak. Everything from here is about arriving fresh.'},
   ]},
-  // Week 15 (recovery)
-  {label:'Week 15 — 24 to 30 Aug · Recovery week',days:[
-    {date:'24 Aug',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Light.',segs:['5km easy'],note:'Begin taper phase.'},
-    {date:'25 Aug',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 24km',detail:'Steady Z2.',segs:['24km Z2','Fuel every 50min'],note:'Shorter recovery run.'},
-    {date:'26 Aug',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'27 Aug',day:'Tue',type:'bmx',badge:'Tempo',title:'6km tempo',detail:'2km easy · 4km tempo · 1km easy',segs:['2km easy','4km tempo','1km easy'],note:'Reduced volume.'},
-    {date:'28 Aug',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Very easy.',segs:['5km easy'],note:'Recover.'},
-    {date:'29 Aug',day:'Thu',type:'bmx',badge:'Mixed',title:'10km structured',detail:'2km Z2 · 6km threshold · 2km Z2',segs:['2km Z2','6km threshold','2km Z2'],note:'Lighter quality work.'},
-    {date:'30 Aug',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+  {label:'Phase 4 — Week 15 — 23–29 Aug · 76km',phase:'Phase 4',days:[
+    {date:'2026-08-24',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 8km',detail:'8km easy recovery.',segs:['8km recovery'],note:''},
+    {date:'2026-08-25',day:'Tue',type:'bmx',badge:'Threshold',title:'6×1km threshold',detail:'6×1km threshold, 90sec recovery.',segs:['2km warm-up','6×1km threshold','90sec recovery'],note:''},
+    {date:'2026-08-26',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run + strength — 10km',detail:'10km easy + strength.',segs:['10km easy','Strength <30min'],note:''},
+    {date:'2026-08-27',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'3×4km marathon pace',detail:'3×4km at marathon pace (5:35–5:40/km), 3min easy jog between.',segs:['Warm-up','3×4km marathon pace','3min recovery jog'],note:'Peak marathon-specific session.'},
+    {date:'2026-08-28',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-08-29',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-08-30',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 28km',detail:'28km easy aerobic. Second peak long run.',segs:['28km easy','Fuel every 45min'],note:'Two 28km runs builds enormous confidence. You\'ve done the work.'},
   ]},
-  // Week 16
-  {label:'Week 16 — 31 Aug to 6 Sept · Taper begins',days:[
-    {date:'31 Aug',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short shakeout.',segs:['5km easy'],note:'Taper continues.'},
-    {date:'1 Sep',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 20km',detail:'Very steady, conversational Z2.',segs:['20km Z2','Easy pace'],note:'Drop volume significantly.'},
-    {date:'2 Sep',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'3 Sep',day:'Tue',type:'bmx',badge:'Tempo',title:'5km tempo',detail:'1.5km easy · 3km tempo · 1.5km easy',segs:['1.5km easy','3km tempo','1.5km easy'],note:'Much reduced.'},
-    {date:'4 Sep',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Very easy.',segs:['5km easy'],note:'Recovery.'},
-    {date:'5 Sep',day:'Thu',type:'bmx',badge:'Mixed',title:'8km structured',detail:'2km Z2 · 4km threshold · 2km Z2',segs:['2km Z2','4km threshold','2km Z2'],note:'Easy quality work.'},
-    {date:'6 Sep',day:'Fri',type:'bz2',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+
+  // ── PHASE 5: Taper ──
+  {label:'Phase 5 — Taper · Week 16 — 30 Aug–5 Sep · 62km',phase:'Phase 5',days:[
+    {date:'2026-08-31',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy. Taper begins.',segs:['8km easy'],note:'Volume starts dropping. Freshness is the goal now.'},
+    {date:'2026-09-01',day:'Tue',type:'bmx',badge:'Threshold',title:'5×1km threshold',detail:'5×1km threshold to stay sharp.',segs:['Warm-up','5×1km threshold','Cool down'],note:''},
+    {date:'2026-09-02',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run — 9km',detail:'9km easy.',segs:['9km easy'],note:''},
+    {date:'2026-09-03',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'14km marathon pace',detail:'14km at marathon pace (5:35–5:40/km).',segs:['14km marathon pace'],note:'Last significant MP session. Should feel controlled and comfortable.'},
+    {date:'2026-09-04',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-05',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-09-06',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 22km',detail:'22km easy. First taper long run.',segs:['22km easy','Fuel every 45min'],note:''},
   ]},
-  // Week 17
-  {label:'Week 17 — 7 to 13 Sept · Taper',days:[
-    {date:'7 Sep',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Light.',segs:['5km easy'],note:''},
-    {date:'8 Sep',day:'Sun',type:'bz2',badge:'Zone 2',title:'Long run — 18km',detail:'Easy and relaxed.',segs:['18km easy Z2'],note:'Further volume reduction.'},
-    {date:'9 Sep',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'10 Sep',day:'Tue',type:'bmx',badge:'Strides',title:'4km + strides',detail:'4km easy with 6×20sec strides',segs:['4km easy','6× strides'],note:'Keep legs sharp without stress.'},
-    {date:'11 Sep',day:'Wed',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Very easy.',segs:['5km easy'],note:''},
-    {date:'12 Sep',day:'Thu',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Relaxed shakeout.',segs:['5km easy'],note:''},
-    {date:'13 Sep',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+  {label:'Phase 5 — Week 17 — 6–12 Sep · 50km',phase:'Phase 5',days:[
+    {date:'2026-09-07',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 7km',detail:'7km easy recovery.',segs:['7km recovery'],note:'Getting fresher every day.'},
+    {date:'2026-09-08',day:'Tue',type:'bmx',badge:'Threshold',title:'4×1km threshold',detail:'4×1km threshold — shorter, sharper.',segs:['Warm-up','4×1km threshold','Cool down'],note:'Keep the legs sharp without accumulating fatigue.'},
+    {date:'2026-09-09',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy.',segs:['8km easy'],note:''},
+    {date:'2026-09-10',day:'Thu',type:'bmx',badge:'Marathon Pace',title:'10km marathon pace',detail:'10km at marathon pace.',segs:['10km marathon pace'],note:''},
+    {date:'2026-09-11',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-12',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:''},
+    {date:'2026-09-13',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 18km',detail:'18km easy. Volume dropping.',segs:['18km easy'],note:'After this, just stay fresh. Fitness is locked in.'},
   ]},
-  // Week 18
-  {label:'Week 18 — 14 to 20 Sept · Final taper',days:[
-    {date:'14 Sep',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 4km',detail:'Very light.',segs:['4km easy'],note:''},
-    {date:'15 Sep',day:'Sun',type:'bz2',badge:'Zone 2',title:'Easy run — 15km',detail:'Conversational pace.',segs:['15km easy Z2'],note:'Final substantial long run of training.'},
-    {date:'16 Sep',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'17 Sep',day:'Tue',type:'bz2',badge:'Easy',title:'Easy 4km',detail:'Short and relaxed.',segs:['4km easy'],note:'Minimal volume.'},
-    {date:'18 Sep',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'19 Sep',day:'Thu',type:'bz2',badge:'Easy',title:'Easy 3km + strides',detail:'3km easy with 4×20sec strides.',segs:['3km easy','4× strides'],note:'Wakes up the system.'},
-    {date:'20 Sep',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+  {label:'Phase 5 — Week 18 — 13–19 Sep · 38km',phase:'Phase 5',days:[
+    {date:'2026-09-14',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 6km',detail:'6km very easy.',segs:['6km recovery'],note:''},
+    {date:'2026-09-15',day:'Tue',type:'bmx',badge:'Marathon Pace',title:'3×2km marathon pace',detail:'3×2km at marathon pace, 2min easy jog.',segs:['Warm-up','3×2km marathon pace','Cool down'],note:'Last quality session. Should feel easy at this pace — good sign.'},
+    {date:'2026-09-16',day:'Wed',type:'bz2',badge:'Easy',title:'Easy run — 7km',detail:'7km easy.',segs:['7km easy'],note:''},
+    {date:'2026-09-17',day:'Thu',type:'bmx',badge:'Steady',title:'Steady run — 8km',detail:'8km steady.',segs:['8km steady'],note:''},
+    {date:'2026-09-18',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-19',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:''},
+    {date:'2026-09-20',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 14km',detail:'14km easy. Last longer long run.',segs:['14km easy'],note:'Short and comfortable. Race is 3 weeks away.'},
   ]},
-  // Week 19
-  {label:'Week 19 — 21 to 27 Sept · Rest week',days:[
-    {date:'21 Sep',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 4km',detail:'Very light recovery jog.',segs:['4km easy'],note:''},
-    {date:'22 Sep',day:'Sun',type:'bz2',badge:'Easy',title:'Easy 10km',detail:'Conversational pace.',segs:['10km easy'],note:'Gentle long run to keep legs moving.'},
-    {date:'23 Sep',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'24 Sep',day:'Tue',type:'bz2',badge:'Easy',title:'Easy 3km',detail:'Very light.',segs:['3km easy'],note:'Minimal volume.'},
-    {date:'25 Sep',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
-    {date:'26 Sep',day:'Thu',type:'bz2',badge:'Easy',title:'Easy 3km',detail:'Short and easy.',segs:['3km easy'],note:''},
-    {date:'27 Sep',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest. Sleep, hydrate, eat.',segs:[],note:'Final rest before race week.'},
+  {label:'Phase 5 — Week 19 — 20–26 Sep · 25km',phase:'Phase 5',days:[
+    {date:'2026-09-21',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],note:''},
+    {date:'2026-09-22',day:'Tue',type:'bz2',badge:'Easy',title:'Easy run + strides — 6km',detail:'6km easy + 4×20sec strides.',segs:['6km easy','4× strides'],note:'Keeps fast-twitch fibres awake.'},
+    {date:'2026-09-23',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-24',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:''},
+    {date:'2026-09-25',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:''},
+    {date:'2026-09-26',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:''},
+    {date:'2026-09-27',day:'Sun',type:'bz2',badge:'Long Run',title:'Easy run — 10km',detail:'10km very easy. Race is 2 weeks away.',segs:['10km easy'],note:'Short legs. Big confidence. Trust every km you\'ve banked.'},
   ]},
-  // Week 20 (race week)
-  {label:'Race week — 28 Sept to 11 Oct · CHESTER MARATHON',days:[
-    {date:'28 Sep',day:'Sat',type:'bz2',badge:'Easy',title:'Easy 5km',detail:'Short, very light shakeout.',segs:['5km easy'],note:'6 days to race.'},
-    {date:'29 Sep',day:'Sun',type:'bz2',badge:'Easy',title:'Easy 6km',detail:'Conversational pace.',segs:['6km easy'],note:'5 days out.'},
-    {date:'30 Sep',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'4 days to race.'},
-    {date:'1 Oct',day:'Tue',type:'bz2',badge:'Shakeout',title:'Easy 4km + strides',detail:'4km easy with 4×20sec strides.',segs:['4km easy','4× strides'],note:'3 days out. Wakes up fast-twitch fibres.'},
-    {date:'2 Oct',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'2 days to race. Fitness is locked in.'},
-    {date:'3 Oct',day:'Thu',type:'bz2',badge:'Shakeout',title:'Easy 3km',detail:'Very short, relaxed.',segs:['3km easy'],note:'1 day to race. Stay loose but don\'t overstress.'},
-    {date:'4 Oct',day:'Fri',type:'brs',badge:'Rest',title:'Rest & final prep',detail:'Lay out kit. Carb load (pasta, rice, potatoes).',segs:[],note:'Race eve. Sleep early. Hydrate well.'},
-    {date:'5 Oct',day:'Sat',type:'btp',badge:'Pre-race',title:'10–15min easy jog',detail:'Very short, just to stay loose.',segs:['10–15min easy'],note:'Race day eve. Rest, eat well, sleep!'},
-    {date:'11 Oct',day:'Sun · RACE DAY',type:'brc',badge:'🏁 RACE DAY',title:'MBNA Chester Marathon 🏁',detail:'42.2km · Sub 4-hour target · 4:58/km pace',segs:['km 1–10: Settle in','km 10–25: Find rhythm','km 25–32: Mental focus','km 32–42.2: All in'],note:'You\'ve trained for this. Start conservatively. Hit your splits. Finish strong. Trust the 20 weeks of preparation. You\'ve got this!'},
-  ]}
+  {label:'Phase 5 — Race Week — 4–11 Oct',phase:'Phase 5',days:[
+    {date:'2026-10-05',day:'Mon',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],note:'6 days out. Legs only.'},
+    {date:'2026-10-06',day:'Tue',type:'btp',badge:'Shakeout',title:'6km with strides',detail:'6km easy + 4×20sec strides.',segs:['6km easy','4× strides'],note:'Wakes up fast-twitch fibres without fatiguing.'},
+    {date:'2026-10-07',day:'Wed',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],note:'Fitness is locked in. Nothing you do now makes you fitter.'},
+    {date:'2026-10-08',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 5km',detail:'5km easy.',segs:['5km easy'],note:'3 days out. Shake the legs, nothing more.'},
+    {date:'2026-10-09',day:'Fri',type:'brs',badge:'Rest',title:'Rest & prep',detail:'Lay out kit. Begin carb loading.',segs:[],note:'Pasta, rice, potatoes. Top up glycogen. No high fibre foods.'},
+    {date:'2026-10-10',day:'Sat',type:'btp',badge:'Pre-race',title:'20min shakeout',detail:'20min very easy jog.',segs:['20min easy'],note:'Race eve. Sleep early, hydrate well, eat familiar foods.'},
+    {date:'2026-10-11',day:'Sun · Race day',type:'brc',badge:'Race day',title:'MBNA Chester Marathon 🏁',detail:'42.2km · Sub-4 · 5:40/km. Start 5:45/km, lock in 5:38–5:40/km from 10km. Maintain form from 30km. Fuel every 45min from the gun.',segs:['0–10km: 5:40–5:45/km','10–30km: 5:38–5:40/km','30–42km: hold form'],note:'18 weeks of smart work. Trust it. Start slower than feels right — you\'ll thank yourself at 35km.'},
+  ]},
 ];
 
+// ── plan state ───────────────────────────────────────────────
 let planDone={};
-try{planDone=JSON.parse(localStorage.getItem('chesterMarathonPlan')||'{}');}catch(e){}
+try{planDone=JSON.parse(localStorage.getItem('chesterMarathon2026')||'{}');}catch(e){}
+let planMissed={};
+try{planMissed=JSON.parse(localStorage.getItem('chesterMarathon2026_missed')||'{}');}catch(e){}
+let planRescheduled={};
+try{planRescheduled=JSON.parse(localStorage.getItem('chesterMarathon2026_rescheduled')||'{}');}catch(e){}
+let planHistoryOpen={};  // tracks which week history blocks are expanded
+
+function savePlanState(){
+  try{
+    localStorage.setItem('chesterMarathon2026',JSON.stringify(planDone));
+    localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));
+    localStorage.setItem('chesterMarathon2026_rescheduled',JSON.stringify(planRescheduled));
+  }catch(e){}
+}
+
+function togglePlanDone(key){
+  planDone[key]=!planDone[key];
+  if(planDone[key]) delete planMissed[key];
+  savePlanState();
+  renderPlan(document.getElementById('tabContent'));
+}
+
+function markMissed(key,title){
+  planMissed[key]=title;
+  delete planDone[key];
+  savePlanState();
+  renderPlan(document.getElementById('tabContent'));
+}
+
+function unmarkMissed(key){
+  delete planMissed[key];
+  savePlanState();
+  renderPlan(document.getElementById('tabContent'));
+}
+
+function toggleHistory(weekKey){
+  // accept either a string key or a DOM element (via this.dataset.wk)
+  if(typeof weekKey==='object') weekKey=weekKey.dataset.wk;
+  planHistoryOpen[weekKey]=!planHistoryOpen[weekKey];
+  const block=document.getElementById('history-'+weekKey);
+  const btn=document.getElementById('histbtn-'+weekKey);
+  if(block){
+    block.classList.toggle('collapsed',!planHistoryOpen[weekKey]);
+    block.classList.toggle('expanded',!!planHistoryOpen[weekKey]);
+  }
+  if(btn){
+    const isWeekHistory=btn.textContent.includes('week');
+    btn.textContent=planHistoryOpen[weekKey]
+      ?(isWeekHistory?'▲ hide earlier this week':'▲ hide history')
+      :(isWeekHistory?'▼ show earlier this week':'▼ show history');
+  }
+}
+
+// ── replanning engine ─────────────────────────────────────────
+// Build a flat list of all plan days in order
+function flatPlanDays(){
+  const days=[];
+  planWeeks.forEach(w=>w.days.forEach(d=>days.push({...d,weekLabel:w.label,phase:w.phase})));
+  return days;
+}
+
+function localToday(){
+  const now=new Date();
+  return now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+}
+
+async function replanFromMissed(missedDate, missedTitle, btnEl){
+  if(btnEl){ btnEl.classList.add('loading'); btnEl.textContent='⟳ Replanning...'; }
+
+  const allDays=flatPlanDays();
+  const today=localToday();
+  const raceDate='2026-10-11';
+  const daysLeft=Math.round((new Date(raceDate)-new Date(today))/86400000);
+
+  // Build context: what's upcoming from today
+  const upcoming=allDays.filter(d=>d.date>=today&&d.date!==raceDate&&d.type!=='brs').slice(0,14);
+  const upcomingStr=upcoming.map(d=>`${d.date} (${d.day}): ${d.title}`).join('\n');
+
+  // All current missed sessions
+  const allMissed=Object.keys(planMissed).map(k=>`${k}: ${planMissed[k]}`).join('\n');
+
+  const ANTHROPIC_KEY=window.ANTHROPIC_KEY||'';
+  if(!ANTHROPIC_KEY){
+    showReplanResult(missedDate,'No Anthropic API key set. Set <code>window.ANTHROPIC_KEY</code> on the page.');
+    if(btnEl){btnEl.classList.remove('loading');btnEl.textContent='↻ Replan with Claude';}
+    return;
+  }
+
+  const prompt=`You are Karl's running coach. He is training for the MBNA Chester Marathon on 11 October 2026 (${daysLeft} days away), targeting sub-4 hours (5:40/km). He is in a 20-week structured plan.
+
+Today is ${today}. Karl has missed:
+${allMissed}
+
+His upcoming scheduled sessions (next 14 training days):
+${upcomingStr}
+
+His weekly structure: Mon recovery, Tue threshold/intervals, Wed easy+strength, Thu steady/marathon pace, Fri rest, Sat easy+strides, Sun long run.
+
+Give a practical replanning response in exactly 3 paragraphs:
+1. What the missed session(s) mean for his fitness and training load — honest but brief.
+2. Exactly how to adjust the NEXT 7 DAYS — name specific days and modified sessions. Be precise: e.g. "Move Thursday's 12km steady to Wednesday and drop it to 10km."
+3. One recovery or nutrition priority to support getting back on track.
+
+No bullet points. Max 180 words. Use Karl's name once.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'No response.';
+    showReplanResult(missedDate,text);
+  }catch(e){
+    showReplanResult(missedDate,'Error: '+e.message);
+  }
+  if(btnEl){btnEl.classList.remove('loading');btnEl.textContent='↻ Replan with Claude';}
+}
+
+function showReplanResult(dateKey,text){
+  const panel=document.getElementById('replan-'+dateKey);
+  if(!panel)return;
+  const paras=text.split(/\n+/).filter(Boolean).map(p=>`<p>${p}</p>`).join('');
+  panel.innerHTML=paras;
+  panel.style.display='block';
+}
 
 function totalPlanSessions(){let t=0;planWeeks.forEach(w=>w.days.forEach(d=>{if(d.type!=='brs')t++;}));return t;}
 function donePlanCount(){return Object.values(planDone).filter(Boolean).length;}
 
-function togglePlanDone(key){
-  planDone[key]=!planDone[key];
-  try{localStorage.setItem('chesterMarathonPlan',JSON.stringify(planDone));}catch(e){}
-  renderPlan(document.getElementById('tabContent'));
-}
+
 
 function renderPlan(el){
-  const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
-  function isToday(dateStr){
-    const m=dateStr.match(/(\d+)\s+(\w+)/);
-    if(!m) return false;
-    const now=new Date();
-    return +m[1]===now.getDate() && months[m[2]]===now.getMonth();
+  const today=localToday();
+  function isPast(d){ return d<today; }
+  function isToday2(d){ return d===today; }
+  function fmtDate(ds){
+    const [y,m,dd]=ds.split('-').map(Number);
+    return new Date(y,m-1,dd).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   }
+  function phaseClass(phase){
+    if(!phase) return 'phase-1';
+    const n=phase.match(/Phase\s*(\d)/i);
+    return n?'phase-'+n[1]:'phase-1';
+  }
+  function buildCard(d,opts){
+    opts=opts||{};
+    const pinned=opts.pinned||false;
+    const isDone=!!planDone[d.date];
+    const isMissed=!!planMissed[d.date];
+    const isRace=d.type==='brc';
+    const isPast2=isPast(d.date);
+    const isTod=isToday2(d.date);
+    const isActionable=d.type!=='brs'&&!isRace;
+    const isRescheduled=!!planRescheduled[d.date];
+    const safeTitle=d.title.replace(/'/g,"\'").replace(/"/g,'&quot;');
+    let cardCls='plan-card';
+    if(isTod&&!pinned) cardCls+=' today';
+    if(isRace) cardCls+=' race-day';
+    if(isMissed) cardCls+=' missed-card';
+    if(isRescheduled&&!isMissed) cardCls+=' rescheduled-card';
+    if(isPast2&&!isTod) cardCls+=' is-past';
+    if(isPast2&&isDone) cardCls+=' done-card';
+    const badges='<span class="plan-badge '+d.type+'">'+d.badge+'</span>'
+      +(isDone?'<span class="plan-badge bdone">\u2713 Done</span>':'')
+      +(isMissed?'<span class="plan-badge bmissed">\u2717 Missed</span>':'')
+      +(isRescheduled&&!isMissed?'<span class="plan-badge brescheduled">\u21bb Rescheduled</span>':'');
+    const segsHtml=d.segs&&d.segs.length
+      ?'<div class="plan-segs">'+d.segs.map(function(s){return '<span class="plan-seg">'+s+'</span>';}).join('')+'</div>':'';
+    const noteHtml=d.note?'<div class="plan-note">'+d.note+'</div>':'';
+    let actionsHtml='';
+    if(isActionable&&!isMissed){
+      actionsHtml='<div class="plan-actions">'
+        +'<button class="plan-done-btn'+(isDone?' done':'')+'" data-action="done" data-date="'+d.date+'">'+(isDone?'✓ Completed':'Mark done')+'</button>'
+        +((isPast2||isTod)&&!isDone?'<button class="plan-missed-btn" data-action="missed" data-date="'+d.date+'" data-title="'+safeTitle+'">✗ Missed</button>':'')
+        +'</div>';
+    } else if(isMissed){
+      actionsHtml='<div class="plan-actions">'
+        +'<button class="plan-adapt-btn" data-action="replan" data-date="'+d.date+'" data-title="'+safeTitle+'">↻ Replan with Claude</button>'
+        +'<button class="plan-missed-btn" data-action="undo" data-date="'+d.date+'">↩ Undo</button>'
+        +'</div>'
+        +'<div class="plan-replan-panel" id="replan-'+d.date+'" style="display:none"></div>';
+    }
+    return '<div class="'+cardCls+'">'
+      +'<div class="plan-date-col">'
+        +'<div class="plan-date">'+fmtDate(d.date)+'</div>'
+        +'<div class="plan-day">'+(isTod&&!pinned?d.day+' \u00b7 Today':d.day)+'</div>'
+      +'</div>'
+      +'<div class="plan-content">'
+        +'<div class="plan-badges">'+badges+'</div>'
+        +'<div class="plan-title">'+d.title+'</div>'
+        +'<div class="plan-detail">'+d.detail+'</div>'
+        +segsHtml+noteHtml+actionsHtml
+      +'</div></div>';
+  }
+
+  // progress bar
   const total=totalPlanSessions(), done=donePlanCount(), pct=Math.round((done/total)*100);
-  let html=`<div class="prog">
-    <div class="prog-labels"><span>${done} of ${total} sessions done</span><span>${pct}%</span></div>
-    <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
-  </div>`;
-  planWeeks.forEach(w=>{
-    html+=`<div class="plan-week">${w.label}</div>`;
-    w.days.forEach(d=>{
-      const isDone=planDone[d.date];
-      const isRace=d.type==='brc';
-      const isToday2=isToday(d.date);
-      html+=`<div class="plan-card${isToday2?' today':''}${isRace?' race-day':''}">
-        <div class="plan-date-col">
-          <div class="plan-date">${d.date}</div>
-          <div class="plan-day">${isToday2?d.day+' · Today':d.day}</div>
-        </div>
-        <div class="plan-content">
-          <span class="plan-badge ${d.type}">${d.badge}</span>
-          ${isDone?'<span class="plan-badge bz2" style="margin-left:4px">Done ✓</span>':''}
-          <div class="plan-title">${d.title}</div>
-          <div class="plan-detail">${d.detail}</div>
-          ${d.segs.length?`<div class="plan-segs">${d.segs.map(s=>`<span class="plan-seg">${s}</span>`).join('')}</div>`:''}
-          ${d.note?`<div class="plan-note">${d.note}</div>`:''}
-          ${d.type!=='brs'?`<button class="plan-done-btn${isDone?' done':''}" onclick="togglePlanDone('${d.date}')">${isDone?'Completed':'Mark done'}</button>`:''}
-        </div>
-      </div>`;
-    });
+  const missedCount=Object.keys(planMissed).length;
+  let html='<div class="prog">'
+    +'<div class="prog-labels"><span>'+done+' of '+total+' sessions done'+(missedCount>0?' &middot; <span style="color:#f87171">'+missedCount+' missed</span>':'')+'</span><span>'+pct+'%</span></div>'
+    +'<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
+    +'</div>';
+
+  // find today entry
+  var todayEntry=null;
+  planWeeks.forEach(function(w){ w.days.forEach(function(d){ if(d.date===today){ todayEntry=d; } }); });
+
+  // pinned today / next session card
+  if(todayEntry){
+    html+='<div class="plan-today-pin">'+buildCard(todayEntry,{pinned:true})+'</div>';
+  } else {
+    var allDays=flatPlanDays();
+    var next=null; for(var i=0;i<allDays.length;i++){ if(allDays[i].date>today){next=allDays[i];break;} }
+    if(next) html+='<div class="plan-today-pin" style="border-color:var(--border)"><div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;margin-bottom:6px">NEXT SESSION</div>'+buildCard(next,{pinned:true})+'</div>';
+  }
+
+  // weeks
+  planWeeks.forEach(function(w,wi){
+    var wDays=w.days;
+    var pastDays=wDays.filter(function(d){return isPast(d.date)&&!isToday2(d.date);});
+    var futureDays=wDays.filter(function(d){return !isPast(d.date)||isToday2(d.date);});
+    var weekStart=wDays.length?wDays[0].date:'';
+    var weekEnd=wDays.length?wDays[wDays.length-1].date:'';
+    var weekContainsToday=wDays.some(function(d){return isToday2(d.date);});
+    var weekIsEntirelyPast=weekEnd<today;
+    var histKey='w'+wi;
+    var isOpen=!!planHistoryOpen[histKey];
+    var phasePill=w.phase?'<span class="plan-phase-pill '+phaseClass(w.phase)+'">'+w.phase+'</span>':'';
+
+    html+='<div class="plan-phase-header">'
+      +'<span class="plan-phase-label">'+w.label+'</span>'
+      +phasePill
+      +(weekIsEntirelyPast?'<button class="plan-history-toggle" id="histbtn-'+histKey+'" data-action="history" data-wk="'+histKey+'">'+(isOpen?'\u25b2 hide history':'\u25bc show history')+'</button>':'')
+      +'</div>';
+
+    if(weekIsEntirelyPast){
+      var doneCnt=wDays.filter(function(d){return planDone[d.date];}).length;
+      var missedCnt=wDays.filter(function(d){return planMissed[d.date];}).length;
+      var trainable=wDays.filter(function(d){return d.type!=='brs'&&d.type!=='brc';}).length;
+      html+='<div class="plan-history-block '+(isOpen?'expanded':'collapsed')+'" id="history-'+histKey+'">';
+      html+='<div style="font-family:var(--mono);font-size:10px;color:var(--muted);padding:4px 2px;display:flex;gap:12px">'
+        +'<span style="color:var(--accent)">\u2713 '+doneCnt+'/'+trainable+' done</span>'
+        +(missedCnt>0?'<span style="color:#f87171">\u2717 '+missedCnt+' missed</span>':'')
+        +'</div>';
+      wDays.forEach(function(d){ html+=buildCard(d); });
+      html+='</div>';
+    } else if(weekContainsToday){
+      if(pastDays.length>0){
+        var histKey2='w'+wi+'p';
+        var isOpen2=!!planHistoryOpen[histKey2];
+        html+='<div style="margin-bottom:4px"><button class="plan-history-toggle" id="histbtn-'+histKey2+'" data-action="history" data-wk="'+histKey2+'">'+(isOpen2?'\u25b2 hide earlier this week':'\u25bc show earlier this week')+'</button></div>';
+        html+='<div class="plan-history-block '+(isOpen2?'expanded':'collapsed')+'" id="history-'+histKey2+'">';
+        pastDays.forEach(function(d){ if(!isToday2(d.date)) html+=buildCard(d); });
+        html+='</div>';
+      }
+      futureDays.forEach(function(d){ if(!isToday2(d.date)) html+=buildCard(d); });
+    } else {
+      wDays.forEach(function(d){ html+=buildCard(d); });
+    }
   });
+
   el.innerHTML=html;
 }
+
+
+
+// ── plan button delegation ───────────────────────────────────
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('[data-action]');
+  if(!btn) return;
+  const action = btn.dataset.action;
+  const date   = btn.dataset.date;
+  const title  = btn.dataset.title || '';
+  if(action==='done')   { togglePlanDone(date); }
+  if(action==='missed') { markMissed(date, title); }
+  if(action==='undo')   { unmarkMissed(date); }
+  if(action==='replan') { replanFromMissed(date, title, btn); }
+  if(action==='history'){
+    const key = btn.dataset.wk;
+    toggleHistory(key);
+  }
+});
 
 // ── range ─────────────────────────────────────────────────────
 function setRange(n){
   days=n;
-  console.log('Range changed to', days, 'days');
-  document.querySelectorAll('.range-btn').forEach(b=>b.classList.remove('on'));
-  event.target.classList.add('on');
+  document.querySelectorAll('.range-btn').forEach(b=>{
+    b.classList.toggle('on', (b.textContent.trim()===(n+'D')));
+  });
   renderMetrics();
-  // Force re-render of current tab
-  const el=document.getElementById('tabContent');
-  if(el) {
-    console.log('Re-rendering tab:', curTab);
-    // Destroy any active charts before re-rendering
-    if(chart){chart.destroy();chart=null;}
-    showTab(curTab);
-  } else {
-    console.warn('tabContent element not found');
-  }
+  showTab(curTab);
 }
 
 async function generateInsight(force=false) {
@@ -782,13 +1035,6 @@ async function generateInsight(force=false) {
     const res = await fetch(GH + 'insight.json?t=' + Date.now());
     if (!res.ok) throw new Error('not found');
     const data = await res.json();
-    
-    // Update the date from the JSON file
-    if (data.date) {
-      const insightDate = new Date(data.date);
-      document.getElementById('insightDate').textContent = 'Generated for ' + insightDate.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-    }
-    
     const paragraphs = data.insight.trim().split(/\n+/).filter(Boolean);
     const labels = ['Yesterday', "Today's session", 'Tip'];
     const html = paragraphs.map((p,i) => `
@@ -801,118 +1047,6 @@ async function generateInsight(force=false) {
     document.getElementById('insightContent').innerHTML =
       `<div class="insight-text" style="color:var(--color-text-tertiary)">Could not load insight. Error: ${err.message}</div>`;
   }
-}
-
-// ── weekly distance comparison ───────────────────────────────
-function renderWeekly(el) {
-  const weekData = [];
-  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
-  
-  // Helper to parse date string like "18 May" to Date object
-  function parseDate(dateStr) {
-    const m = dateStr.match(/(\d+)\s+(\w+)/);
-    if (!m) return null;
-    const day = +m[1];
-    const month = months[m[2]];
-    if (month === undefined) return null;
-    // Assume 2026
-    return new Date(2026, month, day);
-  }
-  
-  // Collect planned distances by week
-  planWeeks.forEach((week, weekIdx) => {
-    let plannedRun = 0, plannedCycle = 0;
-    const weekStart = parseDate(week.days[0].date);
-    const weekEnd = parseDate(week.days[week.days.length - 1].date);
-    
-    if (!weekStart || !weekEnd) return;
-    
-    week.days.forEach(day => {
-      const dayDetail = day.detail || '';
-      
-      // Extract distance from detail (e.g., "20km", "22km", "Long run — 26km")
-      const kmMatch = dayDetail.match(/(\d+)\s*km/i);
-      const kmVal = kmMatch ? +kmMatch[1] : 0;
-      
-      // Categorize by type
-      if (day.type === 'bz2' || day.type === 'bmx' || day.type === 'btp' || day.type === 'brc') {
-        if (dayDetail.toLowerCase().includes('cycl') || dayDetail.toLowerCase().includes('ride')) {
-          plannedCycle += kmVal;
-        } else {
-          plannedRun += kmVal;
-        }
-      }
-    });
-    
-    // Calculate actual distances from activities for this week
-    let actualRun = 0, actualCycle = 0;
-    const acts = D.activities || [];
-    acts.forEach(a => {
-      const actDate = new Date(a.startTimeLocal.split('T')[0]);
-      if (actDate >= weekStart && actDate <= weekEnd) {
-        const dist = (parseFloat(a.distance) || 0) / 1000;
-        const type = (a.activityType_typeKey || '').toLowerCase();
-        
-        if (type.includes('run')) {
-          actualRun += dist;
-        } else if (/cycl|ride|virtual|biking/.test(type)) {
-          actualCycle += dist;
-        }
-      }
-    });
-    
-    const weekLabel = week.label.split('—')[0].trim();
-    weekData.push({
-      week: weekLabel,
-      plannedRun: Math.round(plannedRun * 10) / 10,
-      actualRun: Math.round(actualRun * 10) / 10,
-      plannedCycle: Math.round(plannedCycle * 10) / 10,
-      actualCycle: Math.round(actualCycle * 10) / 10,
-      weekStart,
-      weekEnd
-    });
-  });
-  
-  // Build chart
-  const labels = weekData.map(w => w.week);
-  const pRunData = weekData.map(w => w.plannedRun);
-  const aRunData = weekData.map(w => w.actualRun);
-  const pCycleData = weekData.map(w => w.plannedCycle);
-  const aCycleData = weekData.map(w => w.actualCycle);
-  
-  makeChart('weekChart', 'bar', labels, [
-    {label: 'Planned running (km)', data: pRunData, backgroundColor: '#ef443366', borderColor: '#ef4433', borderWidth: 1},
-    {label: 'Actual running (km)', data: aRunData, backgroundColor: '#10b981cc', borderColor: '#10b981', borderWidth: 1},
-    {label: 'Planned cycling (km)', data: pCycleData, backgroundColor: '#0084ff66', borderColor: '#0084ff', borderWidth: 1},
-    {label: 'Actual cycling (km)', data: aCycleData, backgroundColor: '#06b6d466', borderColor: '#06b6d4', borderWidth: 1},
-  ], {
-    y: {stacked: false}
-  });
-  
-  const maxWeek = weekData.reduce((max, w, i) => 
-    (w.plannedRun + w.plannedCycle > weekData[max].plannedRun + weekData[max].plannedCycle) ? i : max, 0);
-  const summary = weekData.map((w, i) => {
-    const runDiff = w.actualRun - w.plannedRun;
-    const cycDiff = w.actualCycle - w.plannedCycle;
-    const runStatus = Math.abs(runDiff) < 1 ? '✓' : runDiff > 0 ? '↑' : '↓';
-    return `<div style="padding:8px;margin:4px 0;background:rgba(255,255,255,0.02);border-left:2px solid ${runDiff >= -2 ? '#10b981' : '#ef4433'};font-size:12px">
-      <strong>${w.week}</strong><br>
-      Run: ${w.actualRun}/${w.plannedRun}km ${runStatus} | Cycle: ${w.actualCycle}/${w.plannedCycle}km
-    </div>`;
-  }).join('');
-  
-  el.innerHTML = `
-    <div style="height:400px;margin-bottom:24px">
-      <canvas id="weekChart"></canvas>
-    </div>
-    <div style="padding:16px;background:rgba(0,0,0,0.2);border-radius:8px;margin-bottom:16px">
-      <div style="color:var(--muted);font-size:12px;margin-bottom:12px">Click a week to see details</div>
-      ${summary}
-    </div>
-    <div style="color:var(--muted);font-size:11px;padding:12px;background:rgba(255,255,255,0.03);border-radius:6px">
-      <strong>Legend:</strong> ✓ On track | ↑ Above plan | ↓ Below plan · Green bars = running on track · Target: Hit 80%+ of planned distance
-    </div>
-  `;
 }
 
 // ── training status ──────────────────────────────────────────
@@ -1012,6 +1146,7 @@ async function renderTraining(el) {
 let heatmapInstance = null;
 let heatmapRoutes = [];
 let activeFilter = 'all';
+let heatmapMode = 'heatmap'; // 'heatmap' | 'coverage'
 
 function decodePolyline(encoded) {
   let index = 0, lat = 0, lng = 0, coords = [];
@@ -1061,16 +1196,25 @@ function buildSegmentMap(routes) {
 }
 
 async function renderHeatmap(el) {
+  const heatLegend = heatmapMode === 'heatmap'
+    ? '<span>🔴 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span><span style="margin-left:8px">Brighter + thicker = more times covered</span>'
+    : '<span>🟠 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span><span style="margin-left:8px">Every unique road or trail you have ever covered</span>';
+
   el.innerHTML = `
-    <div class="heatmap-filters" id="hmFilters">
-      <button class="hf-btn on" onclick="filterHeatmap('all')">All</button>
-      <button class="hf-btn" onclick="filterHeatmap('run')">Runs</button>
-      <button class="hf-btn" onclick="filterHeatmap('cycle')">Cycles</button>
-      <button class="hf-btn" onclick="filterHeatmap('other')">Other</button>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px">
+      <div class="heatmap-filters" id="hmFilters" style="margin-bottom:0">
+        <button class="hf-btn ${activeFilter==='all'?'on':''}" onclick="filterHeatmap('all')">All</button>
+        <button class="hf-btn ${activeFilter==='run'?'on':''}" onclick="filterHeatmap('run')">Runs</button>
+        <button class="hf-btn ${activeFilter==='cycle'?'on':''}" onclick="filterHeatmap('cycle')">Cycles</button>
+        <button class="hf-btn ${activeFilter==='other'?'on':''}" onclick="filterHeatmap('other')">Other</button>
+      </div>
+      <div style="display:flex;gap:4px;margin-left:auto">
+        <button class="hf-btn mode-btn ${heatmapMode==='heatmap'?'on':''}" onclick="setHeatmapMode('heatmap')" title="Density heatmap — brighter where you run more often">🔥 Heatmap</button>
+        <button class="hf-btn mode-btn ${heatmapMode==='coverage'?'on':''}" onclick="setHeatmapMode('coverage')" title="Coverage map — every road or trail you have ever covered">🗺 Coverage</button>
+      </div>
     </div>
-    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px;display:flex;gap:16px">
-      <span>🔴 Runs</span><span>🔵 Cycles</span><span>🟣 Other</span>
-      <span style="margin-left:8px">Brighter + thicker = more times covered</span>
+    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;padding-left:2px;display:flex;gap:16px;flex-wrap:wrap">
+      ${heatLegend}
     </div>
     <div id="heatmapContainer" style="height:460px;width:100%;display:block;position:relative;z-index:0;"></div>`;
 
@@ -1092,7 +1236,7 @@ async function renderHeatmap(el) {
   container.style.width = '100%';
 
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO', maxZoom: 19
   }).addTo(heatmapInstance);
 
@@ -1106,62 +1250,105 @@ async function renderHeatmap(el) {
     return;
   }
 
-  // Build segment usage counts for density
-  const segCounts = buildSegmentMap(filtered);
-  const maxCount = Math.max(...segCounts.values());
-
-  // Determine base colour per filter
-  const colorFilter = activeFilter === 'all' ? 'run' : activeFilter;
-
-  // Draw each route with opacity/weight based on how many times that path is covered
   const allCoords = [];
-  filtered.forEach(route => {
-    if (!route.polyline) return;
-    const coords = decodePolyline(route.polyline);
-    if (!coords.length) return;
-    allCoords.push(...coords);
 
-    // Calculate average coverage for this route's segments
-    let totalCount = 0, segCount = 0;
-    for (let i = 0; i < coords.length - 1; i++) {
-      const lat = Math.round((coords[i][0] + coords[i+1][0]) / 2 * 1000) / 1000;
-      const lng = Math.round((coords[i][1] + coords[i+1][1]) / 2 * 1000) / 1000;
-      const key = `${lat},${lng}`;
-      totalCount += segCounts.get(key) || 1;
-      segCount++;
-    }
-    const avgCoverage = segCount > 0 ? totalCount / segCount : 1;
-    const ratio = Math.min(avgCoverage / Math.max(maxCount * 0.6, 1), 1);
+  if (heatmapMode === 'heatmap') {
+    // ── HEATMAP MODE: density-weighted opacity & thickness ──
+    const segCounts = buildSegmentMap(filtered);
+    const maxCount = Math.max(...segCounts.values());
 
-    // Get type-specific colour if showing all
-    const typeFilter = activeFilter === 'all' ? getFilterType(route.type) : activeFilter;
-    const col = getHeatColor(typeFilter);
+    filtered.forEach(route => {
+      if (!route.polyline) return;
+      const coords = decodePolyline(route.polyline);
+      if (!coords.length) return;
+      allCoords.push(...coords);
 
-    // Strava style: very faint for once, glowing for frequent routes
-    const opacity = 0.06 + ratio * 0.88;
-    const weight = 0.8 + ratio * 3;
+      let totalCount = 0, segCount = 0;
+      for (let i = 0; i < coords.length - 1; i++) {
+        const lat = Math.round((coords[i][0] + coords[i+1][0]) / 2 * 1000) / 1000;
+        const lng = Math.round((coords[i][1] + coords[i+1][1]) / 2 * 1000) / 1000;
+        totalCount += segCounts.get(`${lat},${lng}`) || 1;
+        segCount++;
+      }
+      const avgCoverage = segCount > 0 ? totalCount / segCount : 1;
+      const ratio = Math.min(avgCoverage / Math.max(maxCount * 0.6, 1), 1);
+      const typeFilter = activeFilter === 'all' ? getFilterType(route.type) : activeFilter;
+      const col = getHeatColor(typeFilter);
+      const opacity = 0.06 + ratio * 0.88;
+      const weight = 0.8 + ratio * 3;
+      const color = `rgba(${col.r},${col.g},${col.b},${opacity.toFixed(2)})`;
 
-    // Add a subtle glow effect for heavily used routes by layering
-    const color = `rgba(${col.r},${col.g},${col.b},${opacity.toFixed(2)})`;
+      if (ratio > 0.4) {
+        L.polyline(coords, {
+          color: `rgba(${col.r},${col.g},${col.b},${(opacity * 0.3).toFixed(2)})`,
+          weight: weight * 3, lineCap: 'round', lineJoin: 'round'
+        }).addTo(heatmapInstance);
+      }
+      L.polyline(coords, { color, weight, lineCap: 'round', lineJoin: 'round' })
+        .bindPopup(`<b>${route.name}</b><br>${route.type} · ${(route.distance/1000).toFixed(1)}km<br>${route.date}`)
+        .addTo(heatmapInstance);
+    });
 
-    if (ratio > 0.4) {
-      // Glow layer underneath for popular routes
-      L.polyline(coords, {
-        color: `rgba(${col.r},${col.g},${col.b},${(opacity * 0.3).toFixed(2)})`,
-        weight: weight * 3,
-        lineCap: 'round',
-        lineJoin: 'round'
-      }).addTo(heatmapInstance);
-    }
+  } else {
+    // ── COVERAGE MODE: deduplicate segments, show every unique road bold & solid ──
+    // Build a set of unique segments across all routes at ~25m resolution
+    const GRID = 4000;
+    const seen = new Set();
+    // We still draw per-route but skip segment cells already drawn
+    // This makes every road you've ever covered show as one bold line
 
-    L.polyline(coords, {
-      color,
-      weight,
-      lineCap: 'round',
-      lineJoin: 'round'
-    }).bindPopup(`<b>${route.name}</b><br>${route.type} · ${(route.distance/1000).toFixed(1)}km<br>${route.date}`)
-      .addTo(heatmapInstance);
-  });
+    filtered.forEach(route => {
+      if (!route.polyline) return;
+      const coords = decodePolyline(route.polyline);
+      if (!coords.length) return;
+      allCoords.push(...coords);
+    });
+
+    // Deduplicate: merge all routes into unique segment cells, then draw as one layer per type
+    const typeGroups = { run: [], cycle: [], other: [] };
+    filtered.forEach(route => {
+      if (!route.polyline) return;
+      const coords = decodePolyline(route.polyline);
+      const ft = getFilterType(route.type);
+      const group = typeGroups[ft] || typeGroups.other;
+      // Build unique segments for this route
+      const uniqueSegs = [];
+      let seg = [];
+      for (let i = 0; i < coords.length; i++) {
+        const lat = Math.round(coords[i][0] * GRID) / GRID;
+        const lng = Math.round(coords[i][1] * GRID) / GRID;
+        const key = `${ft}:${lat},${lng}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          seg.push(coords[i]);
+        } else {
+          if (seg.length > 1) uniqueSegs.push(seg);
+          seg = [];
+        }
+      }
+      if (seg.length > 1) uniqueSegs.push(seg);
+      uniqueSegs.forEach(s => group.push(s));
+    });
+
+    // Draw each type group as bold solid lines with a glow underneath
+    const coverageColors = {
+      run:   { main: 'rgba(255,100,20,0.95)',  glow: 'rgba(255,120,40,0.25)' },
+      cycle: { main: 'rgba(30,140,255,0.95)',  glow: 'rgba(30,140,255,0.22)' },
+      other: { main: 'rgba(180,80,255,0.95)',  glow: 'rgba(180,80,255,0.22)' },
+    };
+
+    Object.entries(typeGroups).forEach(([type, segs]) => {
+      if (!segs.length) return;
+      const c = coverageColors[type];
+      segs.forEach(seg => {
+        if (seg.length < 2) return;
+        // Glow layer
+        L.polyline(seg, { color: c.glow, weight: 10, lineCap: 'round', lineJoin: 'round', interactive: false }).addTo(heatmapInstance);
+        // Bold solid line on top
+        L.polyline(seg, { color: c.main, weight: 3.5, lineCap: 'round', lineJoin: 'round' }).addTo(heatmapInstance);
+      });
+    });
+  }
 
   if (allCoords.length) {
     heatmapInstance.fitBounds(allCoords);
@@ -1170,8 +1357,13 @@ async function renderHeatmap(el) {
 
 function filterHeatmap(type) {
   activeFilter = type;
-  document.querySelectorAll('.hf-btn').forEach(b => b.classList.remove('on'));
-  event.target.classList.add('on');
+  const el = document.getElementById('tabContent');
+  if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
+  renderHeatmap(el);
+}
+
+function setHeatmapMode(mode) {
+  heatmapMode = mode;
   const el = document.getElementById('tabContent');
   if (heatmapInstance) { heatmapInstance.remove(); heatmapInstance = null; }
   renderHeatmap(el);
