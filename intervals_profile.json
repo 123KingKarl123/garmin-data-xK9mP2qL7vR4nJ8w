@@ -31,8 +31,8 @@
   "icu_last_seen": "2026-06-09T04:56:48.715+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 49,
-  "icu_weight": 92.01,
+  "icu_resting_hr": 48,
+  "icu_weight": 91.48,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -262,7 +262,7 @@
         "type": "FFT_CURVES",
         "criticalPower": 187,
         "wPrime": 15450,
-        "pMax": 1115,
+        "pMax": 593,
         "inputPointIndexes": [
           74,
           89
