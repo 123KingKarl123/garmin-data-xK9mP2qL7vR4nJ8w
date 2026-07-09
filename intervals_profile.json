@@ -32,7 +32,7 @@
   "status": "ACTIVE",
   "status_updated": null,
   "icu_resting_hr": 46,
-  "icu_weight": 91.48,
+  "icu_weight": 91.059,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -166,6 +166,7 @@
   "icu_tags": [],
   "icu_notes": null,
   "strava_authorized": false,
+  "custom_items": [],
   "sportSettings": [
     {
       "id": 2416821,
@@ -749,6 +750,5 @@
       "eFTPSupported": false,
       "use_distance_for_intervals": false
     }
-  ],
-  "custom_items": []
+  ]
 }
