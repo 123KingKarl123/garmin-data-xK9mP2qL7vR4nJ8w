@@ -124,6 +124,29 @@
   "google_wellness_keys": null,
   "icu_email_verified": true,
   "icu_email_disabled": null,
+  "email_notifications": [
+    "NEWSLETTER",
+    "ACHIEVEMENTS",
+    "FOLLOW_REQUEST",
+    "COACH_ME_REQUEST",
+    "PRIVATE_CHAT",
+    "PRIVATE_MSG",
+    "GROUP_CHAT",
+    "GROUP_MSG",
+    "ACTIVITY_CHAT",
+    "ACTIVITY_MSG",
+    "COACH_TICK",
+    "FOLLOWED_ACTIVITY_CHAT",
+    "COACHED_ACTIVITY_CHAT",
+    "FOLLOWED_NEW_ACTIVITY",
+    "COACHED_NEW_ACTIVITY",
+    "GEAR_ALERTS",
+    "PLAN_FOR_WEEK"
+  ],
+  "push_notifications": [
+    "NEW_ACTIVITY"
+  ],
+  "include_descr_in_plan_for_week": true,
   "icu_send_achievements": true,
   "icu_send_newsletter": true,
   "icu_send_private_chat": true,
@@ -138,7 +161,6 @@
   "icu_send_coach_me_req": true,
   "icu_send_gear_alerts": true,
   "icu_send_plan_for_week": true,
-  "include_descr_in_plan_for_week": true,
   "icu_send_followed_new_activity": true,
   "icu_send_coached_new_activity": true,
   "icu_send_coach_tick": true,
@@ -166,7 +188,6 @@
   "icu_tags": [],
   "icu_notes": null,
   "strava_authorized": false,
-  "custom_items": [],
   "sportSettings": [
     {
       "id": 2416821,
@@ -750,5 +771,6 @@
       "eFTPSupported": false,
       "use_distance_for_intervals": false
     }
-  ]
+  ],
+  "custom_items": []
 }
