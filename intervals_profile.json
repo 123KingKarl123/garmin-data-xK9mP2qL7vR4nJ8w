@@ -31,8 +31,8 @@
   "icu_last_seen": "2026-06-09T04:56:48.715+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 46,
-  "icu_weight": 91.739,
+  "icu_resting_hr": 51,
+  "icu_weight": 91.169,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -146,6 +146,7 @@
   "push_notifications": [
     "NEW_ACTIVITY"
   ],
+  "has_push_subscriptions": false,
   "include_descr_in_plan_for_week": true,
   "icu_send_achievements": true,
   "icu_send_newsletter": true,
