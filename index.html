@@ -11,14 +11,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   :root {
-    --bg: #ffffff;
-    --surface: #ffffff;
-    --surface2: #f5f5f7;
-    --border: #d2d2d7;
-    --text: #1d1d1f;
-    --muted: #6e6e73;
-    --accent: #30d158;
-    --accent2: #0071e3;
+    --bg: #000000;
+    --surface: #1c1c1e;
+    --surface2: #232326;
+    --border: #38383a;
+    --text: #f5f5f7;
+    --muted: #86868b;
+    --accent: #32d74b;
+    --accent2: #2997ff;
     --accent3: #ff375f;
     --accent4: #ff9f0a;
     --warn: #ffd60a;
@@ -26,7 +26,7 @@
     --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
 
     --color-text-primary: var(--text);
-    --color-text-secondary: #424245;
+    --color-text-secondary: #a1a1a6;
     --color-text-tertiary: var(--muted);
     --color-background-secondary: var(--surface2);
     --border-radius-lg: 18px;
@@ -48,12 +48,12 @@
   /* range tabs (segmented control) */
   .range-row { display: inline-flex; gap: 2px; margin-bottom: 2rem; background: var(--surface2); padding: 4px; border-radius: 11px; }
   .range-btn { font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 7px 20px; border-radius: 8px; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all .2s; }
-  .range-btn.on { background: #ffffff; color: var(--text); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+  .range-btn.on { background: #3a3a3c; color: var(--text); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
 
   /* metric grid */
   .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 2.5rem; }
-  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.15rem 1.3rem; transition: box-shadow .2s ease, transform .2s ease; }
-  .metric:hover { box-shadow: 0 6px 20px rgba(0,0,0,.06); transform: translateY(-1px); }
+  .metric { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.15rem 1.3rem; transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease; }
+  .metric:hover { box-shadow: 0 6px 20px rgba(0,0,0,.35); border-color: #48484a; transform: translateY(-1px); }
   .metric-label { font-family: var(--sans); font-size: 11px; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
   .metric-value { font-size: 28px; font-weight: 600; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
   .metric-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
@@ -68,42 +68,42 @@
   .tab.on { color: var(--text); border-bottom-color: var(--accent2); font-weight: 600; }
 
   /* chart area */
-  .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--border-radius-lg); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,.03); }
+  .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--border-radius-lg); padding: 1.75rem; margin-bottom: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
   .chart-panel h3 { font-family: var(--sans); font-size: 12px; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; font-weight: 600; margin-bottom: 1.25rem; }
   .chart-wrap { position: relative; height: 220px; }
 
   /* activity list */
-  .act-row { display: flex; align-items: center; gap: 12px; padding: .9rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 8px; transition: box-shadow .2s; }
-  .act-row:hover { box-shadow: 0 6px 18px rgba(0,0,0,.05); }
+  .act-row { display: flex; align-items: center; gap: 12px; padding: .9rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 8px; transition: box-shadow .2s, border-color .2s; }
+  .act-row:hover { box-shadow: 0 6px 18px rgba(0,0,0,.3); border-color: #48484a; }
   .act-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; background: var(--surface2); }
   .act-type { font-size: 14px; font-weight: 600; color: var(--text); min-width: 110px; text-transform: capitalize; }
   .act-stat { font-size: 12.5px; color: var(--muted); font-family: var(--sans); }
   .act-date { margin-left: auto; font-size: 12px; color: var(--muted); font-family: var(--sans); }
 
   /* training plan */
-  .plan-today-pin { background: linear-gradient(160deg, #eaf4ff, #f5f5f7); border: 1px solid #cfe4ff; border-radius: 16px; padding: 1.1rem 1.3rem; margin-bottom: 1.4rem; position: relative; }
+  .plan-today-pin { background: linear-gradient(160deg, #0d1f33, #1c1c1e); border: 1px solid #164a7a; border-radius: 16px; padding: 1.1rem 1.3rem; margin-bottom: 1.4rem; position: relative; }
   .plan-today-pin::before { content: 'TODAY'; font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .1em; color: var(--accent2); display: block; margin-bottom: 8px; }
   .plan-phase-header { display: flex; align-items: center; gap: 10px; margin: 1.6rem 0 .7rem; }
   .plan-phase-label { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .03em; text-transform: uppercase; flex: 1; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
   .plan-phase-pill { font-family: var(--sans); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
-  .phase-1 { background: #e3f9ea; color: #1c8a44; }
-  .phase-2 { background: #e6f1ff; color: #0058b0; }
-  .phase-3 { background: #f3ebff; color: #7a3fd4; }
-  .phase-4 { background: #fff2e0; color: #c2670a; }
-  .phase-5 { background: #ffe9e9; color: #c92f2f; }
+  .phase-1 { background: rgba(50,215,75,0.15); color: #4fe36b; }
+  .phase-2 { background: rgba(41,151,255,0.15); color: #5cadff; }
+  .phase-3 { background: rgba(175,120,255,0.16); color: #b98aff; }
+  .phase-4 { background: rgba(255,159,10,0.16); color: #ffb340; }
+  .phase-5 { background: rgba(255,55,95,0.16); color: #ff6482; }
   .plan-history-toggle { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--muted); cursor: pointer; background: var(--surface2); border: none; border-radius: 8px; padding: 5px 12px; display: flex; align-items: center; gap: 4px; white-space: nowrap; transition: all .15s; }
-  .plan-history-toggle:hover { color: var(--text); background: #e8e8ed; }
+  .plan-history-toggle:hover { color: var(--text); background: #3a3a3c; }
   .plan-history-block { overflow: hidden; transition: max-height .35s ease; }
   .plan-history-block.collapsed { max-height: 0; }
   .plan-history-block.expanded { max-height: 9999px; }
   .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: .9rem 1.2rem; margin-bottom: 8px; display: flex; gap: 14px; align-items: flex-start; transition: border-color .2s, box-shadow .2s; }
-  .plan-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.05); }
-  .plan-card.is-past { opacity: .6; }
-  .plan-card.is-past.done-card { opacity: .75; }
-  .plan-card.today { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(0,113,227,.08); }
-  .plan-card.race-day { border-color: var(--accent4); background: #fffaf3; }
-  .plan-card.missed-card { border-color: #ffb3b3; }
-  .plan-card.rescheduled-card { border-color: #a8d0ff; background: #f5faff; }
+  .plan-card:hover { box-shadow: 0 6px 18px rgba(0,0,0,.3); }
+  .plan-card.is-past { opacity: .55; }
+  .plan-card.is-past.done-card { opacity: .72; }
+  .plan-card.today { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(41,151,255,.12); }
+  .plan-card.race-day { border-color: var(--accent4); background: #241a0d; }
+  .plan-card.missed-card { border-color: #7f1d1d; }
+  .plan-card.rescheduled-card { border-color: #1e4a75; background: #0d1a26; }
   .plan-date-col { min-width: 80px; }
   .plan-date { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--muted); }
   .plan-day { font-size: 13px; font-weight: 600; color: var(--text); margin-top: 2px; }
@@ -113,33 +113,35 @@
   .plan-detail { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
   .plan-note { font-size: 11.5px; color: var(--muted); margin-top: 5px; font-style: italic; opacity: .8; }
   .plan-badge { font-family: var(--sans); font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 6px; letter-spacing: .01em; display: inline-block; }
-  .bz2 { background: #e3f9ea; color: #1c8a44; }
-  .bmx { background: #fff2e0; color: #c2670a; }
-  .brs { background: #f0f0f2; color: #6e6e73; }
-  .btp { background: #e6f1ff; color: #0058b0; }
-  .brc { background: #fff2e0; color: #c2670a; }
-  .bmissed { background: #ffe9e9; color: #c92f2f; }
-  .bdone { background: #e3f9ea; color: #1c8a44; }
-  .brescheduled { background: #e6f1ff; color: #0058b0; }
+  .bz2 { background: rgba(50,215,75,0.15); color: #4fe36b; }
+  .bmx { background: rgba(255,159,10,0.16); color: #ffb340; }
+  .brs { background: #2c2c2e; color: #98989d; }
+  .btp { background: rgba(41,151,255,0.15); color: #5cadff; }
+  .brc { background: rgba(255,159,10,0.16); color: #ffb340; }
+  .bhr { background: rgba(175,120,255,0.16); color: #b98aff; }
+  .bvo2 { background: rgba(255,55,95,0.16); color: #ff6482; }
+  .bmissed { background: rgba(255,69,58,0.15); color: #ff6961; }
+  .bdone { background: rgba(50,215,75,0.15); color: #4fe36b; }
+  .brescheduled { background: rgba(41,151,255,0.15); color: #5cadff; }
   .plan-segs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
   .plan-seg { font-size: 10.5px; font-family: var(--sans); font-weight: 500; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: var(--surface2); }
   .plan-actions { display: flex; gap: 6px; margin-top: 9px; flex-wrap: wrap; }
   .plan-done-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 13px; border-radius: 20px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all .15s; }
   .plan-done-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .plan-done-btn.done { background: #e3f9ea; color: #1c8a44; border-color: #e3f9ea; }
-  .plan-missed-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 20px; cursor: pointer; border: 1px solid #ffd0d0; background: transparent; color: #d33; }
-  .plan-adapt-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 13px; border-radius: 20px; cursor: pointer; border: none; background: var(--accent2); color: #fff; letter-spacing: 0; display: flex; align-items: center; gap: 4px; }
+  .plan-done-btn.done { background: rgba(50,215,75,0.15); color: #4fe36b; border-color: rgba(50,215,75,0.3); }
+  .plan-missed-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 11px; border-radius: 20px; cursor: pointer; border: 1px solid #7f1d1d; background: transparent; color: #ff6961; }
+  .plan-adapt-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; padding: 5px 13px; border-radius: 20px; cursor: pointer; border: none; background: var(--accent2); color: #000; letter-spacing: 0; display: flex; align-items: center; gap: 4px; }
   .plan-adapt-btn.loading { opacity: .6; pointer-events: none; }
-  .plan-replan-panel { background: #f5faff; border: 1px solid #d6e8ff; border-radius: 12px; padding: .9rem 1rem; margin-top: 9px; font-size: 12.5px; color: var(--text); line-height: 1.7; }
+  .plan-replan-panel { background: #0d1a26; border: 1px solid #1e4a75; border-radius: 12px; padding: .9rem 1rem; margin-top: 9px; font-size: 12.5px; color: var(--text); line-height: 1.7; }
   .plan-replan-panel p { margin: 0 0 6px; }
   .plan-replan-panel p:last-child { margin: 0; }
   @media(max-width:600px) { .plan-card { flex-direction: column; gap: 6px; } .plan-date-col { min-width: unset; } }
 
   /* heatmap filter + mode buttons */
   .hf-btn { font-family: var(--sans); font-size: 11px; font-weight: 500; padding: 5px 13px; border-radius: 20px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); }
-  .hf-btn.on { background: var(--text); color: #fff; border-color: var(--text); }
+  .hf-btn.on { background: var(--text); color: #000; border-color: var(--text); }
   .hf-btn.mode-btn { padding: 5px 14px; }
-  .hf-btn.mode-btn.on { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+  .hf-btn.mode-btn.on { background: var(--accent2); color: #000; border-color: var(--accent2); }
   .heatmap-filters { display: flex; gap: 6px; flex-wrap: wrap; }
 
   /* status */
@@ -155,13 +157,13 @@
   .updated { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--muted); text-align: right; margin-bottom: 1.25rem; letter-spacing: 0; }
 
   /* daily AI insight */
-  .insight-box { background: linear-gradient(160deg, #fbfbfd, #f5f5f7); border: 1px solid var(--border); border-radius: 20px; padding: 1.75rem; margin-top: 2rem; }
+  .insight-box { background: linear-gradient(160deg, #1c1c1e, #141416); border: 1px solid var(--border); border-radius: 20px; padding: 1.75rem; margin-top: 2rem; }
   .insight-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 1.1rem; }
   .insight-title { font-size: 15px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-  .insight-badge { font-family: var(--sans); font-size: 10px; font-weight: 700; color: #fff; background: var(--accent2); padding: 2px 9px; border-radius: 20px; letter-spacing: .02em; }
+  .insight-badge { font-family: var(--sans); font-size: 10px; font-weight: 700; color: #000; background: var(--accent2); padding: 2px 9px; border-radius: 20px; letter-spacing: .02em; }
   .insight-date { font-size: 11.5px; color: var(--muted); }
   .insight-refresh { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--accent2); background: none; border: none; cursor: pointer; padding: 4px 9px; border-radius: 8px; transition: background .15s; }
-  .insight-refresh:hover { background: #e6f1ff; }
+  .insight-refresh:hover { background: rgba(41,151,255,0.12); }
   .insight-loading { display: flex; align-items: center; gap: 5px; color: var(--muted); font-size: 13px; }
   .insight-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: insightPulse 1.2s infinite ease-in-out; }
   .insight-dot:nth-child(2) { animation-delay: .15s; }
@@ -424,8 +426,8 @@ function makeChart(id, type, labels, datasets, extraOpts={}) {
       responsive:true, maintainAspectRatio:false,
       plugins:{legend:{display:false}},
       scales:{
-        x:{ticks:{color:'#6e6e73',font:{size:10},maxRotation:45,autoSkip:true,maxTicksLimit:14},grid:{color:'#eeeeef'}},
-        y:{ticks:{color:'#6e6e73',font:{size:10}},grid:{color:'rgba(0,0,0,0.045)'}},
+        x:{ticks:{color:'#86868b',font:{size:10},maxRotation:45,autoSkip:true,maxTicksLimit:14},grid:{color:'#2c2c2e'}},
+        y:{ticks:{color:'#86868b',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},
         ...extraOpts
       }
     }
@@ -457,7 +459,7 @@ function showTab(name) {
         return {labels:rows.map(r=>r.date.slice(5)),
           ds:[{label:'Steps',data:rows.map(r=>+r[sc]||0),backgroundColor:'#4ade8066',borderColor:'#4ade80',borderWidth:1,yAxisID:'y'},
               {label:'Calories',data:rows.map(r=>+r[cc]||0),backgroundColor:'#fb923c66',borderColor:'#fb923c',borderWidth:1,yAxisID:'y1'}],
-          extra:{y1:{position:'right',ticks:{color:'#6e6e73',font:{size:10}},grid:{display:false}}}};
+          extra:{y1:{position:'right',ticks:{color:'#86868b',font:{size:10}},grid:{display:false}}}};
       }
     },
     sleep:{
@@ -592,114 +594,114 @@ function renderVolume(el){
 // Sub-3:40 Marathon Plan · Chester 11 Oct 2026 · Starting 4 Jul 2026
 const planWeeks=[
 
-{label:'Phase 1 — Week 1 — 4–10 Jul · 56km',phase:'Phase 1',days:[
+{label:'Phase 1 — Week 1 — 4–10 Jul · 61km',phase:'Phase 1',days:[
 {date:'2026-07-04',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km at easy pace (7:30+/km).',segs:['10km easy'],km:10,note:'Week 1 of the revised 11-week block.'},
 {date:'2026-07-05',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 24km',detail:'24km easy aerobic. Fuel every 45min.',segs:['24km easy','Fuel every 45min'],km:24,note:''},
 {date:'2026-07-06',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-07',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-08',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 12km',detail:'12km total: warm-up, 6km @ 5:13/km, cool down.',segs:['Warm-up','6km @ 5:13/km','Cool down'],km:12,note:'Exactly 5:13/km — not faster.'},
-{date:'2026-07-09',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-10',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km at easy pace (7:30+/km).',segs:['10km easy'],km:10,note:''},
+{date:'2026-07-07',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy — keep it slow, this is about blood flow, not fitness.',segs:['5km recovery'],km:5,note:'Recovery pace — should feel almost too easy.'},
+{date:'2026-07-08',day:'Wed',type:'btp',badge:'Tempo',title:'Tempo run — 12km',detail:'12km total: warm-up, 6km @ 4:55/km tempo effort, cool down.',segs:['Warm-up','6km @ 4:55/km','Cool down'],km:12,note:'Threshold effort — comfortably hard, faster than marathon pace but sustainable.'},
+{date:'2026-07-09',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km at easy pace (7:30+/km).',segs:['10km easy'],km:10,note:''},
+{date:'2026-07-10',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 1 — Week 2 — 11–17 Jul · 60km',phase:'Phase 1',days:[
+{label:'Phase 1 — Week 2 — 11–17 Jul · 65km',phase:'Phase 1',days:[
 {date:'2026-07-11',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
 {date:'2026-07-12',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 26km',detail:'26km easy aerobic.',segs:['26km easy','Fuel every 45min'],km:26,note:''},
 {date:'2026-07-13',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-14',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-15',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 14km',detail:'14km total: warm-up, 8km @ 5:13/km, cool down.',segs:['Warm-up','8km @ 5:13/km','Cool down'],km:14,note:''},
-{date:'2026-07-16',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-17',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
+{date:'2026-07-14',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],km:5,note:''},
+{date:'2026-07-15',day:'Wed',type:'bmx',badge:'MP Intervals',title:'Marathon pace intervals — 14km',detail:'14km total: warm-up, 4×2km @ 5:13/km with 2min jog recovery, cool down.',segs:['Warm-up','4×2km @ 5:13/km','2min jog recovery','Cool down'],km:14,note:'Marathon pace broken into reps — practice locking into 5:13/km.'},
+{date:'2026-07-16',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
+{date:'2026-07-17',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 1 — Week 3 — 18–24 Jul · 65km',phase:'Phase 1',days:[
+{label:'Phase 1 — Week 3 — 18–24 Jul · 70km',phase:'Phase 1',days:[
 {date:'2026-07-18',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
 {date:'2026-07-19',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 29km',detail:'29km easy aerobic.',segs:['29km easy','Fuel every 45min'],km:29,note:''},
 {date:'2026-07-20',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-21',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-22',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 14km',detail:'14km total: warm-up, 8km @ 5:13/km, cool down.',segs:['Warm-up','8km @ 5:13/km','Cool down'],km:14,note:''},
-{date:'2026-07-23',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-24',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 12km',detail:'12km easy pace.',segs:['12km easy'],km:12,note:''},
+{date:'2026-07-21',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],km:5,note:''},
+{date:'2026-07-22',day:'Wed',type:'bhr',badge:'Hill Repeats',title:'Hill repeats — 14km',detail:'14km total: warm-up, 8×60sec hill reps @ 5K effort with jog-down recovery, cool down.',segs:['Warm-up','8×60sec hill reps','Jog-down recovery','Cool down'],km:14,note:'Builds strength and running economy — any incline works: bridge, gentle hill, or treadmill.'},
+{date:'2026-07-23',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 12km',detail:'12km easy pace.',segs:['12km easy'],km:12,note:''},
+{date:'2026-07-24',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 2 — Week 4 — Recovery — 25–31 Jul · 47km',phase:'Phase 2',days:[
-{date:'2026-07-25',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:'Recovery week — 28% drop in volume.'},
+{label:'Phase 2 — Week 4 — Recovery — 25–31 Jul · 51km',phase:'Phase 2',days:[
+{date:'2026-07-25',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:'Recovery week — reduced volume.'},
 {date:'2026-07-26',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 21km',detail:'21km easy aerobic.',segs:['21km easy'],km:21,note:''},
 {date:'2026-07-27',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-28',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-29',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 10km',detail:'10km total: warm-up, 5km @ 5:13/km, cool down.',segs:['Warm-up','5km @ 5:13/km','Cool down'],km:10,note:''},
-{date:'2026-07-30',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-07-31',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:''},
+{date:'2026-07-28',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 4km',detail:'4km very easy.',segs:['4km recovery'],km:4,note:''},
+{date:'2026-07-29',day:'Wed',type:'btp',badge:'Tempo',title:'Tempo run — 10km',detail:'10km total: warm-up, 4km @ 4:55/km tempo effort, cool down.',segs:['Warm-up','4km @ 4:55/km','Cool down'],km:10,note:''},
+{date:'2026-07-30',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:''},
+{date:'2026-07-31',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 2 — Week 5 — 1–7 Aug · 68km',phase:'Phase 2',days:[
+{label:'Phase 2 — Week 5 — 1–7 Aug · 73km',phase:'Phase 2',days:[
 {date:'2026-08-01',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
 {date:'2026-08-02',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 30km',detail:'30km easy aerobic.',segs:['30km easy','Fuel every 45min'],km:30,note:'First 30km run of the block.'},
 {date:'2026-08-03',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-04',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-05',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 16km',detail:'16km total: warm-up, 10km @ 5:13/km, cool down.',segs:['Warm-up','10km @ 5:13/km','Cool down'],km:16,note:''},
-{date:'2026-08-06',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-07',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 12km',detail:'12km easy pace.',segs:['12km easy'],km:12,note:''},
+{date:'2026-08-04',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],km:5,note:''},
+{date:'2026-08-05',day:'Wed',type:'bvo2',badge:'VO₂ Max',title:'VO₂ max intervals — 16km',detail:'16km total: warm-up, 8×800m @ 4:20/km with 2min jog recovery, cool down.',segs:['Warm-up','8×800m @ 4:20/km','2min jog recovery','Cool down'],km:16,note:'Sharpens top-end speed and running economy — effort should feel hard by the last rep.'},
+{date:'2026-08-06',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 12km',detail:'12km easy pace.',segs:['12km easy'],km:12,note:''},
+{date:'2026-08-07',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 2 — Week 6 — 8–14 Aug · 70km',phase:'Phase 2',days:[
+{label:'Phase 2 — Week 6 — 8–14 Aug · 75km',phase:'Phase 2',days:[
 {date:'2026-08-08',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
 {date:'2026-08-09',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 32km',detail:'32km easy aerobic.',segs:['32km easy','Fuel every 45min'],km:32,note:''},
 {date:'2026-08-10',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-11',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-12',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace + threshold — 16km',detail:'16km total: warm-up, 8km @ 5:13/km, 4km threshold, cool down.',segs:['Warm-up','8km @ 5:13/km','4km threshold','Cool down'],km:16,note:''},
-{date:'2026-08-13',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-14',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 12km',detail:'12km easy pace.',segs:['12km easy'],km:12,note:''},
+{date:'2026-08-11',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],km:5,note:''},
+{date:'2026-08-12',day:'Wed',type:'btp',badge:'Tempo',title:'Tempo run — 16km',detail:'16km total: warm-up, 8km @ 4:55/km tempo effort, cool down.',segs:['Warm-up','8km @ 4:55/km','Cool down'],km:16,note:''},
+{date:'2026-08-13',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 12km',detail:'12km easy pace.',segs:['12km easy'],km:12,note:''},
+{date:'2026-08-14',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 3 — Peak — Week 7 — 15–21 Aug · 70km',phase:'Phase 3',days:[
+{label:'Phase 3 — Peak — Week 7 — 15–21 Aug · 75km',phase:'Phase 3',days:[
 {date:'2026-08-15',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:'Peak week.'},
 {date:'2026-08-16',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 34km',detail:'34km easy aerobic. First of your two peak long runs.',segs:['34km easy','Fuel every 45min'],km:34,note:''},
 {date:'2026-08-17',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-18',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-19',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 16km',detail:'16km total: warm-up, 10km @ 5:13/km, cool down.',segs:['Warm-up','10km @ 5:13/km','Cool down'],km:16,note:''},
-{date:'2026-08-20',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-21',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
+{date:'2026-08-18',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],km:5,note:''},
+{date:'2026-08-19',day:'Wed',type:'bmx',badge:'MP Intervals',title:'Marathon pace intervals — 16km',detail:'16km total: warm-up, 4×2km @ 5:13/km with 2min jog recovery, cool down.',segs:['Warm-up','4×2km @ 5:13/km','2min jog recovery','Cool down'],km:16,note:''},
+{date:'2026-08-20',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
+{date:'2026-08-21',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 3 — Week 8 — Recovery — 22–28 Aug · 53km',phase:'Phase 3',days:[
+{label:'Phase 3 — Week 8 — Recovery — 22–28 Aug · 57km',phase:'Phase 3',days:[
 {date:'2026-08-22',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:'Recovery week — 24% drop.'},
 {date:'2026-08-23',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 25km',detail:'25km easy aerobic.',segs:['25km easy'],km:25,note:''},
 {date:'2026-08-24',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-25',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-26',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 12km',detail:'12km total: warm-up, 6km @ 5:13/km, cool down.',segs:['Warm-up','6km @ 5:13/km','Cool down'],km:12,note:''},
-{date:'2026-08-27',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-08-28',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:''},
+{date:'2026-08-25',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 4km',detail:'4km very easy.',segs:['4km recovery'],km:4,note:''},
+{date:'2026-08-26',day:'Wed',type:'bhr',badge:'Hill Repeats',title:'Hill repeats — 12km',detail:'12km total: warm-up, 6×60sec hill reps @ 5K effort with jog-down recovery, cool down.',segs:['Warm-up','6×60sec hill reps','Jog-down recovery','Cool down'],km:12,note:''},
+{date:'2026-08-27',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:''},
+{date:'2026-08-28',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 3 — Week 9 — Last Big Week — 29 Aug–4 Sep · 71km',phase:'Phase 3',days:[
+{label:'Phase 3 — Week 9 — Last Big Week — 29 Aug–4 Sep · 76km',phase:'Phase 3',days:[
 {date:'2026-08-29',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
 {date:'2026-08-30',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 35km',detail:'35km easy aerobic. Your longest run — final confidence run.',segs:['35km easy','Fuel every 45min'],km:35,note:'This is the proof run. If this goes well, sub-3:40 is very much on.'},
 {date:'2026-08-31',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-01',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-02',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 16km',detail:'16km total: warm-up, 10km @ 5:13/km, cool down.',segs:['Warm-up','10km @ 5:13/km','Cool down'],km:16,note:''},
-{date:'2026-09-03',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-04',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
+{date:'2026-09-01',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 5km',detail:'5km very easy.',segs:['5km recovery'],km:5,note:''},
+{date:'2026-09-02',day:'Wed',type:'btp',badge:'Tempo',title:'Tempo run — 16km',detail:'16km total: warm-up, 8km @ 4:55/km tempo effort, cool down.',segs:['Warm-up','8km @ 4:55/km','Cool down'],km:16,note:''},
+{date:'2026-09-03',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km easy pace.',segs:['10km easy'],km:10,note:''},
+{date:'2026-09-04',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 4 — Taper — Week 10 — 5–11 Sep · 42km',phase:'Phase 4',days:[
-{date:'2026-09-05',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:'Taper begins — 41% drop from week 9.'},
+{label:'Phase 4 — Taper — Week 10 — 5–11 Sep · 46km',phase:'Phase 4',days:[
+{date:'2026-09-05',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 8km',detail:'8km easy pace.',segs:['8km easy'],km:8,note:'Taper begins — 39% drop from week 9.'},
 {date:'2026-09-06',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 18km',detail:'18km easy aerobic.',segs:['18km easy'],km:18,note:''},
 {date:'2026-09-07',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-08',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-09',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'Marathon pace — 10km',detail:'10km total: warm-up, 6km @ 5:13/km, cool down.',segs:['Warm-up','6km @ 5:13/km','Cool down'],km:10,note:''},
-{date:'2026-09-10',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-11',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy pace.',segs:['6km easy'],km:6,note:''},
+{date:'2026-09-08',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 4km',detail:'4km very easy.',segs:['4km recovery'],km:4,note:''},
+{date:'2026-09-09',day:'Wed',type:'bvo2',badge:'VO₂ Max',title:'VO₂ max intervals — 10km',detail:'10km total: warm-up, 5×600m @ 4:20/km with 2min jog recovery, cool down.',segs:['Warm-up','5×600m @ 4:20/km','2min jog recovery','Cool down'],km:10,note:'Short and sharp — this is about keeping the legs lively, not adding fitness.'},
+{date:'2026-09-10',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy pace.',segs:['6km easy'],km:6,note:''},
+{date:'2026-09-11',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
-{label:'Phase 4 — Week 11 — Final Prep — 12–18 Sep · 15km',phase:'Phase 4',days:[
-{date:'2026-09-12',day:'Sat',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-13',day:'Sun',type:'brs',badge:'Rest / walk only',title:'Rest / walk only',detail:'No running — walk only if you want to move.',segs:[],km:0,note:'10 days out.'},
-{date:'2026-09-14',day:'Mon',type:'bz2',badge:'Easy',title:'Easy run — 6km',detail:'6km easy pace.',segs:['6km easy'],km:6,note:''},
-{date:'2026-09-15',day:'Tue',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-16',day:'Wed',type:'bmx',badge:'Marathon Pace',title:'5km + 5×2min MP reps',detail:'5km easy plus 5×2min @ 5:13/km with 2min easy jog recovery between reps — sharpens the legs without adding fatigue.',segs:['5km easy','5×2min @ 5:13/km','2min jog recovery'],km:5,note:''},
-{date:'2026-09-17',day:'Thu',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
-{date:'2026-09-18',day:'Fri',type:'bz2',badge:'Easy',title:'Easy run — 4km',detail:'4km easy pace.',segs:['4km easy'],km:4,note:''},
+{label:'Phase 4 — Week 11 — Final Prep — 12–18 Sep · 24km',phase:'Phase 4',days:[
+{date:'2026-09-12',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 4km',detail:'4km easy pace.',segs:['4km easy'],km:4,note:''},
+{date:'2026-09-13',day:'Sun',type:'bz2',badge:'Long Run',title:'Long run — 8km',detail:'8km easy aerobic — a step-back long run before the maintenance phase.',segs:['8km easy'],km:8,note:''},
+{date:'2026-09-14',day:'Mon',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
+{date:'2026-09-15',day:'Tue',type:'bz2',badge:'Recovery',title:'Recovery run — 3km',detail:'3km very easy.',segs:['3km recovery'],km:3,note:''},
+{date:'2026-09-16',day:'Wed',type:'btp',badge:'Tempo',title:'Tempo touch — 5km',detail:'5km total: warm-up, 2km @ 4:55/km tempo effort, cool down.',segs:['Warm-up','2km @ 4:55/km','Cool down'],km:5,note:'Keeps the legs sharp without adding fatigue this far out.'},
+{date:'2026-09-17',day:'Thu',type:'bz2',badge:'Easy',title:'Easy run — 4km',detail:'4km easy pace.',segs:['4km easy'],km:4,note:''},
+{date:'2026-09-18',day:'Fri',type:'brs',badge:'Rest',title:'Rest',detail:'Full rest.',segs:[],km:0,note:''},
 ]},
 
 {label:'Phase 5 — Maintenance — 19–25 Sep · light',phase:'Phase 5',days:[
@@ -1249,7 +1251,7 @@ async function renderHeatmap(el) {
   container.style.width = '100%';
 
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO', maxZoom: 19
   }).addTo(heatmapInstance);
 
