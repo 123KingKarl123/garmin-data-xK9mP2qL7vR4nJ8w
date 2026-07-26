@@ -144,6 +144,21 @@
     "PLAN_FOR_WEEK"
   ],
   "push_notifications": [
+    "ACHIEVEMENTS",
+    "FOLLOW_REQUEST",
+    "COACH_ME_REQUEST",
+    "PRIVATE_CHAT",
+    "PRIVATE_MSG",
+    "GROUP_CHAT",
+    "GROUP_MSG",
+    "ACTIVITY_CHAT",
+    "ACTIVITY_MSG",
+    "COACH_TICK",
+    "GEAR_ALERTS",
+    "FOLLOWED_NEW_ACTIVITY",
+    "COACHED_NEW_ACTIVITY",
+    "FOLLOWED_ACTIVITY_CHAT",
+    "COACHED_ACTIVITY_CHAT",
     "NEW_ACTIVITY"
   ],
   "has_push_subscriptions": false,
@@ -457,10 +472,10 @@
       "mmp_model": {
         "type": "FFT_CURVES",
         "criticalPower": 324,
-        "wPrime": 21000,
+        "wPrime": 22080,
         "pMax": 681,
         "inputPointIndexes": [
-          84,
+          95,
           126
         ],
         "ftp": 331
