@@ -204,7 +204,6 @@
   "icu_tags": [],
   "icu_notes": null,
   "strava_authorized": false,
-  "custom_items": [],
   "sportSettings": [
     {
       "id": 2416821,
@@ -788,5 +787,6 @@
       "eFTPSupported": false,
       "use_distance_for_intervals": false
     }
-  ]
+  ],
+  "custom_items": []
 }
