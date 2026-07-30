@@ -31,7 +31,7 @@
   "icu_last_seen": "2026-06-09T04:56:48.715+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 47,
+  "icu_resting_hr": 49,
   "icu_weight": 91.139,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
@@ -161,6 +161,7 @@
     "COACHED_ACTIVITY_CHAT",
     "NEW_ACTIVITY"
   ],
+  "notification_athlete_tags_enabled": null,
   "has_push_subscriptions": false,
   "include_descr_in_plan_for_week": true,
   "icu_send_achievements": true,
@@ -471,10 +472,10 @@
       "mmp_model": {
         "type": "FFT_CURVES",
         "criticalPower": 324,
-        "wPrime": 22080,
+        "wPrime": 23100,
         "pMax": 681,
         "inputPointIndexes": [
-          95,
+          93,
           126
         ],
         "ftp": 331
