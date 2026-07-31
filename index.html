@@ -220,6 +220,7 @@
       <button class="tab" data-tab="plan" onclick="showTab('plan')">Race plan</button>
       <button class="tab" data-tab="volume" onclick="showTab('volume')">Weekly volume</button>
       <button class="tab" data-tab="training" onclick="showTab('training')">Training status</button>
+      <button class="tab" data-tab="freshness" onclick="showTab('freshness')">Fitness &amp; Freshness</button>
       <button class="tab" data-tab="heatmap" onclick="showTab('heatmap')">Heatmap</button>
     </div>
 
@@ -448,6 +449,7 @@ function showTab(name) {
   if(name==='volume') { renderVolume(el); return; }
   if(name==='heatmap') { renderHeatmap(el); return; }
   if(name==='training') { renderTraining(el); return; }
+  if(name==='freshness') { renderFreshness(el); return; }
 
   const cfg={
     steps:{
@@ -1154,6 +1156,76 @@ async function renderTraining(el) {
 
   } catch(e) {
     el.innerHTML = '<div class="status">Training status not available yet — run the workflow to fetch it.</div>';
+  }
+}
+
+// ── fitness & freshness ──────────────────────────────────────
+// Reads fitness_freshness.json — a daily time series of {date, ctl, atl}
+// (ctl = Fitness, atl = Fatigue). Form = ctl - atl is computed here.
+// See fetch_fitness_freshness.py for how this file is generated from Intervals.icu.
+async function renderFreshness(el) {
+  el.innerHTML = '<div class="status">Loading fitness & freshness…</div>';
+  try {
+    const res = await fetch(GH + 'fitness_freshness.json?t=' + Date.now());
+    if (!res.ok) throw new Error('not found');
+    let rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) throw new Error('empty');
+
+    rows = rows.map(r => {
+      const ctl = +r.ctl || +r.fitness || 0;
+      const atl = +r.atl || +r.fatigue || 0;
+      const form = (r.form !== undefined && r.form !== null) ? +r.form : (ctl - atl);
+      return { date: r.date, ctl, atl, form };
+    }).filter(r => r.date).sort((a,b) => a.date > b.date ? 1 : -1);
+
+    const view = filterRows(rows, 'date', days);
+    const use = view.length ? view : rows.slice(-days);
+
+    const latest = use[use.length - 1];
+    const prev7 = use[Math.max(0, use.length - 8)];
+    const fitnessDelta = prev7 ? Math.round((latest.ctl - prev7.ctl) * 10) / 10 : 0;
+
+    function formLabel(f) {
+      if (f >= 5)  return { text: 'Fresh',        color: 'var(--accent)'  };
+      if (f >= -10) return { text: 'Grey zone',    color: 'var(--accent4)' };
+      if (f >= -30) return { text: 'Building',     color: 'var(--accent2)' };
+      return             { text: 'High risk',      color: '#ff6961'        };
+    }
+    const fl = formLabel(latest.form);
+
+    el.innerHTML = `
+      <div class="metrics" style="margin-bottom:1.5rem">
+        <div class="metric"><div class="metric-label">Fitness (CTL)</div><div class="metric-value green">${latest.ctl.toFixed(1)}</div><div class="metric-sub">${fitnessDelta >= 0 ? '+' : ''}${fitnessDelta} vs 7 days ago</div></div>
+        <div class="metric"><div class="metric-label">Fatigue (ATL)</div><div class="metric-value orange">${latest.atl.toFixed(1)}</div><div class="metric-sub">last 7 days load</div></div>
+        <div class="metric"><div class="metric-label">Form (TSB)</div><div class="metric-value blue">${latest.form >= 0 ? '+' : ''}${latest.form.toFixed(1)}</div><div class="metric-sub" style="color:${fl.color}">${fl.text}</div></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Fitness, fatigue &amp; form</h3>
+        <div style="display:flex;gap:16px;margin-bottom:10px;font-size:11px;color:var(--muted);font-family:var(--mono)">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#32d74b;border-radius:2px;display:inline-block"></span>Fitness</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#ff9f0a;border-radius:2px;display:inline-block"></span>Fatigue</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#2997ff;border-radius:2px;display:inline-block"></span>Form</span>
+        </div>
+        <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+      </div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);line-height:1.6;max-width:640px">
+        Fitness and Fatigue build from your daily training load; Form is Fitness minus Fatigue.
+        Form dropping during a big block is normal — watch for it climbing back up as you taper into Chester and London.
+      </div>`;
+
+    makeChart('mainChart', 'line',
+      use.map(r => r.date.slice(5)),
+      [
+        { label:'Fitness', data: use.map(r=>Math.round(r.ctl*10)/10), borderColor:'#32d74b', backgroundColor:'#32d74b22', borderWidth:2, pointRadius:0, tension:0.3, yAxisID:'y' },
+        { label:'Fatigue', data: use.map(r=>Math.round(r.atl*10)/10), borderColor:'#ff9f0a', backgroundColor:'#ff9f0a22', borderWidth:2, pointRadius:0, tension:0.3, yAxisID:'y' },
+        { label:'Form',    data: use.map(r=>Math.round(r.form*10)/10), borderColor:'#2997ff', backgroundColor:'#2997ff22', borderWidth:2, pointRadius:0, tension:0.3, yAxisID:'y1' },
+      ],
+      { y1: { position:'right', ticks:{color:'#86868b',font:{size:10}}, grid:{display:false} } }
+    );
+
+  } catch (e) {
+    el.innerHTML = `<div class="status">Fitness &amp; Freshness data not available yet.<br><br>
+      Run <code style="font-family:var(--mono)">fetch_fitness_freshness.py</code> to generate <code style="font-family:var(--mono)">fitness_freshness.json</code> from your Intervals.icu data, and commit it alongside your other exports.</div>`;
   }
 }
 
