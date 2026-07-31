@@ -28,11 +28,11 @@
   "date_format": "EEE_MMM_dd_yyyy",
   "time_format": "hh_mm_a",
   "visibility": "PRIVATE",
-  "icu_last_seen": "2026-06-09T04:56:48.715+00:00",
+  "icu_last_seen": "2026-07-30T13:25:57.502+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 49,
-  "icu_weight": 91.139,
+  "icu_resting_hr": 44,
+  "icu_weight": 90.349,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -789,5 +789,44 @@
       "use_distance_for_intervals": false
     }
   ],
-  "custom_items": []
+  "custom_items": [
+    {
+      "id": 1179066,
+      "athlete_id": "i582883",
+      "type": "FITNESS_TABLE",
+      "visibility": "PRIVATE",
+      "name": "Totals Table 1",
+      "description": null,
+      "image": null,
+      "content": {
+        "id": null,
+        "name": "Totals Table 1",
+        "plots": [],
+        "title": null,
+        "width": null,
+        "height": null,
+        "groupBy": "week",
+        "maxRows": null
+      },
+      "usage_count": 0,
+      "index": 1,
+      "hide_script": false,
+      "hidden_by_id": null,
+      "updated": "2026-07-30T13:30:08.343+00:00",
+      "from_athlete": {
+        "id": null,
+        "name": null,
+        "profile_medium": "/no-profile-pic.png",
+        "city": null,
+        "state": null,
+        "country": null,
+        "timezone": null,
+        "sex": null,
+        "bio": null,
+        "website": null,
+        "email": null
+      },
+      "from_id": null
+    }
+  ]
 }
