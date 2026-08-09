@@ -5510,7 +5510,7 @@
         "pMax": 666.1747
       }
     ],
-    "updated": "2026-08-09T05:56:17.629+00:00",
+    "updated": "2026-08-09T08:12:37.568+00:00",
     "weight": 90.97,
     "restingHR": 43,
     "hrv": 114.0,
@@ -5539,7 +5539,7 @@
     "lactate": null,
     "bodyFat": 29.0,
     "abdomen": null,
-    "vo2max": null,
+    "vo2max": 47.0,
     "comments": null,
     "steps": 39,
     "respiration": null,
