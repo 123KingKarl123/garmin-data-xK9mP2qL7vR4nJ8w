@@ -5510,8 +5510,8 @@
         "pMax": 716.4072
       }
     ],
-    "updated": "2026-08-17T06:03:21.169+00:00",
-    "weight": null,
+    "updated": "2026-08-17T07:10:26.605+00:00",
+    "weight": 92.489,
     "restingHR": 46,
     "hrv": 104.0,
     "hrvSDNN": null,
@@ -5537,7 +5537,7 @@
     "baevskySI": null,
     "bloodGlucose": null,
     "lactate": null,
-    "bodyFat": null,
+    "bodyFat": 30.1,
     "abdomen": null,
     "vo2max": null,
     "comments": null,
