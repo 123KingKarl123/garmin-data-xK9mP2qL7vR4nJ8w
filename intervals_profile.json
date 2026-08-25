@@ -31,8 +31,8 @@
   "icu_last_seen": "2026-07-31T08:25:51.228+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 42,
-  "icu_weight": 91.61,
+  "icu_resting_hr": 44,
+  "icu_weight": 91.449,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -49,7 +49,7 @@
   "bio": null,
   "website": "https://123kingkarl123.github.io/garmin-data-xK9mP2qL7vR4nJ8w/",
   "icu_date_of_birth": "1991-01-12",
-  "icu_api_key": "3gwgztglqxm455o79g6gwfrwk",
+  "icu_api_key": null,
   "icu_type_settings": [],
   "icu_form_as_percent": false,
   "icu_mmp_days": 90,
@@ -205,6 +205,46 @@
   "icu_tags": [],
   "icu_notes": null,
   "strava_authorized": false,
+  "custom_items": [
+    {
+      "id": 1179066,
+      "athlete_id": "i582883",
+      "type": "FITNESS_TABLE",
+      "visibility": "PRIVATE",
+      "name": "Totals Table 1",
+      "description": null,
+      "image": null,
+      "content": {
+        "id": null,
+        "name": "Totals Table 1",
+        "plots": [],
+        "title": null,
+        "width": null,
+        "height": null,
+        "groupBy": "week",
+        "maxRows": null
+      },
+      "usage_count": 0,
+      "index": 1,
+      "hide_script": false,
+      "hidden_by_id": null,
+      "updated": "2026-07-30T13:30:08.343+00:00",
+      "from_athlete": {
+        "id": null,
+        "name": null,
+        "profile_medium": "/no-profile-pic.png",
+        "city": null,
+        "state": null,
+        "country": null,
+        "timezone": null,
+        "sex": null,
+        "bio": null,
+        "website": null,
+        "email": null
+      },
+      "from_id": null
+    }
+  ],
   "sportSettings": [
     {
       "id": 2416821,
@@ -787,46 +827,6 @@
       "other": true,
       "eFTPSupported": false,
       "use_distance_for_intervals": false
-    }
-  ],
-  "custom_items": [
-    {
-      "id": 1179066,
-      "athlete_id": "i582883",
-      "type": "FITNESS_TABLE",
-      "visibility": "PRIVATE",
-      "name": "Totals Table 1",
-      "description": null,
-      "image": null,
-      "content": {
-        "id": null,
-        "name": "Totals Table 1",
-        "plots": [],
-        "title": null,
-        "width": null,
-        "height": null,
-        "groupBy": "week",
-        "maxRows": null
-      },
-      "usage_count": 0,
-      "index": 1,
-      "hide_script": false,
-      "hidden_by_id": null,
-      "updated": "2026-07-30T13:30:08.343+00:00",
-      "from_athlete": {
-        "id": null,
-        "name": null,
-        "profile_medium": "/no-profile-pic.png",
-        "city": null,
-        "state": null,
-        "country": null,
-        "timezone": null,
-        "sex": null,
-        "bio": null,
-        "website": null,
-        "email": null
-      },
-      "from_id": null
     }
   ]
 }
