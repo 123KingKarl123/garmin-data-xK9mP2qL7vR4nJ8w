@@ -31,7 +31,7 @@
   "icu_last_seen": "2026-07-31T08:25:51.228+00:00",
   "status": "ACTIVE",
   "status_updated": null,
-  "icu_resting_hr": 44,
+  "icu_resting_hr": 46,
   "icu_weight": 91.449,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
@@ -338,14 +338,14 @@
       "updated": "2026-05-20T07:29:53.580+00:00",
       "mmp_model": {
         "type": "FFT_CURVES",
-        "criticalPower": 187,
-        "wPrime": 15450,
+        "criticalPower": 148,
+        "wPrime": 8820,
         "pMax": 466,
         "inputPointIndexes": [
-          74,
-          89
+          93,
+          127
         ],
-        "ftp": 190
+        "ftp": 151
       },
       "display": {
         "colorScheme": "SOLID",
