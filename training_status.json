@@ -38,7 +38,7 @@
   "mostRecentTrainingLoadBalance_metricsTrainingLoadBalanceDTOMap_3495376439_monthlyLoadAnaerobicTargetMax": 334,
   "mostRecentTrainingLoadBalance_metricsTrainingLoadBalanceDTOMap_3495376439_trainingBalanceFeedbackPhrase": "ANAEROBIC_SHORTAGE",
   "mostRecentTrainingLoadBalance_metricsTrainingLoadBalanceDTOMap_3495376439_primaryTrainingDevice": true,
-  "mostRecentTrainingLoadBalance_recordedDevices": "[{\"deviceId\": 3495376439, \"imageURL\": \"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png\", \"deviceName\": \"Forerunner 965\", \"category\": 0}]",
+  "mostRecentTrainingLoadBalance_recordedDevices": "[{\"deviceId\": 3495376439, \"imageURL\": \"https://s3.amazonaws.com/garmin-connect-prod/profile_images/4db491f1-b89c-4730-b408-3cc58fb978ca-71.png\", \"deviceName\": \"Forerunner 965\", \"category\": 1}]",
   "mostRecentTrainingStatus_userId": 96589030,
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_calendarDate": "2026-08-29",
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_sinceDate": "2026-08-26",
@@ -64,9 +64,9 @@
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_acuteTrainingLoadDTO_dailyTrainingLoadChronic": 297,
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_acuteTrainingLoadDTO_dailyAcuteChronicWorkloadRatio": 0.7,
   "mostRecentTrainingStatus_latestTrainingStatusData_3495376439_primaryTrainingDevice": true,
-  "mostRecentTrainingStatus_recordedDevices": "[{\"deviceId\": 3495376439, \"imageURL\": \"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png\", \"deviceName\": \"Forerunner 965\", \"category\": 0}]",
+  "mostRecentTrainingStatus_recordedDevices": "[{\"deviceId\": 3495376439, \"imageURL\": \"https://s3.amazonaws.com/garmin-connect-prod/profile_images/4db491f1-b89c-4730-b408-3cc58fb978ca-71.png\", \"deviceName\": \"Forerunner 965\", \"category\": 1}]",
   "mostRecentTrainingStatus_showSelector": false,
-  "mostRecentTrainingStatus_lastPrimarySyncDate": "2026-08-29",
+  "mostRecentTrainingStatus_lastPrimarySyncDate": null,
   "heatAltitudeAcclimationDTO": null,
   "date": "2026-08-29"
 }
