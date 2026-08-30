@@ -5510,8 +5510,8 @@
         "pMax": 709.98535
       }
     ],
-    "updated": "2026-08-30T08:44:30.526+00:00",
-    "weight": null,
+    "updated": "2026-08-30T11:30:31.307+00:00",
+    "weight": 91.05,
     "restingHR": 47,
     "hrv": 104.0,
     "hrvSDNN": null,
@@ -5537,17 +5537,17 @@
     "baevskySI": null,
     "bloodGlucose": null,
     "lactate": null,
-    "bodyFat": null,
+    "bodyFat": 30.7,
     "abdomen": null,
     "vo2max": 47.0,
     "comments": null,
-    "steps": 11339,
+    "steps": 12104,
     "respiration": null,
     "carbohydrates": null,
     "protein": null,
     "fatTotal": null,
     "locked": null,
-    "tempWeight": true,
+    "tempWeight": false,
     "tempRestingHR": false
   }
 ]

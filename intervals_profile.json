@@ -32,7 +32,7 @@
   "status": "ACTIVE",
   "status_updated": null,
   "icu_resting_hr": 47,
-  "icu_weight": 91.959,
+  "icu_weight": 91.05,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
   "icu_queue_pos": null,
@@ -291,6 +291,7 @@
       "after_kj0": null,
       "after_kj1": null,
       "power_field": null,
+      "p30s_exponent": 3.0,
       "lthr": 174,
       "max_hr": 193,
       "hr_zones": [
@@ -438,6 +439,7 @@
       "after_kj0": null,
       "after_kj1": null,
       "power_field": null,
+      "p30s_exponent": 3.0,
       "lthr": 175,
       "max_hr": 193,
       "hr_zones": [
@@ -594,6 +596,7 @@
       "after_kj0": null,
       "after_kj1": null,
       "power_field": null,
+      "p30s_exponent": 3.0,
       "lthr": 175,
       "max_hr": 193,
       "hr_zones": [
@@ -723,6 +726,7 @@
       "after_kj0": null,
       "after_kj1": null,
       "power_field": null,
+      "p30s_exponent": 3.0,
       "lthr": 175,
       "max_hr": 193,
       "hr_zones": [
