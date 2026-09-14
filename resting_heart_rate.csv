@@ -1,4 +1,4 @@
-allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE,date,statisticsStartDate,statisticsEndDate,userProfileId,groupedMetrics
+allMetrics_metricsMap_WELLNESS_RESTING_HEART_RATE,statisticsStartDate,statisticsEndDate,date,userProfileId,groupedMetrics
 "[{""value"": 44.0, ""calendarDate"": ""2026-06-16""}]",2026-06-16,2026-06-16,2026-06-16,96589030,
 "[{""value"": 43.0, ""calendarDate"": ""2026-06-17""}]",2026-06-17,2026-06-17,2026-06-17,96589030,
 "[{""value"": 49.0, ""calendarDate"": ""2026-06-18""}]",2026-06-18,2026-06-18,2026-06-18,96589030,
