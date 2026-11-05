@@ -5600,7 +5600,7 @@
         "pMax": 792.0495
       }
     ],
-    "updated": "2026-11-05T07:18:36.606+00:00",
+    "updated": "2026-11-05T14:10:43.038+00:00",
     "weight": 93.029,
     "restingHR": 47,
     "hrv": 100.0,
@@ -5631,8 +5631,8 @@
     "abdomen": null,
     "vo2max": null,
     "comments": null,
-    "steps": 29,
-    "floorsClimbed": null,
+    "steps": 2113,
+    "floorsClimbed": 12,
     "respiration": null,
     "carbohydrates": null,
     "protein": null,
