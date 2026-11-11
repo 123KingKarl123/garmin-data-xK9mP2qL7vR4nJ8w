@@ -7,6 +7,8 @@
   "mostRecentVO2Max_generic_fitnessAge": null,
   "mostRecentVO2Max_generic_fitnessAgeDescription": null,
   "mostRecentVO2Max_generic_maxMetCategory": 0,
+  "mostRecentVO2Max_generic_sport": "RUNNING",
+  "mostRecentVO2Max_generic_subSport": "GENERIC",
   "mostRecentVO2Max_cycling": null,
   "mostRecentVO2Max_heatAltitudeAcclimation_calendarDate": "2026-11-11",
   "mostRecentVO2Max_heatAltitudeAcclimation_altitudeAcclimationDate": "2026-11-11",
