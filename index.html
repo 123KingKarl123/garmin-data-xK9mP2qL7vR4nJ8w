@@ -119,6 +119,8 @@
   .btp { background: rgba(41,151,255,0.15); color: #5cadff; }
   .brc { background: rgba(255,159,10,0.16); color: #ffb340; }
   .bhr { background: rgba(175,120,255,0.16); color: #b98aff; }
+  .bsw { background: rgba(100,210,255,0.15); color: #64d2ff; }
+  .bbk { background: rgba(255,214,10,0.14); color: #ffd60a; }
   .bvo2 { background: rgba(255,55,95,0.16); color: #ff6482; }
   .bmissed { background: rgba(255,69,58,0.15); color: #ff6961; }
   .bdone { background: rgba(50,215,75,0.15); color: #4fe36b; }
@@ -263,6 +265,7 @@ let chart = null;
 const racesList = [
   { title: 'Essar Chester Half Marathon', date: '2026-05-17', distance: '21.1km' },
   { title: 'MBNA Chester Marathon', date: '2026-10-11', distance: '42.2km' },
+  { title: 'IRONMAN 70.3 Maastricht-Limburg', date: '2027-09-05', distance: '1.9km / 90km / 21.1km' },
 ];
 const todayRace = new Date(); todayRace.setHours(0,0,0,0);
 const nextCountdownRace = racesList
@@ -280,6 +283,7 @@ if (rlEl && nextCountdownRace) {
 const raceEvents = [
   { title: 'Essar Chester Half Marathon', date: '2026-05-17', distance: '21.1km' },
   { title: 'MBNA Chester Marathon', date: '2026-10-11', distance: '42.2km' },
+  { title: 'IRONMAN 70.3 Maastricht-Limburg', date: '2027-09-05', distance: '1.9km / 90km / 21.1km' },
 ];
 const today2 = new Date(); today2.setHours(0,0,0,0);
 const nextRace = raceEvents
@@ -579,7 +583,7 @@ function renderVolume(el){
   const planned=planWeeks.map(w=>Math.round(plannedKmForWeek(w)*10)/10);
   const actual=planWeeks.map(w=>Math.round(actualKmForWeek(w)*10)/10);
 
-  el.innerHTML=`<div class="chart-panel"><h3>Weekly distance — planned vs actual</h3>
+  el.innerHTML=`<div class="chart-panel"><h3>Weekly run distance — planned vs actual</h3>
     <div style="display:flex;gap:16px;margin-bottom:10px;font-size:11px;color:var(--muted);font-family:var(--mono)">
       <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#60a5fa;border-radius:2px;display:inline-block"></span>Planned</span>
       <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#4ade80;border-radius:2px;display:inline-block"></span>Actual</span>
@@ -593,8 +597,8 @@ function renderVolume(el){
 }
 
 // ── training plan ─────────────────────────────────────────────
-// Sub-3:40 Marathon Plan · Chester 11 Oct 2026 · Starting 4 Jul 2026
-const planWeeks=[
+// Archived: Sub-3:40 Marathon Plan · Chester 11 Oct 2026 (completed; not rendered)
+const chesterWeeks=[
 
 {label:'Phase 1 — Week 1 — 4–10 Jul · 61km',phase:'Phase 1',days:[
 {date:'2026-07-04',day:'Sat',type:'bz2',badge:'Easy',title:'Easy run — 10km',detail:'10km at easy pace (7:30+/km).',segs:['10km easy'],km:10,note:'Week 1 of the revised 11-week block.'},
@@ -740,20 +744,356 @@ const planWeeks=[
 
 ];
 
+// ── ACTIVE PLAN: IRONMAN 70.3 Maastricht-Limburg · Sun 5 Sep 2027 · 33 weeks from Mon 18 Jan 2027 ──
+// Weekly shape: Mon swim · Tue run quality · Wed bike quality · Thu swim · Fri rest · Sat long ride/brick · Sun long run
+const planWeeks=[
+
+{label:"Phase 1 — Week 1 — 18–24 Jan · 5.7h",phase:"Phase 1 · Base",days:[
+{"date": "2027-01-18", "day": "Mon", "note": "Starting where you are: short reps with rests are fine. Quality of stroke beats distance for now.", "segs": ["WU 200", "Drills 4×50", "5×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1000m", "detail": "WU 200 easy; drills 4×50; main 5×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-01-19", "day": "Tue", "note": "Re-entry week: keep it genuinely easy. Strides are short and smooth, not sprints.", "segs": ["40 min easy", "6×20 sec strides"], "km": 6.1, "type": "bz2", "badge": "Easy + Strides", "title": "Easy run — 40 min", "detail": "40 min easy (RPE 3–4), finishing with 6×20 sec strides (walk-back recovery)."},
+{"date": "2027-01-20", "day": "Wed", "note": "", "segs": ["45 min", "steady Z2 (56–75% FTP) with 6×30 sec high-cadence spin-ups (100+ rpm)"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Z2 + cadence", "detail": "45 min steady Z2 (56–75% FTP) with 6×30 sec high-cadence spin-ups (100+ rpm)."},
+{"date": "2027-01-21", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "3×300 (30 sec rest)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1300m", "detail": "WU 200 easy + 4×25 drill; main: 3×300 (30 sec rest); CD 100 easy."},
+{"date": "2027-01-22", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-01-23", "day": "Sat", "note": "Zwift is fine through winter. Move rides outdoors as weather allows, and check the Maastricht bike course profile once it is published.", "segs": ["105 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h45", "detail": "Z2 endurance (56–75% FTP), steady, cadence 85–95. Fuel from 60 min: 40–60g carbs/hour."},
+{"date": "2027-01-24", "day": "Sun", "note": "", "segs": ["65 min"], "km": 9.8, "type": "bz2", "badge": "Long Run", "title": "Long run — 65 min", "detail": "Easy aerobic (RPE 4–5), conversational, flat if possible."},
+]},
+
+{label:"Phase 1 — Week 2 — 25–31 Jan · 5.8h",phase:"Phase 1 · Base",days:[
+{"date": "2027-01-25", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "6×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1100m", "detail": "WU 200 easy; drills 4×50; main 6×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-01-26", "day": "Tue", "note": "", "segs": ["WU 10 min", "6×2 min @ 10K effort, 90 sec jog", "CD 10 min"], "km": 6.5, "type": "btp", "badge": "Tempo Intervals", "title": "Intervals — 6×2 min", "detail": "40 min total: WU 10 min easy, 6×2 min @ 10K effort, 90 sec jog, CD 10 min easy."},
+{"date": "2027-01-27", "day": "Wed", "note": "", "segs": ["WU 11 min", "3×6 min @ tempo (76–90% FTP), 3 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Tempo — 3×6 min", "detail": "45 min total: WU 11 min building from Z1 to Z2, 3×6 min @ tempo (76–90% FTP), 3 min easy, CD 7 min easy."},
+{"date": "2027-01-28", "day": "Thu", "note": "First CSS test (on Thursday). It sets your swim pace zones for the next 8 weeks.", "segs": ["WU 400", "400m TT", "200 easy", "200m TT", "CD 100"], "km": 0, "type": "bsw", "badge": "CSS Test", "title": "Swim — CSS test", "detail": "WU 400 easy; 400m time trial (best even effort); 200 easy; 200m time trial; CD 100. CSS pace per 100m = (T400 − T200) ÷ 2, using the times in seconds."},
+{"date": "2027-01-29", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-01-30", "day": "Sat", "note": "", "segs": ["110 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h50", "detail": "Z2 endurance (56–75% FTP), steady, cadence 85–95. Fuel from 60 min: 40–60g carbs/hour."},
+{"date": "2027-01-31", "day": "Sun", "note": "", "segs": ["65 min"], "km": 9.8, "type": "bz2", "badge": "Long Run", "title": "Long run — 65 min", "detail": "Easy aerobic (RPE 4–5), conversational, flat if possible."},
+]},
+
+{label:"Phase 1 — Week 3 — 1–7 Feb · 6.4h",phase:"Phase 1 · Base",days:[
+{"date": "2027-02-01", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "7×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1200m", "detail": "WU 200 easy; drills 4×50; main 7×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-02-02", "day": "Tue", "note": "", "segs": ["WU 10 min", "3×8 min @ tempo (RPE 7), 2 min jog", "CD 10 min"], "km": 7.7, "type": "btp", "badge": "Tempo", "title": "Tempo — 3×8 min", "detail": "48 min total: WU 10 min easy, 3×8 min @ tempo (RPE 7), 2 min jog, CD 10 min easy."},
+{"date": "2027-02-03", "day": "Wed", "note": "FTP = 95% of your 20-min average power. Use that number for every %FTP target after this. No FTP yet? Use RPE until this test.", "segs": ["WU 20 min", "5 min hard", "5 min easy", "20 min all-out", "CD 10 min"], "km": 0, "type": "bbk", "badge": "FTP Test", "title": "20-min FTP test", "detail": "WU 20 min easy incl. 3×1 min hard; 5 min hard opener; 5 min easy; 20 min all-out; CD 10 min easy. Pace the 20 min evenly: start just under what you think you can hold."},
+{"date": "2027-02-04", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "2×500 (30 sec rest)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1400m", "detail": "WU 200 easy + 4×25 drill; main: 2×500 (30 sec rest); CD 100 easy."},
+{"date": "2027-02-05", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-02-06", "day": "Sat", "note": "", "segs": ["110 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h50", "detail": "Z2 endurance (56–75% FTP), steady, cadence 85–95. Fuel from 60 min: 40–60g carbs/hour."},
+{"date": "2027-02-07", "day": "Sun", "note": "", "segs": ["70 min"], "km": 10.6, "type": "bz2", "badge": "Long Run", "title": "Long run — 70 min", "detail": "Easy aerobic (RPE 4–5), conversational, flat if possible."},
+]},
+
+{label:"Phase 1 — Week 4 — 8–14 Feb · 5.2h",phase:"Phase 1 · Base",days:[
+{"date": "2027-02-08", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "4×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 900m", "detail": "WU 200 easy; drills 4×50; main 4×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-02-09", "day": "Tue", "note": "Record the time. It sets your run effort zones for the next block — repeat in weeks 12 and 20.", "segs": ["WU 10 min", "5km time trial — even, hard effort", "CD 10 min"], "km": 7.3, "type": "bvo2", "badge": "5K Test", "title": "5km time trial", "detail": "45 min total: WU 10 min easy, 5km time trial — even, hard effort, CD 10 min easy."},
+{"date": "2027-02-10", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-02-11", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "600 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1000m", "detail": "WU 200 easy + 4×25 drill; main: 600 continuous, easy; CD 100 easy."},
+{"date": "2027-02-12", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-02-13", "day": "Sat", "note": "", "segs": ["90 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h30", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-02-14", "day": "Sun", "note": "", "segs": ["55 min"], "km": 8.3, "type": "bz2", "badge": "Long Run", "title": "Long run — 55 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 1 — Week 5 — 15–21 Feb · 6.4h",phase:"Phase 1 · Base",days:[
+{"date": "2027-02-15", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "7×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1200m", "detail": "WU 200 easy; drills 4×50; main 7×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-02-16", "day": "Tue", "note": "", "segs": ["WU 15 min", "8×60 sec hill reps @ 5K effort, jog down", "CD 15 min"], "km": 7.4, "type": "bhr", "badge": "Hill Reps", "title": "Hill reps — 8×60 sec", "detail": "46 min total: WU 15 min easy, 8×60 sec hill reps @ 5K effort, jog down, CD 15 min easy."},
+{"date": "2027-02-17", "day": "Wed", "note": "", "segs": ["WU 12 min", "3×8 min @ sweet spot (88–94% FTP), 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Sweet spot — 3×8 min", "detail": "55 min total: WU 12 min building from Z1 to Z2, 3×8 min @ sweet spot (88–94% FTP), 4 min easy, CD 7 min easy."},
+{"date": "2027-02-18", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "800 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1200m", "detail": "WU 200 easy + 4×25 drill; main: 800 continuous; CD 100 easy."},
+{"date": "2027-02-19", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-02-20", "day": "Sat", "note": "", "segs": ["120 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 2h00", "detail": "Z2 endurance (56–75% FTP), steady, cadence 85–95. Fuel from 60 min: 40–60g carbs/hour."},
+{"date": "2027-02-21", "day": "Sun", "note": "", "segs": ["75 min"], "km": 11.4, "type": "bz2", "badge": "Long Run", "title": "Long run — 75 min", "detail": "Easy aerobic (RPE 4–5), conversational, flat if possible."},
+]},
+
+{label:"Phase 1 — Week 6 — 22–28 Feb · 6.8h",phase:"Phase 1 · Base",days:[
+{"date": "2027-02-22", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "8×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1300m", "detail": "WU 200 easy; drills 4×50; main 8×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-02-23", "day": "Tue", "note": "", "segs": ["WU 10 min", "2×15 min @ tempo (RPE 7), 3 min jog", "CD 10 min"], "km": 8.5, "type": "btp", "badge": "Tempo", "title": "Tempo — 2×15 min", "detail": "53 min total: WU 10 min easy, 2×15 min @ tempo (RPE 7), 3 min jog, CD 10 min easy."},
+{"date": "2027-02-24", "day": "Wed", "note": "", "segs": ["WU 15 min", "3×10 min @ sweet spot (88–94% FTP), 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Sweet spot — 3×10 min", "detail": "60 min total: WU 15 min building from Z1 to Z2, 3×10 min @ sweet spot (88–94% FTP), 4 min easy, CD 7 min easy."},
+{"date": "2027-02-25", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1000 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1400m", "detail": "WU 200 easy + 4×25 drill; main: 1000 continuous; CD 100 easy."},
+{"date": "2027-02-26", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-02-27", "day": "Sat", "note": "", "segs": ["125 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 2h05", "detail": "Z2 endurance (56–75% FTP), steady, cadence 85–95. Fuel from 60 min: 40–60g carbs/hour."},
+{"date": "2027-02-28", "day": "Sun", "note": "", "segs": ["75 min"], "km": 11.4, "type": "bz2", "badge": "Long Run", "title": "Long run — 75 min", "detail": "Easy aerobic (RPE 4–5), conversational, flat if possible."},
+]},
+
+{label:"Phase 1 — Week 7 — 1–7 Mar · 6.9h",phase:"Phase 1 · Base",days:[
+{"date": "2027-03-01", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "8×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1300m", "detail": "WU 200 easy; drills 4×50; main 8×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-03-02", "day": "Tue", "note": "", "segs": ["WU 10 min", "5×1km @ 10K effort, 2 min jog", "CD 10 min"], "km": 8.5, "type": "bvo2", "badge": "Intervals", "title": "Intervals — 5×1km", "detail": "53 min total: WU 10 min easy, 5×1km @ 10K effort, 2 min jog, CD 10 min easy."},
+{"date": "2027-03-03", "day": "Wed", "note": "", "segs": ["WU 13 min", "2×15 min @ sweet spot (88–94% FTP), 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Sweet spot — 2×15 min", "detail": "55 min total: WU 13 min building from Z1 to Z2, 2×15 min @ sweet spot (88–94% FTP), 5 min easy, CD 7 min easy."},
+{"date": "2027-03-04", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1100 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1500m", "detail": "WU 200 easy + 4×25 drill; main: 1100 continuous; CD 100 easy."},
+{"date": "2027-03-05", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-03-06", "day": "Sat", "note": "", "segs": ["130 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 2h10", "detail": "Z2 endurance (56–75% FTP), steady, cadence 85–95. Fuel from 60 min: 40–60g carbs/hour."},
+{"date": "2027-03-07", "day": "Sun", "note": "", "segs": ["80 min"], "km": 12.1, "type": "bz2", "badge": "Long Run", "title": "Long run — 80 min", "detail": "Easy aerobic (RPE 4–5), conversational, flat if possible."},
+]},
+
+{label:"Phase 1 — Week 8 — 8–14 Mar · 5.2h",phase:"Phase 1 · Base",days:[
+{"date": "2027-03-08", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "5×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1000m", "detail": "WU 200 easy; drills 4×50; main 5×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-03-09", "day": "Tue", "note": "", "segs": ["40 min easy", "6×20 sec strides"], "km": 6.1, "type": "bz2", "badge": "Easy + Strides", "title": "Easy run — 40 min", "detail": "40 min easy (RPE 3–4), finishing with 6×20 sec strides (walk-back recovery)."},
+{"date": "2027-03-10", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-03-11", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "700 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1100m", "detail": "WU 200 easy + 4×25 drill; main: 700 continuous, easy; CD 100 easy."},
+{"date": "2027-03-12", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-03-13", "day": "Sat", "note": "", "segs": ["95 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h35", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-03-14", "day": "Sun", "note": "", "segs": ["55 min"], "km": 8.3, "type": "bz2", "badge": "Long Run", "title": "Long run — 55 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 2 — Week 9 — 15–21 Mar · 7.1h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-03-15", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "8×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1300m", "detail": "WU 200 easy; drills 4×50; main 8×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-03-16", "day": "Tue", "note": "", "segs": ["WU 15 min", "20 min continuous tempo (RPE 7)", "CD 15 min"], "km": 8.1, "type": "btp", "badge": "Tempo", "title": "Tempo — 20 min", "detail": "50 min total: WU 15 min easy, 20 min continuous tempo (RPE 7), CD 15 min easy."},
+{"date": "2027-03-17", "day": "Wed", "note": "", "segs": ["WU 14 min", "3×12 min @ sweet spot (88–94% FTP), 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Sweet spot — 3×12 min", "detail": "65 min total: WU 14 min building from Z1 to Z2, 3×12 min @ sweet spot (88–94% FTP), 4 min easy, CD 7 min easy."},
+{"date": "2027-03-18", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1200 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1600m", "detail": "WU 200 easy + 4×25 drill; main: 1200 continuous; CD 100 easy."},
+{"date": "2027-03-19", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-03-20", "day": "Sat", "note": "Smooth transition is part of the session: change quickly, run easy for the first 5 min.", "segs": ["Ride 120 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 2h00 + 10 min run", "detail": "Z2 endurance (56–75% FTP). Final 25 min: 2×10 min tempo (76–90% FTP). Fuel 50–70g carbs/hour. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-03-21", "day": "Sun", "note": "", "segs": ["80 min"], "km": 12.1, "type": "bz2", "badge": "Long Run", "title": "Long run — 80 min", "detail": "Easy aerobic. Final 15 min steady (RPE 6)."},
+]},
+
+{label:"Phase 2 — Week 10 — 22–28 Mar · 7.2h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-03-22", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "9×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1400m", "detail": "WU 200 easy; drills 4×50; main 9×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-03-23", "day": "Tue", "note": "", "segs": ["WU 10 min", "3×10 min @ tempo, 2 min jog", "CD 10 min"], "km": 8.7, "type": "btp", "badge": "Tempo", "title": "Tempo — 3×10 min", "detail": "54 min total: WU 10 min easy, 3×10 min @ tempo, 2 min jog, CD 10 min easy."},
+{"date": "2027-03-24", "day": "Wed", "note": "", "segs": ["WU 13 min", "2×20 min @ 90–95% FTP, 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Threshold-ish — 2×20 min", "detail": "65 min total: WU 13 min building from Z1 to Z2, 2×20 min @ 90–95% FTP, 5 min easy, CD 7 min easy."},
+{"date": "2027-03-25", "day": "Thu", "note": "Retest CSS and update your zones.", "segs": ["WU 400", "400m TT", "200 easy", "200m TT", "CD 100"], "km": 0, "type": "bsw", "badge": "CSS Test", "title": "Swim — CSS test", "detail": "WU 400 easy; 400m time trial (best even effort); 200 easy; 200m time trial; CD 100. CSS pace per 100m = (T400 − T200) ÷ 2, using the times in seconds."},
+{"date": "2027-03-26", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-03-27", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 10 min run", "detail": "Z2 endurance (56–75% FTP). Final 25 min: 2×10 min tempo (76–90% FTP). Fuel 50–70g carbs/hour. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-03-28", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 15 min steady (RPE 6)."},
+]},
+
+{label:"Phase 2 — Week 11 — 29 Mar–4 Apr · 7.5h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-03-29", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "9×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1400m", "detail": "WU 200 easy; drills 4×50; main 9×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-03-30", "day": "Tue", "note": "", "segs": ["WU 15 min", "6×3 min @ 5K effort, 2 min jog", "CD 15 min"], "km": 9.4, "type": "bvo2", "badge": "Intervals", "title": "Intervals — 6×3 min", "detail": "58 min total: WU 15 min easy, 6×3 min @ 5K effort, 2 min jog, CD 15 min easy."},
+{"date": "2027-03-31", "day": "Wed", "note": "Retest. Update your FTP in Zwift/Garmin and use the new number.", "segs": ["WU 20 min", "5 min hard", "5 min easy", "20 min all-out", "CD 10 min"], "km": 0, "type": "bbk", "badge": "FTP Test", "title": "20-min FTP test", "detail": "WU 20 min easy incl. 3×1 min hard; 5 min hard opener; 5 min easy; 20 min all-out; CD 10 min easy. Pace the 20 min evenly: start just under what you think you can hold."},
+{"date": "2027-04-01", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1400 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1800m", "detail": "WU 200 easy + 4×25 drill; main: 1400 continuous; CD 100 easy."},
+{"date": "2027-04-02", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-04-03", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 10 min run", "detail": "Z2 endurance (56–75% FTP). Final 25 min: 2×10 min tempo (76–90% FTP). Fuel 50–70g carbs/hour. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-04-04", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 15 min steady (RPE 6)."},
+]},
+
+{label:"Phase 2 — Week 12 — 5–11 Apr · 5.5h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-04-05", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "6×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1100m", "detail": "WU 200 easy; drills 4×50; main 6×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-04-06", "day": "Tue", "note": "Repeat of the week-4 test. Compare the two to see how the run is responding while swim and bike volume rises.", "segs": ["WU 10 min", "5km time trial — even, hard effort", "CD 10 min"], "km": 7.3, "type": "bvo2", "badge": "5K Test", "title": "5km time trial", "detail": "45 min total: WU 10 min easy, 5km time trial — even, hard effort, CD 10 min easy."},
+{"date": "2027-04-07", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-04-08", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "900 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1300m", "detail": "WU 200 easy + 4×25 drill; main: 900 continuous, easy; CD 100 easy."},
+{"date": "2027-04-09", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-04-10", "day": "Sat", "note": "", "segs": ["95 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h35", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-04-11", "day": "Sun", "note": "", "segs": ["60 min"], "km": 9.1, "type": "bz2", "badge": "Long Run", "title": "Long run — 60 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 2 — Week 13 — 12–18 Apr · 7.4h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-04-12", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "9×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1400m", "detail": "WU 200 easy; drills 4×50; main 9×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-04-13", "day": "Tue", "note": "", "segs": ["WU 15 min", "25 min continuous tempo (RPE 7)", "CD 15 min"], "km": 8.9, "type": "btp", "badge": "Tempo", "title": "Tempo — 25 min", "detail": "55 min total: WU 15 min easy, 25 min continuous tempo (RPE 7), CD 15 min easy."},
+{"date": "2027-04-14", "day": "Wed", "note": "", "segs": ["WU 11 min", "5×6 min @ 100–105% FTP, 3 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "VO2-ish — 5×6 min", "detail": "60 min total: WU 11 min building from Z1 to Z2, 5×6 min @ 100–105% FTP, 3 min easy, CD 7 min easy."},
+{"date": "2027-04-15", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1500 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1900m", "detail": "WU 200 easy + 4×25 drill; main: 1500 continuous; CD 100 easy."},
+{"date": "2027-04-16", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-04-17", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 10 min run", "detail": "Z2 endurance (56–75% FTP). Final 25 min: 2×10 min tempo (76–90% FTP). Fuel 50–70g carbs/hour. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-04-18", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 15 min steady (RPE 6)."},
+]},
+
+{label:"Phase 2 — Week 14 — 19–25 Apr · 7.8h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-04-19", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-04-20", "day": "Tue", "note": "", "segs": ["WU 20 min", "10×60 sec hill reps @ 5K effort, jog down", "CD 20 min"], "km": 9.7, "type": "bhr", "badge": "Hill Reps", "title": "Hill reps — 10×60 sec", "detail": "60 min total: WU 20 min easy, 10×60 sec hill reps @ 5K effort, jog down, CD 20 min easy."},
+{"date": "2027-04-21", "day": "Wed", "note": "", "segs": ["WU 14 min", "3×12 min @ 88–92% FTP, 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Tempo/SS — 3×12 min", "detail": "65 min total: WU 14 min building from Z1 to Z2, 3×12 min @ 88–92% FTP, 4 min easy, CD 7 min easy."},
+{"date": "2027-04-22", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1600 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2000m", "detail": "WU 200 easy + 4×25 drill; main: 1600 continuous; CD 100 easy."},
+{"date": "2027-04-23", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-04-24", "day": "Sat", "note": "", "segs": ["Ride 130 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 2h10 + 10 min run", "detail": "Z2 endurance (56–75% FTP). Final 25 min: 2×10 min tempo (76–90% FTP). Fuel 50–70g carbs/hour. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-04-25", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 15 min steady (RPE 6)."},
+]},
+
+{label:"Phase 2 — Week 15 — 26 Apr–2 May · 7.7h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-04-26", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-04-27", "day": "Tue", "note": "", "segs": ["WU 10 min", "3×10 min @ half-marathon effort (RPE 6–7), 2 min jog", "CD 10 min"], "km": 8.7, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 3×10 min", "detail": "54 min total: WU 10 min easy, 3×10 min @ half-marathon effort (RPE 6–7), 2 min jog, CD 10 min easy."},
+{"date": "2027-04-28", "day": "Wed", "note": "", "segs": ["WU 13 min", "2×20 min @ 85–90% FTP, 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Tempo — 2×20 min", "detail": "65 min total: WU 13 min building from Z1 to Z2, 2×20 min @ 85–90% FTP, 5 min easy, CD 7 min easy."},
+{"date": "2027-04-29", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1700 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2100m", "detail": "WU 200 easy + 4×25 drill; main: 1700 continuous; CD 100 easy."},
+{"date": "2027-04-30", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-05-01", "day": "Sat", "note": "", "segs": ["Ride 130 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 2h10 + 10 min run", "detail": "Z2 endurance (56–75% FTP). Final 25 min: 2×10 min tempo (76–90% FTP). Fuel 50–70g carbs/hour. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-05-02", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 15 min steady (RPE 6)."},
+]},
+
+{label:"Phase 2 — Week 16 — 3–9 May · 5.6h",phase:"Phase 2 · Aerobic build",days:[
+{"date": "2027-05-03", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "6×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1100m", "detail": "WU 200 easy; drills 4×50; main 6×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-05-04", "day": "Tue", "note": "", "segs": ["40 min easy", "6×20 sec strides"], "km": 6.1, "type": "bz2", "badge": "Easy + Strides", "title": "Easy run — 40 min", "detail": "40 min easy (RPE 3–4), finishing with 6×20 sec strides (walk-back recovery)."},
+{"date": "2027-05-05", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-05-06", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1000 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1400m", "detail": "WU 200 easy + 4×25 drill; main: 1000 continuous, easy; CD 100 easy."},
+{"date": "2027-05-07", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-05-08", "day": "Sat", "note": "", "segs": ["100 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h40", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-05-09", "day": "Sun", "note": "", "segs": ["60 min"], "km": 9.1, "type": "bz2", "badge": "Long Run", "title": "Long run — 60 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 3 — Week 17 — 10–16 May · 7.8h",phase:"Phase 3 · Build",days:[
+{"date": "2027-05-10", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-05-11", "day": "Tue", "note": "", "segs": ["WU 10 min", "30 min continuous tempo (RPE 7)", "CD 10 min"], "km": 8.1, "type": "btp", "badge": "Tempo", "title": "Tempo — 30 min", "detail": "50 min total: WU 10 min easy, 30 min continuous tempo (RPE 7), CD 10 min easy."},
+{"date": "2027-05-12", "day": "Wed", "note": "", "segs": ["WU 11 min", "4×10 min @ 95–100% FTP, 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Threshold — 4×10 min", "detail": "70 min total: WU 11 min building from Z1 to Z2, 4×10 min @ 95–100% FTP, 4 min easy, CD 7 min easy."},
+{"date": "2027-05-13", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1800 continuous", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2200m", "detail": "WU 200 easy + 4×25 drill; main: 1800 continuous; CD 100 easy."},
+{"date": "2027-05-14", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-05-15", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 15 min run", "detail": "Z2 endurance with 2×20 min @ race power (75–82% FTP) in the middle. Fuel 60–80g carbs/hour. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-05-16", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 20–25 min progressing to half-marathon effort."},
+]},
+
+{label:"Phase 3 — Week 18 — 17–23 May · 7.8h",phase:"Phase 3 · Build",days:[
+{"date": "2027-05-17", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-05-18", "day": "Tue", "note": "", "segs": ["WU 10 min", "4×1.5km @ 10K effort, 90 sec jog", "CD 10 min"], "km": 8.9, "type": "bvo2", "badge": "Intervals", "title": "Intervals — 4×1.5km", "detail": "55 min total: WU 10 min easy, 4×1.5km @ 10K effort, 90 sec jog, CD 10 min easy."},
+{"date": "2027-05-19", "day": "Wed", "note": "", "segs": ["WU 14 min", "3×12 min @ 92–97% FTP, 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Threshold — 3×12 min", "detail": "65 min total: WU 14 min building from Z1 to Z2, 3×12 min @ 92–97% FTP, 4 min easy, CD 7 min easy."},
+{"date": "2027-05-20", "day": "Thu", "note": "Final CSS retest.", "segs": ["WU 400", "400m TT", "200 easy", "200m TT", "CD 100"], "km": 0, "type": "bsw", "badge": "CSS Test", "title": "Swim — CSS test", "detail": "WU 400 easy; 400m time trial (best even effort); 200 easy; 200m time trial; CD 100. CSS pace per 100m = (T400 − T200) ÷ 2, using the times in seconds."},
+{"date": "2027-05-21", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-05-22", "day": "Sat", "note": "", "segs": ["Ride 140 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 2h20 + 15 min run", "detail": "Z2 endurance with 2×20 min @ race power (75–82% FTP) in the middle. Fuel 60–80g carbs/hour. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-05-23", "day": "Sun", "note": "", "segs": ["95 min"], "km": 14.4, "type": "bz2", "badge": "Long Run", "title": "Long run — 95 min", "detail": "Easy aerobic. Final 20–25 min progressing to half-marathon effort."},
+]},
+
+{label:"Phase 3 — Week 19 — 24–30 May · 8h",phase:"Phase 3 · Build",days:[
+{"date": "2027-05-24", "day": "Mon", "note": "Race distance in one go. If it feels hard, that is useful information, not failure.", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-05-25", "day": "Tue", "note": "", "segs": ["WU 10 min", "2×18 min @ half-marathon effort (RPE 6–7), 3 min jog", "CD 10 min"], "km": 9.5, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 2×18 min", "detail": "59 min total: WU 10 min easy, 2×18 min @ half-marathon effort (RPE 6–7), 3 min jog, CD 10 min easy."},
+{"date": "2027-05-26", "day": "Wed", "note": "Final FTP update before the race-specific block.", "segs": ["WU 20 min", "5 min hard", "5 min easy", "20 min all-out", "CD 10 min"], "km": 0, "type": "bbk", "badge": "FTP Test", "title": "20-min FTP test", "detail": "WU 20 min easy incl. 3×1 min hard; 5 min hard opener; 5 min easy; 20 min all-out; CD 10 min easy. Pace the 20 min evenly: start just under what you think you can hold."},
+{"date": "2027-05-27", "day": "Thu", "note": "Race distance in one go. If it feels hard, that is useful information, not failure.", "segs": ["WU 200 + drills", "1900 continuous (race distance)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2300m", "detail": "WU 200 easy + 4×25 drill; main: 1900 continuous (race distance); CD 100 easy."},
+{"date": "2027-05-28", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-05-29", "day": "Sat", "note": "", "segs": ["Ride 135 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 2h15 + 15 min run", "detail": "Z2 endurance with 2×20 min @ race power (75–82% FTP) in the middle. Fuel 60–80g carbs/hour. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-05-30", "day": "Sun", "note": "", "segs": ["90 min"], "km": 13.6, "type": "bz2", "badge": "Long Run", "title": "Long run — 90 min", "detail": "Easy aerobic. Final 20–25 min progressing to half-marathon effort."},
+]},
+
+{label:"Phase 3 — Week 20 — 31 May–6 Jun · 6h",phase:"Phase 3 · Build",days:[
+{"date": "2027-05-31", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "7×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1200m", "detail": "WU 200 easy; drills 4×50; main 7×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-06-01", "day": "Tue", "note": "Third 5K test. Use it to reset paces for the race-specific block.", "segs": ["WU 10 min", "5km time trial — even, hard effort", "CD 10 min"], "km": 7.3, "type": "bvo2", "badge": "5K Test", "title": "5km time trial", "detail": "45 min total: WU 10 min easy, 5km time trial — even, hard effort, CD 10 min easy."},
+{"date": "2027-06-02", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-06-03", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1200 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1600m", "detail": "WU 200 easy + 4×25 drill; main: 1200 continuous, easy; CD 100 easy."},
+{"date": "2027-06-04", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-06-05", "day": "Sat", "note": "", "segs": ["105 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h45", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-06-06", "day": "Sun", "note": "", "segs": ["65 min"], "km": 9.8, "type": "bz2", "badge": "Long Run", "title": "Long run — 65 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 3 — Week 21 — 7–13 Jun · 8h",phase:"Phase 3 · Build",days:[
+{"date": "2027-06-07", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-06-08", "day": "Tue", "note": "", "segs": ["WU 10 min", "35 min continuous tempo (RPE 7)", "CD 10 min"], "km": 8.9, "type": "btp", "badge": "Tempo", "title": "Tempo — 35 min", "detail": "55 min total: WU 10 min easy, 35 min continuous tempo (RPE 7), CD 10 min easy."},
+{"date": "2027-06-09", "day": "Wed", "note": "", "segs": ["WU 13 min", "2×25 min @ 82–88% FTP, 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Tempo — 2×25 min", "detail": "75 min total: WU 13 min building from Z1 to Z2, 2×25 min @ 82–88% FTP, 5 min easy, CD 7 min easy."},
+{"date": "2027-06-10", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "2×1000 (30 sec rest)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2400m", "detail": "WU 200 easy + 4×25 drill; main: 2×1000 (30 sec rest); CD 100 easy."},
+{"date": "2027-06-11", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-06-12", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 15 min run", "detail": "Z2 endurance with 2×20 min @ race power (75–82% FTP) in the middle. Fuel 60–80g carbs/hour. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-06-13", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 20–25 min progressing to half-marathon effort."},
+]},
+
+{label:"Phase 3 — Week 22 — 14–20 Jun · 8h",phase:"Phase 3 · Build",days:[
+{"date": "2027-06-14", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-06-15", "day": "Tue", "note": "", "segs": ["WU 15 min", "10×75 sec hill reps @ 5K effort, jog down", "CD 15 min"], "km": 8.4, "type": "bhr", "badge": "Hill Reps", "title": "Hill reps — 10×75 sec", "detail": "52 min total: WU 15 min easy, 10×75 sec hill reps @ 5K effort, jog down, CD 15 min easy."},
+{"date": "2027-06-16", "day": "Wed", "note": "", "segs": ["WU 13 min", "4×12 min @ 90–95% FTP, 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Threshold — 4×12 min", "detail": "80 min total: WU 13 min building from Z1 to Z2, 4×12 min @ 90–95% FTP, 4 min easy, CD 7 min easy."},
+{"date": "2027-06-17", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1900 continuous @ race effort", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2300m", "detail": "WU 200 easy + 4×25 drill; main: 1900 continuous @ race effort; CD 100 easy."},
+{"date": "2027-06-18", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-06-19", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 15 min run", "detail": "Z2 endurance with 2×20 min @ race power (75–82% FTP) in the middle. Fuel 60–80g carbs/hour. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-06-20", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 20–25 min progressing to half-marathon effort."},
+]},
+
+{label:"Phase 3 — Week 23 — 21–27 Jun · 8h",phase:"Phase 3 · Build",days:[
+{"date": "2027-06-21", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-06-22", "day": "Tue", "note": "", "segs": ["WU 10 min", "3×12 min @ half-marathon effort, 2 min jog", "CD 10 min"], "km": 9.7, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 3×12 min", "detail": "60 min total: WU 10 min easy, 3×12 min @ half-marathon effort, 2 min jog, CD 10 min easy."},
+{"date": "2027-06-23", "day": "Wed", "note": "", "segs": ["WU 13 min", "3×15 min @ 80–85% FTP (race-power rehearsal), 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Race-power rehearsal — 3×15 min", "detail": "75 min total: WU 13 min building from Z1 to Z2, 3×15 min @ 80–85% FTP (race-power rehearsal), 5 min easy, CD 7 min easy."},
+{"date": "2027-06-24", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "4×500 steady (30 sec rest)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2400m", "detail": "WU 200 easy + 4×25 drill; main: 4×500 steady (30 sec rest); CD 100 easy."},
+{"date": "2027-06-25", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-06-26", "day": "Sat", "note": "", "segs": ["Ride 120 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 2h00 + 15 min run", "detail": "Z2 endurance with 2×20 min @ race power (75–82% FTP) in the middle. Fuel 60–80g carbs/hour. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-06-27", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy aerobic. Final 20–25 min progressing to half-marathon effort."},
+]},
+
+{label:"Phase 3 — Week 24 — 28 Jun–4 Jul · 5.9h",phase:"Phase 3 · Build",days:[
+{"date": "2027-06-28", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "7×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1200m", "detail": "WU 200 easy; drills 4×50; main 7×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-06-29", "day": "Tue", "note": "", "segs": ["40 min easy", "6×20 sec strides"], "km": 6.1, "type": "bz2", "badge": "Easy + Strides", "title": "Easy run — 40 min", "detail": "40 min easy (RPE 3–4), finishing with 6×20 sec strides (walk-back recovery)."},
+{"date": "2027-06-30", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-07-01", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1200 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1600m", "detail": "WU 200 easy + 4×25 drill; main: 1200 continuous, easy; CD 100 easy."},
+{"date": "2027-07-02", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-07-03", "day": "Sat", "note": "", "segs": ["105 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h45", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-07-04", "day": "Sun", "note": "", "segs": ["65 min"], "km": 9.8, "type": "bz2", "badge": "Long Run", "title": "Long run — 65 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 4 — Week 25 — 5–11 Jul · 8.1h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-07-05", "day": "Mon", "note": "Open water: from here, get in the water at least 3 times before race day if you can (wetsuit on, practise sighting).", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-07-06", "day": "Tue", "note": "", "segs": ["WU 10 min", "4×8 min @ half-marathon effort, 90 sec jog", "CD 10 min"], "km": 9.2, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 4×8 min", "detail": "57 min total: WU 10 min easy, 4×8 min @ half-marathon effort, 90 sec jog, CD 10 min easy."},
+{"date": "2027-07-07", "day": "Wed", "note": "", "segs": ["WU 13 min", "3×15 min @ 78–83% FTP (race power), 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Race power — 3×15 min", "detail": "75 min total: WU 13 min building from Z1 to Z2, 3×15 min @ 78–83% FTP (race power), 5 min easy, CD 7 min easy."},
+{"date": "2027-07-08", "day": "Thu", "note": "Open water: from here, get in the water at least 3 times before race day if you can (wetsuit on, practise sighting).", "segs": ["WU 200 + drills", "1900 continuous — open water if you can", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2300m", "detail": "WU 200 easy + 4×25 drill; main: 1900 continuous — open water if you can; CD 100 easy."},
+{"date": "2027-07-09", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-07-10", "day": "Sat", "note": "Smooth transition is part of the session: change quickly, run easy for the first 5 min.", "segs": ["Ride 125 min", "Run 20 min off the bike"], "km": 3.2, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 20 min run", "detail": "Z2 with 3×15–20 min @ race power (78–83% FTP). Race kit, race nutrition (60–80g carbs/hour), aero position. Then straight into a 20 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-07-11", "day": "Sun", "note": "", "segs": ["90 min"], "km": 13.6, "type": "bz2", "badge": "Long Run", "title": "Long run — 90 min", "detail": "Easy start, then final 25–30 min @ half-marathon effort. Practise race fuelling: gel at 45 min then every 30–40 min."},
+]},
+
+{label:"Phase 4 — Week 26 — 12–18 Jul · 8h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-07-12", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-07-13", "day": "Tue", "note": "", "segs": ["WU 10 min", "2×18 min @ half-marathon effort, 3 min jog", "CD 10 min"], "km": 9.5, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 2×18 min", "detail": "59 min total: WU 10 min easy, 2×18 min @ half-marathon effort, 3 min jog, CD 10 min easy."},
+{"date": "2027-07-14", "day": "Wed", "note": "", "segs": ["WU 13 min", "2×20 min @ 78–83% FTP (race power), 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Race power — 2×20 min", "detail": "65 min total: WU 13 min building from Z1 to Z2, 2×20 min @ 78–83% FTP (race power), 5 min easy, CD 7 min easy."},
+{"date": "2027-07-15", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "4×500 @ race effort (20 sec rest)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2400m", "detail": "WU 200 easy + 4×25 drill; main: 4×500 @ race effort (20 sec rest); CD 100 easy."},
+{"date": "2027-07-16", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-07-17", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 20 min off the bike"], "km": 3.2, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 20 min run", "detail": "Z2 with 3×15–20 min @ race power (78–83% FTP). Race kit, race nutrition (60–80g carbs/hour), aero position. Then straight into a 20 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-07-18", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy start, then final 25–30 min @ half-marathon effort. Practise race fuelling: gel at 45 min then every 30–40 min."},
+]},
+
+{label:"Phase 4 — Week 27 — 19–25 Jul · 8h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-07-19", "day": "Mon", "note": "Practise sighting and pack-swimming if a group session is available.", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-07-20", "day": "Tue", "note": "", "segs": ["WU 15 min", "6×800m @ 5K effort, 2 min jog", "CD 15 min"], "km": 9.8, "type": "bvo2", "badge": "Intervals", "title": "Intervals — 6×800m", "detail": "61 min total: WU 15 min easy, 6×800m @ 5K effort, 2 min jog, CD 15 min easy."},
+{"date": "2027-07-21", "day": "Wed", "note": "", "segs": ["WU 14 min", "4×8 min @ 95–100% FTP, 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Sharpener — 4×8 min", "detail": "65 min total: WU 14 min building from Z1 to Z2, 4×8 min @ 95–100% FTP, 4 min easy, CD 7 min easy."},
+{"date": "2027-07-22", "day": "Thu", "note": "Practise sighting and pack-swimming if a group session is available.", "segs": ["WU 200 + drills", "1900 continuous, sighting every 8–10 strokes", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2300m", "detail": "WU 200 easy + 4×25 drill; main: 1900 continuous, sighting every 8–10 strokes; CD 100 easy."},
+{"date": "2027-07-23", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-07-24", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 20 min off the bike"], "km": 3.2, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 20 min run", "detail": "Z2 with 3×15–20 min @ race power (78–83% FTP). Race kit, race nutrition (60–80g carbs/hour), aero position. Then straight into a 20 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-07-25", "day": "Sun", "note": "", "segs": ["90 min"], "km": 13.6, "type": "bz2", "badge": "Long Run", "title": "Long run — 90 min", "detail": "Easy start, then final 25–30 min @ half-marathon effort. Practise race fuelling: gel at 45 min then every 30–40 min."},
+]},
+
+{label:"Phase 4 — Week 28 — 26 Jul–1 Aug · 6.1h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-07-26", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "7×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1200m", "detail": "WU 200 easy; drills 4×50; main 7×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-07-27", "day": "Tue", "note": "", "segs": ["45 min easy", "6×20 sec strides"], "km": 6.8, "type": "bz2", "badge": "Easy + Strides", "title": "Easy run — 45 min", "detail": "45 min easy (RPE 3–4), finishing with 6×20 sec strides (walk-back recovery)."},
+{"date": "2027-07-28", "day": "Wed", "note": "", "segs": ["45 min", "easy Z2 with 4×1 min cadence spin-ups"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Easy Z2 spin", "detail": "45 min easy Z2 with 4×1 min cadence spin-ups."},
+{"date": "2027-07-29", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1200 continuous, easy", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1600m", "detail": "WU 200 easy + 4×25 drill; main: 1200 continuous, easy; CD 100 easy."},
+{"date": "2027-07-30", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-07-31", "day": "Sat", "note": "", "segs": ["110 min"], "km": 0, "type": "bbk", "badge": "Long Ride", "title": "Long ride — 1h50", "detail": "Z2 endurance only (56–75% FTP), relaxed — recovery week."},
+{"date": "2027-08-01", "day": "Sun", "note": "", "segs": ["65 min"], "km": 9.8, "type": "bz2", "badge": "Long Run", "title": "Long run — 65 min", "detail": "Easy aerobic, conversational — recovery week."},
+]},
+
+{label:"Phase 4 — Week 29 — 2–8 Aug · 8h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-08-02", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-08-03", "day": "Tue", "note": "", "segs": ["WU 10 min", "3×12 min @ half-marathon effort, 2 min jog", "CD 10 min"], "km": 9.7, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 3×12 min", "detail": "60 min total: WU 10 min easy, 3×12 min @ half-marathon effort, 2 min jog, CD 10 min easy."},
+{"date": "2027-08-04", "day": "Wed", "note": "", "segs": ["WU 13 min", "2×20 min @ 78–83% FTP (race power), 5 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Race power — 2×20 min", "detail": "65 min total: WU 13 min building from Z1 to Z2, 2×20 min @ 78–83% FTP (race power), 5 min easy, CD 7 min easy."},
+{"date": "2027-08-05", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "10×200 @ CSS (15 sec rest)", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2400m", "detail": "WU 200 easy + 4×25 drill; main: 10×200 @ CSS (15 sec rest); CD 100 easy."},
+{"date": "2027-08-06", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-08-07", "day": "Sat", "note": "", "segs": ["Ride 125 min", "Run 20 min off the bike"], "km": 3.2, "type": "bmx", "badge": "Brick", "title": "Long ride 2h05 + 20 min run", "detail": "Z2 with 3×15–20 min @ race power (78–83% FTP). Race kit, race nutrition (60–80g carbs/hour), aero position. Then straight into a 20 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-08-08", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy start, then final 25–30 min @ half-marathon effort. Practise race fuelling: gel at 45 min then every 30–40 min."},
+]},
+
+{label:"Phase 4 — Week 30 — 9–15 Aug · 7.6h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-08-09", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "10×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1500m", "detail": "WU 200 easy; drills 4×50; main 10×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-08-10", "day": "Tue", "note": "", "segs": ["WU 10 min", "30 min continuous @ half-marathon effort", "CD 10 min"], "km": 8.1, "type": "btp", "badge": "Race-effort", "title": "Steady — 30 min at race effort", "detail": "50 min total: WU 10 min easy, 30 min continuous @ half-marathon effort, CD 10 min easy."},
+{"date": "2027-08-11", "day": "Wed", "note": "", "segs": ["WU 14 min", "3×12 min @ 78–83% FTP (race power), 4 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Race power — 3×12 min", "detail": "65 min total: WU 14 min building from Z1 to Z2, 3×12 min @ 78–83% FTP (race power), 4 min easy, CD 7 min easy."},
+{"date": "2027-08-12", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1900 continuous @ race effort", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 2300m", "detail": "WU 200 easy + 4×25 drill; main: 1900 continuous @ race effort; CD 100 easy."},
+{"date": "2027-08-13", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-08-14", "day": "Sat", "note": "", "segs": ["Ride 115 min", "Run 20 min off the bike"], "km": 3.2, "type": "bmx", "badge": "Brick", "title": "Long ride 1h55 + 20 min run", "detail": "Z2 with 3×15–20 min @ race power (78–83% FTP). Race kit, race nutrition (60–80g carbs/hour), aero position. Then straight into a 20 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-08-15", "day": "Sun", "note": "", "segs": ["85 min"], "km": 12.9, "type": "bz2", "badge": "Long Run", "title": "Long run — 85 min", "detail": "Easy start, then final 25–30 min @ half-marathon effort. Practise race fuelling: gel at 45 min then every 30–40 min."},
+]},
+
+{label:"Phase 4 — Week 31 — 16–22 Aug · 7h",phase:"Phase 4 · Race-specific",days:[
+{"date": "2027-08-16", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "9×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1400m", "detail": "WU 200 easy; drills 4×50; main 9×100 @ steady aerobic (RPE 5–6, 15 sec rest, swim); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-08-17", "day": "Tue", "note": "", "segs": ["WU 10 min", "4×6 min @ half-marathon effort, 90 sec jog", "CD 10 min"], "km": 7.9, "type": "bmx", "badge": "Race-effort", "title": "Half-marathon effort — 4×6 min", "detail": "49 min total: WU 10 min easy, 4×6 min @ half-marathon effort, 90 sec jog, CD 10 min easy."},
+{"date": "2027-08-18", "day": "Wed", "note": "", "segs": ["WU 14 min", "4×5 min @ 100% FTP, 3 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Sharpener — 4×5 min", "detail": "50 min total: WU 14 min building from Z1 to Z2, 4×5 min @ 100% FTP, 3 min easy, CD 7 min easy."},
+{"date": "2027-08-19", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "1500 @ race effort", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1900m", "detail": "WU 200 easy + 4×25 drill; main: 1500 @ race effort; CD 100 easy."},
+{"date": "2027-08-20", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-08-21", "day": "Sat", "note": "", "segs": ["Ride 115 min", "Run 15 min off the bike"], "km": 2.4, "type": "bmx", "badge": "Brick", "title": "Long ride 1h55 + 15 min run", "detail": "Z2 with 3×15–20 min @ race power (78–83% FTP). Race kit, race nutrition (60–80g carbs/hour), aero position. Then straight into a 15 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-08-22", "day": "Sun", "note": "", "segs": ["80 min"], "km": 12.1, "type": "bz2", "badge": "Long Run", "title": "Long run — 80 min", "detail": "Easy start, then final 25–30 min @ half-marathon effort. Practise race fuelling: gel at 45 min then every 30–40 min."},
+]},
+
+{label:"Phase 5 — Week 32 — 23–29 Aug · 5.3h",phase:"Phase 5 · Taper & race",days:[
+{"date": "2027-08-23", "day": "Mon", "note": "", "segs": ["WU 200", "Drills 4×50", "6×100 steady", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim technique — 1100m", "detail": "WU 200 easy; drills 4×50; main 6×100 @ steady aerobic (RPE 5–6, 15 sec rest, pull buoy + paddles); CD 100 easy. Focus: long smooth stroke, high-elbow catch, bilateral breathing."},
+{"date": "2027-08-24", "day": "Tue", "note": "Short and sharp. Legs should feel springy, not tired.", "segs": ["WU 10 min", "4×1km @ race effort, 2 min jog", "CD 10 min"], "km": 7.4, "type": "bvo2", "badge": "Sharpener", "title": "Sharpener — 4×1km", "detail": "46 min total: WU 10 min easy, 4×1km @ race effort, 2 min jog, CD 10 min easy."},
+{"date": "2027-08-25", "day": "Wed", "note": "", "segs": ["WU 12 min", "3×5 min @ race power (78–83% FTP), 3 min easy", "CD 7 min"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Race power — 3×5 min", "detail": "40 min total: WU 12 min building from Z1 to Z2, 3×5 min @ race power (78–83% FTP), 3 min easy, CD 7 min easy."},
+{"date": "2027-08-26", "day": "Thu", "note": "", "segs": ["WU 200 + drills", "800 incl. 4×100 @ race effort", "CD 100"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim endurance — 1200m", "detail": "WU 200 easy + 4×25 drill; main: 800 incl. 4×100 @ race effort; CD 100 easy."},
+{"date": "2027-08-27", "day": "Fri", "note": "Rest day before the long ride — protect it.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest", "detail": "Full rest. Optional 15–20 min mobility or light strength (single-leg work, glutes, core)."},
+{"date": "2027-08-28", "day": "Sat", "note": "", "segs": ["Ride 80 min", "Run 10 min off the bike"], "km": 1.6, "type": "bmx", "badge": "Brick", "title": "Long ride 1h20 + 10 min run", "detail": "Easy Z2 with 3×5 min @ race power. Keep it short and fresh. Then straight into a 10 min run off the bike: easy for 5 min, then settle."},
+{"date": "2027-08-29", "day": "Sun", "note": "", "segs": ["55 min"], "km": 8.3, "type": "bz2", "badge": "Long Run", "title": "Long run — 55 min", "detail": "Easy, short, relaxed."},
+]},
+
+{label:"Phase 5 — Week 33 — 30 Aug–5 Sep · 2.8h + race",phase:"Phase 5 · Taper & race",days:[
+{"date": "2027-08-30", "day": "Mon", "note": "", "segs": ["WU 300", "4×100 race effort", "4×50 fast", "CD 200"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim — easy with race-effort pick-ups", "detail": "1200m: WU 300 easy; 4×100 @ race effort (20 sec rest); 4×50 fast; CD 200 easy."},
+{"date": "2027-08-31", "day": "Tue", "note": "", "segs": ["30 min easy", "4× strides"], "km": 4.5, "type": "bz2", "badge": "Easy", "title": "Easy run — 30 min with strides", "detail": "30 min easy + 4×20 sec strides."},
+{"date": "2027-09-01", "day": "Wed", "note": "Last bike quality. Keep it crisp.", "segs": ["WU 15", "3×3 min race power", "3×1 min @ FTP", "CD 8"], "km": 0, "type": "bbk", "badge": "Bike", "title": "Bike — race-power openers", "detail": "45 min: WU 15 min; 3×3 min @ race power (78–83% FTP), 3 min easy; 3×1 min @ 100% FTP, 2 min easy; CD 8 min."},
+{"date": "2027-09-02", "day": "Thu", "note": "", "segs": ["800m easy"], "km": 0, "type": "bsw", "badge": "Swim", "title": "Swim — easy 800m", "detail": "800m easy: WU 200; 4×100 steady; 4×50 build; CD 100. Open water if available."},
+{"date": "2027-09-03", "day": "Fri", "note": "Registration and bike check-in times: confirm on the official race page.", "segs": [], "km": 0, "type": "brs", "badge": "Rest", "title": "Rest, pack & travel", "detail": "Rest. Pack and double-check kit list. Travel to Maastricht if racing from there, register when the expo opens, begin carb-loading (steady, familiar foods)."},
+{"date": "2027-09-04", "day": "Sat", "note": "Nothing new today: no new food, no new kit.", "segs": ["25 min spin", "10 min jog"], "km": 1.6, "type": "btp", "badge": "Pre-race", "title": "Race-eve openers & bike check-in", "detail": "25 min easy spin + 3×30 sec race-power pick-ups; 10 min easy jog + 3 strides. Rack the bike, lay out kit, early dinner (familiar carbs), sleep early."},
+{"date": "2027-09-05", "day": "Sun", "note": "Everything you have done for 33 weeks is already banked. Execute the plan.", "segs": ["Swim: controlled start", "Bike: 75–80% FTP", "Run: easy first 3km, then settle"], "km": 21.1, "type": "brc", "badge": "Race day", "title": "IRONMAN 70.3 Maastricht-Limburg 🏁", "detail": "1.9km swim · 90km bike · 21.1km run. Swim: smooth and controlled, no sprint at the start. Bike: 75–80% FTP, hold steady, fuel 60–80g carbs/hour. Run: first 3km easy, then settle at half-marathon effort, hold form to the line."},
+]},
+
+];
+
 // ── plan state ───────────────────────────────────────────────
 let planDone={};
-try{planDone=JSON.parse(localStorage.getItem('chesterMarathon2026')||'{}');}catch(e){}
+try{planDone=JSON.parse(localStorage.getItem('maastricht703_2027')||'{}');}catch(e){}
 let planMissed={};
-try{planMissed=JSON.parse(localStorage.getItem('chesterMarathon2026_missed')||'{}');}catch(e){}
+try{planMissed=JSON.parse(localStorage.getItem('maastricht703_2027_missed')||'{}');}catch(e){}
 let planRescheduled={};
-try{planRescheduled=JSON.parse(localStorage.getItem('chesterMarathon2026_rescheduled')||'{}');}catch(e){}
+try{planRescheduled=JSON.parse(localStorage.getItem('maastricht703_2027_rescheduled')||'{}');}catch(e){}
 let planHistoryOpen={};  // tracks which week history blocks are expanded
 
 function savePlanState(){
   try{
-    localStorage.setItem('chesterMarathon2026',JSON.stringify(planDone));
-    localStorage.setItem('chesterMarathon2026_missed',JSON.stringify(planMissed));
-    localStorage.setItem('chesterMarathon2026_rescheduled',JSON.stringify(planRescheduled));
+    localStorage.setItem('maastricht703_2027',JSON.stringify(planDone));
+    localStorage.setItem('maastricht703_2027_missed',JSON.stringify(planMissed));
+    localStorage.setItem('maastricht703_2027_rescheduled',JSON.stringify(planRescheduled));
   }catch(e){}
 }
 
@@ -813,7 +1153,7 @@ async function replanFromMissed(missedDate, missedTitle, btnEl){
 
   const allDays=flatPlanDays();
   const today=localToday();
-  const raceDate='2026-10-11';
+  const raceDate='2027-09-05';
   const daysLeft=Math.round((new Date(raceDate)-new Date(today))/86400000);
 
   // Build context: what's upcoming from today
@@ -830,7 +1170,7 @@ async function replanFromMissed(missedDate, missedTitle, btnEl){
     return;
   }
 
-  const prompt=`You are Karl's running coach. He is training for the MBNA Chester Marathon on 11 October 2026 (${daysLeft} days away), targeting sub-3:40 (5:13/km). He is in an 11-week structured plan.
+  const prompt=`You are Karl's triathlon coach. He is training for IRONMAN 70.3 Maastricht-Limburg on 5 September 2027 (${daysLeft} days away): 1.9km swim, 90km bike, 21.1km run. He trains 6–8 hours a week in a 33-week structured plan.
 
 Today is ${today}. Karl has missed:
 ${allMissed}
@@ -838,7 +1178,7 @@ ${allMissed}
 His upcoming scheduled sessions (next 14 training days):
 ${upcomingStr}
 
-His weekly structure (weeks 1–10): Sat easy, Sun long run, Wed marathon pace at 5:13/km, Mon/Tue/Thu rest, Fri easy. This changes in the final taper weeks — check the upcoming sessions list above for the exact structure on a given week.
+His weekly structure: Mon swim technique, Tue run quality, Wed bike quality, Thu swim endurance, Fri rest, Sat long ride (brick run in later phases), Sun long run. Swim is his limiter, so protect swim sessions where possible. Taper weeks at the end change this structure — check the upcoming sessions list for the exact week.
 
 Give a practical replanning response in exactly 3 paragraphs:
 1. What the missed session(s) mean for his fitness and training load — honest but brief.
@@ -1210,7 +1550,7 @@ async function renderFreshness(el) {
       </div>
       <div style="font-size:11px;color:var(--color-text-tertiary);line-height:1.6;max-width:640px">
         Fitness and Fatigue build from your daily training load; Form is Fitness minus Fatigue.
-        Form dropping during a big block is normal — watch for it climbing back up as you taper into Chester and London.
+        Form dropping during a big block is normal — watch for it climbing back up as you taper into Maastricht.
       </div>`;
 
     makeChart('mainChart', 'line',
@@ -1323,8 +1663,8 @@ async function renderHeatmap(el) {
   container.style.width = '100%';
 
   heatmapInstance = L.map('heatmapContainer', { zoomControl: true, scrollWheelZoom: true });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO', maxZoom: 19
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles © Esri — Esri, DeLorme, NAVTEQ', maxNativeZoom: 16, maxZoom: 19
   }).addTo(heatmapInstance);
 
   // Filter routes
