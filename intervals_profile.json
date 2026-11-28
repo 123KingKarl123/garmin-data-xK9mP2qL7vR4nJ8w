@@ -31,7 +31,7 @@
   "icu_last_seen": "2026-07-31T08:25:51.228+00:00",
   "status": "DORMANT",
   "status_updated": "2026-10-29T08:27:15.493+00:00",
-  "icu_resting_hr": 55,
+  "icu_resting_hr": 51,
   "icu_weight": 93.099,
   "icu_weight_sync": "NONE",
   "icu_activated": "2026-05-14T00:00:00.000+00:00",
@@ -403,9 +403,9 @@
       "custom_field_values": {},
       "custom_zones_ids": [],
       "calendar_tile_activity_panel_id": null,
+      "use_distance_for_intervals": false,
       "other": false,
-      "eFTPSupported": true,
-      "use_distance_for_intervals": false
+      "eFTPSupported": true
     },
     {
       "id": 2416822,
@@ -586,9 +586,9 @@
       "custom_field_values": {},
       "custom_zones_ids": [],
       "calendar_tile_activity_panel_id": null,
+      "use_distance_for_intervals": false,
       "other": false,
-      "eFTPSupported": true,
-      "use_distance_for_intervals": false
+      "eFTPSupported": true
     },
     {
       "id": 2416823,
@@ -726,9 +726,9 @@
       "custom_field_values": {},
       "custom_zones_ids": [],
       "calendar_tile_activity_panel_id": null,
+      "use_distance_for_intervals": true,
       "other": false,
-      "eFTPSupported": false,
-      "use_distance_for_intervals": true
+      "eFTPSupported": false
     },
     {
       "id": 2416824,
@@ -865,9 +865,9 @@
       "custom_field_values": {},
       "custom_zones_ids": [],
       "calendar_tile_activity_panel_id": null,
+      "use_distance_for_intervals": false,
       "other": true,
-      "eFTPSupported": false,
-      "use_distance_for_intervals": false
+      "eFTPSupported": false
     }
   ]
 }
